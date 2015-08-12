@@ -11,4 +11,6 @@ public:
 	~PluginUI();
 
 	IMainWindow* GetMainWindow();
+
+	int Run();
 };

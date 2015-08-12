@@ -32,6 +32,11 @@ extern "C"
 		return g_GlobalData.m_pMainWindow;
 	}
 
+	QTUI_DECLSPEC int Run()
+	{
+		return g_GlobalData.m_pApp->exec();
+	}
+
 	QTUI_DECLSPEC void PluginDestroy()
 	{
 		g_GlobalData.Destroy();

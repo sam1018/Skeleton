@@ -1,11 +1,17 @@
 #pragma once
 
-#include <QtWidgets\qmainwindow.h>
 #include "../SkeletonInterface/IMainWindow.h"
+#include <memory>
 
-class MainWindow : public QMainWindow, public IMainWindow
+class MainWindow : public IMainWindow
 {
 public:
 	MainWindow();
 	~MainWindow();
+
+	void Show();
+
+private:
+	struct ImplData;
+	std::unique_ptr <ImplData> m_pImplData;
 };

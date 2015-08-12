@@ -1,7 +1,6 @@
 #include "PluginUI.h"
 #include "../SkeletonInterface/IMainWindow.h"
-
-typedef IMainWindow* (__cdecl *GetMainWindowFunc)(void);
+#include <functional>
 
 PluginUI::PluginUI()
 {
@@ -13,6 +12,10 @@ PluginUI::~PluginUI()
 
 IMainWindow* PluginUI::GetMainWindow()
 {
-	GetMainWindowFunc GetMainWindow = (GetMainWindowFunc) GetFunctionAddress("GetMainWindow");
-	return GetMainWindow();
+	return PluginCallerBody<IMainWindow*>(__func__);
+}
+
+int PluginUI::Run()
+{
+	return PluginCallerBody<int>(__func__);
 }

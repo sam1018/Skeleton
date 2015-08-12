@@ -158,6 +158,7 @@
   <ItemGroup>
     <ClInclude Include="Exceptions.h" />
     <ClInclude Include="IPlugin.h" />
+    <ClInclude Include="Main.h" />
     <ClInclude Include="PluginUI.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

@@ -21,6 +21,10 @@ public:
 
 	void Arguements(int argc, char** argv);
 
+	void Show();
+
+	int Run();
+
 private:
 	struct ImplData;
 	std::unique_ptr <ImplData> m_pImplData;
