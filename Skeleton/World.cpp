@@ -1,6 +1,6 @@
 #include "World.h"
 #include "PluginUI.h"
-#include "IMainFrame.h"
+#include "../SkeletonInterface/IMainWindow.h"
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -9,7 +9,7 @@ namespace pt = boost::property_tree;
 
 struct World::ImplData
 {
-	std::unique_ptr <IMainFrame> m_pMainFrame;
+	IMainWindow* m_pMainWindow;
 	PluginUI pluginUI;
 };
 
@@ -33,15 +33,16 @@ void World::LoadPlugins(std::string fileName)
 	pt::read_xml(fileName, tree);
 
 	m_pImplData->pluginUI.LoadModule(tree.get("PluginsList.UIPlugin", "QTUI"));
+	m_pImplData->pluginUI.Initialize(m_argc, m_argv);
 }
 
 void World::LoadObjects()
 {
-	CreateMainFrame();
+	m_pImplData->m_pMainWindow = m_pImplData->pluginUI.GetMainWindow();
 }
 
-IMainFrame* World::CreateMainFrame()
+void World::Arguements(int argc, char ** argv)
 {
-	m_pImplData->m_pMainFrame = m_pImplData->pluginUI.CreateMainFrame();
-	return m_pImplData->m_pMainFrame.get();
+	m_argc = argc;
+	m_argv = argv;
 }

@@ -1,21 +1,19 @@
 #include <iostream>
 #include "World.h"
 #include "Exceptions.h"
+#include <Windows.h>
 
-int main()
+int main(int argc, char** argv)
 {
 	try
 	{
+		World::GetInstance().Arguements(argc, argv);
 		World::GetInstance().LoadPlugins("PluginsList.xml");
 		World::GetInstance().LoadObjects();
 	}
-	catch (FunctionLoadFailedException& e)
+	catch (PluginFailedException& e)
 	{
-		std::cerr << "ERROR!!!! Failed to load function: " << e.what() << "\n";
-	}
-	catch (ModuleLoadException& e)
-	{
-		std::cerr << "ERROR!!!! Failed to load module: " << e.what() << "\n";
+		std::cerr << e.what() << "\n";
 	}
 	catch (...)
 	{

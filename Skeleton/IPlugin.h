@@ -11,6 +11,9 @@ public:
 
 	void LoadModule(std::string moduleName);
 
+	void Initialize(int argc, char** argv);
+
+protected:
 	void* GetFunctionAddress(std::string functionName);
 
 private:

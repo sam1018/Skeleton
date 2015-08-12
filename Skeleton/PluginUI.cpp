@@ -1,7 +1,7 @@
 #include "PluginUI.h"
-#include "IMainFrame.h"
+#include "../SkeletonInterface/IMainWindow.h"
 
-typedef std::unique_ptr <IMainFrame>(__cdecl *CreateMainFrameFunc)(void);
+typedef IMainWindow* (__cdecl *GetMainWindowFunc)(void);
 
 PluginUI::PluginUI()
 {
@@ -11,8 +11,8 @@ PluginUI::~PluginUI()
 {
 }
 
-std::unique_ptr <IMainFrame> PluginUI::CreateMainFrame()
+IMainWindow* PluginUI::GetMainWindow()
 {
-	CreateMainFrameFunc CreateMainFrame = (CreateMainFrameFunc) GetFunctionAddress("CreateMainFrame");
-	return CreateMainFrame();
+	GetMainWindowFunc GetMainWindow = (GetMainWindowFunc) GetFunctionAddress("GetMainWindow");
+	return GetMainWindow();
 }

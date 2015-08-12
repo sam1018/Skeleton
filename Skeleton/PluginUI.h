@@ -2,7 +2,7 @@
 
 #include "IPlugin.h"
 
-class IMainFrame;
+class IMainWindow;
 
 class PluginUI : public IPlugin
 {
@@ -10,5 +10,5 @@ public:
 	PluginUI();
 	~PluginUI();
 
-	std::unique_ptr <IMainFrame> CreateMainFrame();
+	IMainWindow* GetMainWindow();
 };
