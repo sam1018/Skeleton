@@ -4,41 +4,39 @@
 
 struct QTUIGlobalData
 {
-	QApplication *m_pApp = nullptr;
-	MainWindow *m_pMainWindow = nullptr;
+	std::unique_ptr <QApplication> m_pApp;
+	std::unique_ptr <MainWindow> m_pMainWindow;
 
-	void Initialize(int argc, char** argv)
+	QTUIGlobalData(int argc, char** argv) : 
+		m_pApp{ std::make_unique<QApplication>(argc, argv) },
+		m_pMainWindow{ std::make_unique<MainWindow>() }
 	{
-		m_pApp = new QApplication(argc, argv);
-		m_pMainWindow = new MainWindow;
 	}
 
-	void Destroy()
+	~QTUIGlobalData()
 	{
-		delete m_pMainWindow;
-		delete m_pApp;
 	}
 
-}g_GlobalData;
+} *g_GlobalData;
 
 extern "C"
 {
 	QTUI_DECLSPEC void PluginInitialize(int argc, char** argv)
 	{
-		g_GlobalData.Initialize(argc, argv);
+		g_GlobalData = new QTUIGlobalData(argc, argv);
 	}
 	QTUI_DECLSPEC IMainWindow* GetMainWindow(void)
 	{
-		return g_GlobalData.m_pMainWindow;
+		return g_GlobalData->m_pMainWindow.get();
 	}
 
 	QTUI_DECLSPEC int Run()
 	{
-		return g_GlobalData.m_pApp->exec();
+		return g_GlobalData->m_pApp->exec();
 	}
 
 	QTUI_DECLSPEC void PluginDestroy()
 	{
-		g_GlobalData.Destroy();
+		delete g_GlobalData;
 	}
 }
