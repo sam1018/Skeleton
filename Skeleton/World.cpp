@@ -1,11 +1,8 @@
 #include "World.h"
 #include "PluginUI.h"
 #include "../SkeletonInterface/IMainWindow.h"
-
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-
-namespace pt = boost::property_tree;
 
 struct World::ImplData
 {
@@ -29,6 +26,7 @@ World& World::GetInstance()
 
 void World::LoadPlugins(std::string fileName)
 {
+	namespace pt = boost::property_tree;
 	pt::ptree tree;
 	pt::read_xml(fileName, tree);
 

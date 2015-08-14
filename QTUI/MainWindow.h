@@ -3,6 +3,8 @@
 #include "../SkeletonInterface/IMainWindow.h"
 #include <memory>
 
+class MainWindowImpl;
+
 class MainWindow : public IMainWindow
 {
 public:
@@ -12,9 +14,5 @@ public:
 	void Show();
 
 private:
-	void CreateToolbars();
-
-private:
-	struct ImplData;
-	std::unique_ptr <ImplData> m_pImplData;
+	std::unique_ptr <MainWindowImpl> m_pMainWindowImpl;
 };

@@ -1,6 +1,5 @@
 #include "IPlugin.h"
 #include <windows.h> 
-#include "Exceptions.h"
 #include <functional>
 #include <strsafe.h>
 
@@ -55,11 +54,12 @@ std::string GetErrorMsg(LPCTSTR errDesc)
 
 struct IPlugin::ImplData
 {
-	HINSTANCE hinstLib = nullptr;
+	HINSTANCE m_HinstLib = nullptr;
+	std::string m_ModuleName;
 
 	~ImplData()
 	{
-		FreeLibrary(hinstLib);
+		FreeLibrary(m_HinstLib);
 	}
 };
 
@@ -70,31 +70,37 @@ IPlugin::IPlugin() : m_pImplData{std::make_unique<ImplData>()}
 
 IPlugin::~IPlugin()
 {
-	PluginDestroy();
+	// Eat up, if PluginDestroy() throws
+	try
+	{
+		PluginDestroy();
+	}
+	catch (...) {}
 }
 
 void IPlugin::LoadModule(std::string moduleName)
 {
 	std::wstring fileName = GetModuleNameForWindows(moduleName);
-	m_pImplData->hinstLib = LoadLibrary(fileName.c_str());
+	m_pImplData->m_HinstLib = LoadLibrary(fileName.c_str());
+	m_pImplData->m_ModuleName = moduleName;
 	std::wstring errDesc = L"Loading module: \"" + fileName + L"\" failed";
 
-	if (!m_pImplData->hinstLib)
+	if (!m_pImplData->m_HinstLib)
 	{
-		PluginFailedException ob{ GetErrorMsg(errDesc.c_str()).c_str() };
-		throw ob;
+		std::exception e{ GetErrorMsg(errDesc.c_str()).c_str() };
+		throw e;
 	}
 }
 
 void* IPlugin::GetFunctionAddress(std::string functionName)
 {
-	void* ret = GetProcAddress(m_pImplData->hinstLib, functionName.c_str());
+	void* ret = GetProcAddress(m_pImplData->m_HinstLib, functionName.c_str());
 	std::wstring errDesc = L"Loading function: \"" + StringToWString(functionName) + L"\" failed";
 
 	if (!ret)
 	{
-		PluginFailedException ob { (GetErrorMsg(errDesc.c_str())).c_str()};
-		throw ob;
+		std::exception e{ (GetErrorMsg(errDesc.c_str())).c_str()};
+		throw e;
 	}
 
 	return ret;
@@ -102,7 +108,13 @@ void* IPlugin::GetFunctionAddress(std::string functionName)
 
 void IPlugin::PluginInitialize(int argc, char** argv)
 {
-	PluginCallerBody<void, int, char**>(__func__, argc, argv);
+	bool ret = PluginCallerBody<bool, int, char**>(__func__, argc, argv);
+
+	if (!ret)
+	{
+		std::exception e{ ("Initialization for plugin: \"" + m_pImplData->m_ModuleName + "\" Failed.").c_str() };
+		throw e;
+	}
 }
 
 void IPlugin::PluginDestroy()

@@ -1,6 +1,7 @@
 #include "QTUI.h"
 #include <QtWidgets\QApplication.h>
 #include "MainWindow.h"
+#include <iostream>
 
 struct QTUIGlobalData
 {
@@ -21,9 +22,23 @@ struct QTUIGlobalData
 
 extern "C"
 {
-	QTUI_DECLSPEC void PluginInitialize(int argc, char** argv)
+	QTUI_DECLSPEC bool PluginInitialize(int argc, char** argv)
 	{
-		g_GlobalData = new QTUIGlobalData(argc, argv);
+		try
+		{
+			g_GlobalData = new QTUIGlobalData(argc, argv);
+		}
+		catch (std::exception &e)
+		{
+			std::cout << e.what() << "\n";
+			return false;
+		}
+		catch (...)
+		{
+			return false;
+		}
+
+		return true;
 	}
 	QTUI_DECLSPEC IMainWindow* GetMainWindow(void)
 	{

@@ -75,6 +75,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <CustomBuildBeforeTargets>ClCompile</CustomBuildBeforeTargets>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -100,18 +103,25 @@
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>QTUI_EXPORT;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%QT_CORE%/include;%QT_CORE%/include/QtANGLE</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%QTDIR%/include;%QT_CORE%/include/QtANGLE;%BOOST_ROOT%</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>Qt5Guid.lib;Qt5Widgetsd.lib;Qt5Cored.lib;SkeletonInterface.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>%QT_CORE%/lib;$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>%QTDIR%/lib;$(OutDir)</AdditionalLibraryDirectories>
     </Link>
+    <CustomBuildStep>
+      <Command>%QTDIR%\bin\moc.exe MainWindowImpl.h -o tmp\moc\moc_MainWindowImpl.cpp</Command>
+      <Message>Moc'ing MainWindowImpl.h ...</Message>
+      <Outputs>tmp\moc\moc_MainWindowImpl.cpp</Outputs>
+      <Inputs>%QTDIR%\bin\moc.exe;</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -151,11 +161,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="MainWindowImpl.cpp" />
     <ClCompile Include="QTUI.cpp" />
+    <ClCompile Include="tmp\moc\moc_MainWindowImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainWindow.h" />
+    <ClInclude Include="MainWindowImpl.h" />
     <ClInclude Include="QTUI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\WindowSettings.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

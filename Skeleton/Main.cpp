@@ -1,6 +1,5 @@
 #include <iostream>
 #include "World.h"
-#include "Exceptions.h"
 #include <Windows.h>
 #include "Main.h"
 
@@ -10,7 +9,7 @@ int main(int argc, char** argv)
 	{
 		// Initialize the world
 		World::GetInstance().Arguements(argc, argv);
-		World::GetInstance().LoadPlugins("PluginsList.xml");
+		World::GetInstance().LoadPlugins("../PluginsList.xml");
 		World::GetInstance().LoadObjects();
 
 		// Show the application
@@ -19,7 +18,7 @@ int main(int argc, char** argv)
 		// Run the application
 		World::GetInstance().Run();
 	}
-	catch (PluginFailedException& e)
+	catch (std::exception &e)
 	{
 		std::cerr << e.what() << "\n";
 	}
