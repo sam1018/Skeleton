@@ -70,6 +70,7 @@ IPlugin::IPlugin() : m_pImplData{std::make_unique<ImplData>()}
 
 IPlugin::~IPlugin()
 {
+	PluginDestroy();
 }
 
 void IPlugin::LoadModule(std::string moduleName)
@@ -99,12 +100,14 @@ void* IPlugin::GetFunctionAddress(std::string functionName)
 	return ret;
 }
 
-void IPlugin::Initialize(int argc, char** argv)
+void IPlugin::PluginInitialize(int argc, char** argv)
 {
-	void* p = GetFunctionAddress("PluginInitialize");
-	InitFunc Func = (InitFunc) GetFunctionAddress("PluginInitialize");
-	if (Func)
-		Func(argc, argv);
+	PluginCallerBody<void, int, char**>(__func__, argc, argv);
+}
+
+void IPlugin::PluginDestroy()
+{
+	PluginCallerBody<void>(__func__);
 }
 
 std::wstring IPlugin::GetModuleNameForWindows(std::string moduleName)

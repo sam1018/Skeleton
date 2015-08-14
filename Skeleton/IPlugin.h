@@ -11,19 +11,21 @@ public:
 
 	void LoadModule(std::string moduleName);
 
-	void Initialize(int argc, char** argv);
+	void PluginInitialize(int argc, char** argv);
+
+	void PluginDestroy();
 
 	// Purpose: Calls "funcName" function, that's residing within the plugin
 	// Precaution: "funcName" must have "C" linkage
 	// Parameter funcName: Name of the function that will be called
 	// Template argument : RetType: return value of "funcName" function
 	//                     Args: arguments for "funcName" function
-	template <typename RetType, class... Args>
-	RetType PluginCallerBody(std::string funcName)
+	template <typename RetType, class... ArgsType>
+	RetType PluginCallerBody(std::string funcName, ArgsType... args)
 	{
-		using FuncType = RetType(*)(void);
+		using FuncType = RetType(*)(ArgsType...);
 		FuncType func = (FuncType)GetFunctionAddress(funcName);
-		return func(std::forward<Args>(_Args)...);
+		return func(std::forward<ArgsType>(args)...);
 	}
 
 protected:

@@ -12,6 +12,9 @@ public:
 	void Show();
 
 private:
+	void CreateToolbars();
+
+private:
 	struct ImplData;
 	std::unique_ptr <ImplData> m_pImplData;
 };

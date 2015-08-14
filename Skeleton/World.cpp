@@ -33,7 +33,7 @@ void World::LoadPlugins(std::string fileName)
 	pt::read_xml(fileName, tree);
 
 	m_pImplData->m_pluginUI.LoadModule(tree.get("PluginsList.UIPlugin", "QTUI"));
-	m_pImplData->m_pluginUI.Initialize(m_argc, m_argv);
+	m_pImplData->m_pluginUI.PluginInitialize(m_argc, m_argv);
 }
 
 void World::LoadObjects()
