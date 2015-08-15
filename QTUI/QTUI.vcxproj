@@ -120,7 +120,8 @@
       <Command>%QTDIR%\bin\moc.exe MainWindowImpl.h -o tmp\moc\moc_MainWindowImpl.cpp</Command>
       <Message>Moc'ing MainWindowImpl.h ...</Message>
       <Outputs>tmp\moc\moc_MainWindowImpl.cpp</Outputs>
-      <Inputs>%QTDIR%\bin\moc.exe;</Inputs>
+      <Inputs>
+      </Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

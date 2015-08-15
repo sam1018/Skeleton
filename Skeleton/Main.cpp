@@ -15,6 +15,9 @@ int main(int argc, char** argv)
 		// Show the application
 		World::GetInstance().Show();
 
+		HWND hwnd = GetConsoleWindow();
+		ShowWindow(hwnd, 0);
+
 		// Run the application
 		World::GetInstance().Run();
 	}
