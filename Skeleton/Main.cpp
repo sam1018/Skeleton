@@ -2,6 +2,7 @@
 #include "World.h"
 #include <Windows.h>
 #include "Main.h"
+#include <iostream>
 
 int main(int argc, char** argv)
 {
