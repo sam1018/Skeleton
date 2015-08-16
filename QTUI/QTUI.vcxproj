@@ -110,13 +110,15 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%QTDIR%\lib;$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SkeletonInterface.lib;qt5cored.lib;qt5widgetsd.lib;qt5guid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SkeletonInterface.lib;qt5cored.lib;qt5widgetsd.lib;qt5guid.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <CustomBuildStep>
-      <Command>%QTDIR%\bin\moc.exe MainWindowImpl.h -o tmp\moc\moc_MainWindowImpl.cpp</Command>
-      <Message>Moc'ing MainWindowImpl.h ...</Message>
-      <Outputs>tmp\moc\moc_MainWindowImpl.cpp</Outputs>
-      <Inputs>MainWindowImpl.h</Inputs>
+      <Command>%QTDIR%\bin\moc.exe MainWindowImpl.h -o tmp\moc\moc_MainWindowImpl.cpp
+%QTDIR%\bin\moc.exe OpenGLWindowImpl.h -o tmp\moc\moc_OpenGLWindowImpl.cpp
+</Command>
+      <Message>Moc'ing ...</Message>
+      <Outputs>tmp\moc\moc_MainWindowImpl.cpp;tmp\moc\moc_OpenGLWindowImpl.cpp</Outputs>
+      <Inputs>MainWindowImpl.h;OpenGLWindowImpl.h</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -158,12 +160,17 @@
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MainWindowImpl.cpp" />
+    <ClCompile Include="OpenGLWindow.cpp" />
+    <ClCompile Include="OpenGLWindowImpl.cpp" />
     <ClCompile Include="QTUI.cpp" />
     <ClCompile Include="tmp\moc\moc_MainWindowImpl.cpp" />
+    <ClCompile Include="tmp\moc\moc_OpenGLWindowImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="MainWindowImpl.h" />
+    <ClInclude Include="OpenGLWindow.h" />
+    <ClInclude Include="OpenGLWindowImpl.h" />
     <ClInclude Include="QTUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

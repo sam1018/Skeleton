@@ -38,11 +38,8 @@
     <ClInclude Include="PluginUI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Main.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\PluginsList.xml" />
+    <Xml Include="..\SkeletonSettings.xml" />
   </ItemGroup>
 </Project>

@@ -1,8 +1,8 @@
 #include "MainWindow.h"
 #include "MainWindowImpl.h"
 
-MainWindow::MainWindow() : 
-	m_pMainWindowImpl{ std::make_unique <MainWindowImpl> () }
+MainWindow::MainWindow(OpenGLWindow *pOpenGLWindow) :
+	m_pMainWindowImpl{ std::make_unique <MainWindowImpl> (pOpenGLWindow) }
 {
 }
 

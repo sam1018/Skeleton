@@ -1,7 +1,6 @@
 #include <iostream>
 #include "World.h"
 #include <Windows.h>
-#include "Main.h"
 #include <iostream>
 
 int main(int argc, char** argv)
@@ -10,14 +9,18 @@ int main(int argc, char** argv)
 	{
 		// Initialize the world
 		World::GetInstance().Arguements(argc, argv);
-		World::GetInstance().LoadPlugins("../PluginsList.xml");
+		World::GetInstance().LoadSettings("../SkeletonSettings.xml");
+		World::GetInstance().LoadPlugins();
 		World::GetInstance().LoadObjects();
 
 		// Show the application
 		World::GetInstance().Show();
 
-		HWND hwnd = GetConsoleWindow();
-		ShowWindow(hwnd, 0);
+		if (World::GetInstance().HideCmdPromptAfterInitialization())
+		{
+			HWND hwnd = GetConsoleWindow();
+			ShowWindow(hwnd, 0);
+		}
 
 		// Run the application
 		World::GetInstance().Run();

@@ -3,6 +3,7 @@
 #include "IPlugin.h"
 
 class IMainWindow;
+class IOpenGLWindow;
 
 class PluginUI : public IPlugin
 {
@@ -11,6 +12,7 @@ public:
 	~PluginUI();
 
 	IMainWindow* GetMainWindow();
+	IOpenGLWindow* GetOpenGLWindow();
 
 	int Run();
 };

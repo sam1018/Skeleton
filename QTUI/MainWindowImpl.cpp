@@ -6,6 +6,8 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <iostream>
+#include "QTUI.h"
+#include "OpenGLWindowImpl.h"
 
 struct WindowSettings
 {
@@ -36,10 +38,12 @@ struct WindowSettings
 
 constexpr auto settingsFile{ "../WindowSettings.xml" };
 
-MainWindowImpl::MainWindowImpl() :
+MainWindowImpl::MainWindowImpl(OpenGLWindow *pOpenGLWindow) :
 	m_Screens{ QApplication::screens() }
 {
 	g_Settings.Load(settingsFile);
+
+	setCentralWidget(QWidget::createWindowContainer(pOpenGLWindow->GetOpenGLWindowImpl()));
 
 	AddToolbars();
 }

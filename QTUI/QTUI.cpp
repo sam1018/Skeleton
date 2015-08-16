@@ -1,24 +1,7 @@
 #include "QTUI.h"
-#include <QtWidgets\QApplication.h>
-#include "MainWindow.h"
 #include <iostream>
 
-struct QTUIGlobalData
-{
-	std::unique_ptr <QApplication> m_pApp;
-	std::unique_ptr <MainWindow> m_pMainWindow;
-
-	QTUIGlobalData(int argc, char** argv) : 
-		m_pApp{ std::make_unique<QApplication>(argc, argv) },
-		m_pMainWindow{ std::make_unique<MainWindow>() }
-	{
-	}
-
-	~QTUIGlobalData()
-	{
-	}
-
-} *g_GlobalData;
+QTUIGlobalData *g_GlobalData = nullptr;
 
 extern "C"
 {
@@ -43,6 +26,11 @@ extern "C"
 	QTUI_DECLSPEC IMainWindow* GetMainWindow(void)
 	{
 		return g_GlobalData->m_pMainWindow.get();
+	}
+
+	QTUI_DECLSPEC IOpenGLWindow* GetOpenGLWindow(void)
+	{
+		return g_GlobalData->m_pOpenGLWindow.get();
 	}
 
 	QTUI_DECLSPEC int Run()

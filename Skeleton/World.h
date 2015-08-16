@@ -15,7 +15,9 @@ private:
 public:
 	static World& GetInstance();
 
-	void LoadPlugins(std::string fileName);
+	void LoadSettings(std::string fileName);
+
+	void LoadPlugins();
 
 	void LoadObjects();
 
@@ -24,6 +26,8 @@ public:
 	void Show();
 
 	int Run();
+
+	bool HideCmdPromptAfterInitialization();
 
 private:
 	struct ImplData;

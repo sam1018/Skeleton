@@ -15,6 +15,11 @@ IMainWindow* PluginUI::GetMainWindow()
 	return PluginCallerBody<IMainWindow*>(__func__);
 }
 
+IOpenGLWindow * PluginUI::GetOpenGLWindow()
+{
+	return PluginCallerBody<IOpenGLWindow*>(__func__);
+}
+
 int PluginUI::Run()
 {
 	return PluginCallerBody<int>(__func__);

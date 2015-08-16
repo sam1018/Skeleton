@@ -108,6 +108,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -148,10 +149,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="IMainWindow.h" />
+    <ClInclude Include="IOpenGLWindow.h" />
     <ClInclude Include="SkeletonInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IMainWindow.cpp" />
+    <ClCompile Include="IOpenGLWindow.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

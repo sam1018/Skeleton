@@ -2,12 +2,14 @@
 
 #include <QtWidgets\QMainWindow>
 
+class OpenGLWindow;
+
 class MainWindowImpl : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	MainWindowImpl();
+	MainWindowImpl(OpenGLWindow *pOpenGLWindow);
 	~MainWindowImpl();
 
 	void Show();

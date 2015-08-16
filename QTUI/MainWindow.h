@@ -4,11 +4,12 @@
 #include <memory>
 
 class MainWindowImpl;
+class OpenGLWindow;
 
 class MainWindow : public IMainWindow
 {
 public:
-	MainWindow();
+	MainWindow(OpenGLWindow *pOpenGLWindow);
 	~MainWindow();
 
 	void Show();

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SkeletonSettings>
+  <PluginsList>
+    <UIPlugin>QTUI</UIPlugin>
+  </PluginsList>
+  <HideCmdPromptAfterInitialization>false</HideCmdPromptAfterInitialization>
+</SkeletonSettings>
