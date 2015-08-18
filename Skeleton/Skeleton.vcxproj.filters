@@ -21,10 +21,13 @@
     <ClCompile Include="World.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IPlugin.cpp">
+    <ClCompile Include="PluginsManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PluginUI.cpp">
+    <ClCompile Include="Plugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonSettings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,10 +35,13 @@
     <ClInclude Include="World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IPlugin.h">
+    <ClInclude Include="PluginsManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PluginUI.h">
+    <ClInclude Include="Plugin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

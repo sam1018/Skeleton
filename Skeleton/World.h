@@ -15,23 +15,13 @@ private:
 public:
 	static World& GetInstance();
 
-	void LoadSettings(std::string fileName);
-
-	void LoadPlugins();
-
-	void LoadObjects();
-
-	void Arguements(int argc, char** argv);
+	void InitializePlugins(int argc, char** argv);
 
 	void Show();
 
 	int Run();
 
-	bool HideCmdPromptAfterInitialization();
-
 private:
 	struct ImplData;
 	std::unique_ptr <ImplData> m_pImplData;
-	int m_argc;
-	char** m_argv;
 };

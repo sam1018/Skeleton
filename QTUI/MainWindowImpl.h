@@ -2,6 +2,11 @@
 
 #include <QtWidgets\QMainWindow>
 
+///////////////////////////////////////////////////////
+///     Implementation class for MainWindow       /////
+///  So only MainWindow is supposed to include it /////
+///////////////////////////////////////////////////////
+
 class OpenGLWindow;
 
 class MainWindowImpl : public QMainWindow

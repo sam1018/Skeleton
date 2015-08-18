@@ -1,4 +1,4 @@
-#include "IPlugin.h"
+#include "Plugin.h"
 #include <windows.h> 
 #include <functional>
 #include <strsafe.h>
@@ -52,7 +52,7 @@ std::string GetErrorMsg(LPCTSTR errDesc)
 	return WStringToString(ret);
 }
 
-struct IPlugin::ImplData
+struct Plugin::ImplData
 {
 	HINSTANCE m_HinstLib = nullptr;
 	std::string m_ModuleName;
@@ -63,22 +63,7 @@ struct IPlugin::ImplData
 	}
 };
 
-IPlugin::IPlugin() : m_pImplData{std::make_unique<ImplData>()}
-{
-}
-
-
-IPlugin::~IPlugin()
-{
-	// Eat up, if PluginDestroy() throws
-	try
-	{
-		PluginDestroy();
-	}
-	catch (...) {}
-}
-
-void IPlugin::LoadModule(std::string moduleName)
+Plugin::Plugin(std::string moduleName) : m_pImplData{std::make_unique<ImplData>()}
 {
 	std::wstring fileName = GetModuleNameForWindows(moduleName);
 	m_pImplData->m_HinstLib = LoadLibrary(fileName.c_str());
@@ -92,7 +77,18 @@ void IPlugin::LoadModule(std::string moduleName)
 	}
 }
 
-void* IPlugin::GetFunctionAddress(std::string functionName)
+
+Plugin::~Plugin()
+{
+	// Eat up, if PluginDestroy() throws
+	try
+	{
+		PluginDestroy();
+	}
+	catch (...) {}
+}
+
+void* Plugin::GetFunctionAddress(std::string functionName)
 {
 	void* ret = GetProcAddress(m_pImplData->m_HinstLib, functionName.c_str());
 	std::wstring errDesc = L"Loading function: \"" + StringToWString(functionName) + L"\" failed";
@@ -106,7 +102,7 @@ void* IPlugin::GetFunctionAddress(std::string functionName)
 	return ret;
 }
 
-void IPlugin::PluginInitialize(int argc, char** argv)
+void Plugin::PluginInitialize(int argc, char** argv)
 {
 	bool ret = PluginCallerBody<bool, int, char**>(__func__, argc, argv);
 
@@ -117,12 +113,12 @@ void IPlugin::PluginInitialize(int argc, char** argv)
 	}
 }
 
-void IPlugin::PluginDestroy()
+void Plugin::PluginDestroy()
 {
 	PluginCallerBody<void>(__func__);
 }
 
-std::wstring IPlugin::GetModuleNameForWindows(std::string moduleName)
+std::wstring Plugin::GetModuleNameForWindows(std::string moduleName)
 {
 	return StringToWString(moduleName + ".dll");
 }

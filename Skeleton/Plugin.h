@@ -3,13 +3,11 @@
 #include <string>
 #include <memory>
 
-class IPlugin
+class Plugin
 {
 public:
-	IPlugin();
-	virtual ~IPlugin() = 0;
-
-	void LoadModule(std::string moduleName);
+	Plugin(std::string moduleName);
+	~Plugin();
 
 	void PluginInitialize(int argc, char** argv);
 

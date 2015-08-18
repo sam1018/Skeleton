@@ -6,7 +6,7 @@
 class MainWindowImpl;
 class OpenGLWindow;
 
-class MainWindow : public IMainWindow
+class MainWindow : public MW::IMainWindow
 {
 public:
 	MainWindow(OpenGLWindow *pOpenGLWindow);

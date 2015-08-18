@@ -158,20 +158,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CoreGUIApplication.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MainWindowImpl.cpp" />
     <ClCompile Include="OpenGLWindow.cpp" />
     <ClCompile Include="OpenGLWindowImpl.cpp" />
+    <ClCompile Include="QTGUISettings.cpp" />
     <ClCompile Include="QTUI.cpp" />
     <ClCompile Include="tmp\moc\moc_MainWindowImpl.cpp" />
     <ClCompile Include="tmp\moc\moc_OpenGLWindowImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CoreGUIApplication.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="MainWindowImpl.h" />
     <ClInclude Include="OpenGLWindow.h" />
     <ClInclude Include="OpenGLWindowImpl.h" />
+    <ClInclude Include="QTGUISettings.h" />
     <ClInclude Include="QTUI.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\QTGUISettings.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

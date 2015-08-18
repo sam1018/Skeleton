@@ -2,6 +2,7 @@
 
 #include "../SkeletonInterface/IOpenGLWindow.h"
 
+class QWindow;
 class OpenGLWindowImpl;
 
 class OpenGLWindow : public IOpenGLWindow
@@ -10,10 +11,11 @@ public:
 	OpenGLWindow();
 	~OpenGLWindow();
 
-	OpenGLWindowImpl* GetOpenGLWindowImpl() { return m_pImpl; }
+	QWindow* GetOpenGLWindowImpl();
 
 	void Update();
 
 private:
+	// MainWindowImpl is responsible for destroying it
 	OpenGLWindowImpl* m_pImpl;
 };

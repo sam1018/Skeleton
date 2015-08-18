@@ -1,45 +1,43 @@
 #include "QTUI.h"
-#include <iostream>
+#include <memory>
+#include "OpenGLWindow.h"
+#include "MainWindow.h"
+#include "CoreGUIApplication.h"
+#include "QTGUISettings.h"
 
-QTUIGlobalData *g_GlobalData = nullptr;
+
+struct QTUIGlobalData
+{
+	std::unique_ptr <CoreGUIApplication> m_pApp;
+	std::unique_ptr <OpenGLWindow> m_pOpenGLWindow;
+	std::unique_ptr <MainWindow> m_pMainWindow;
+
+	QTUIGlobalData(int argc, char** argv) :
+		m_pApp{ std::make_unique<CoreGUIApplication>(argc, argv) },
+		m_pOpenGLWindow{ std::make_unique<OpenGLWindow>() },
+		m_pMainWindow{ std::make_unique<MainWindow>(m_pOpenGLWindow.get()) }
+	{
+	}
+
+	~QTUIGlobalData()
+	{
+	}
+
+} *g_GlobalData;
+
+constexpr auto settingsFile{ "../QTGUISettings.xml" };
 
 extern "C"
 {
-	QTUI_DECLSPEC bool PluginInitialize(int argc, char** argv)
+	QTUI_DECLSPEC void PluginInitialize(int argc, char** argv)
 	{
-		try
-		{
-			g_GlobalData = new QTUIGlobalData(argc, argv);
-		}
-		catch (std::exception &e)
-		{
-			std::cout << e.what() << "\n";
-			return false;
-		}
-		catch (...)
-		{
-			return false;
-		}
-
-		return true;
-	}
-	QTUI_DECLSPEC IMainWindow* GetMainWindow(void)
-	{
-		return g_GlobalData->m_pMainWindow.get();
-	}
-
-	QTUI_DECLSPEC IOpenGLWindow* GetOpenGLWindow(void)
-	{
-		return g_GlobalData->m_pOpenGLWindow.get();
-	}
-
-	QTUI_DECLSPEC int Run()
-	{
-		return g_GlobalData->m_pApp->exec();
+		QTGUISettings::GetInstance().Load(settingsFile);
+		g_GlobalData = new QTUIGlobalData(argc, argv);
 	}
 
 	QTUI_DECLSPEC void PluginDestroy()
 	{
+		QTGUISettings::GetInstance().Save(settingsFile);
 		delete g_GlobalData;
 	}
 }

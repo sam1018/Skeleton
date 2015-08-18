@@ -148,13 +148,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ICoreGUIApplication.h" />
     <ClInclude Include="IMainWindow.h" />
     <ClInclude Include="IOpenGLWindow.h" />
     <ClInclude Include="SkeletonInterface.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ICoreGUIApplication.cpp" />
     <ClCompile Include="IMainWindow.cpp" />
     <ClCompile Include="IOpenGLWindow.cpp" />
+    <ClCompile Include="SkeletonInterface.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

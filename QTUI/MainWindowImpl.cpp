@@ -1,48 +1,16 @@
 #include "MainWindowImpl.h"
+#include "QTUI.h"
+#include "OpenGLWindow.h"
+#include "QTGUISettings.h"
 #include <QtWidgets\QApplication>
 #include <QtGui\QScreen>
 #include <QtWidgets\QComboBox>
 #include <QtWidgets\QToolBar>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
 #include <iostream>
-#include "QTUI.h"
-#include "OpenGLWindowImpl.h"
-
-struct WindowSettings
-{
-	int m_MonitorIndex;
-
-	void Load(std::string settingsFile)
-	{
-		namespace pt = boost::property_tree;
-
-		pt::ptree tree;
-		pt::read_xml(settingsFile, tree);
-
-
-		m_MonitorIndex = tree.get("WindowSettings.MonitorIndex", 0);
-	}
-
-	void Save(std::string settingsFile)
-	{
-		namespace pt = boost::property_tree;
-
-		pt::ptree tree;
-
-		tree.put("WindowSettings.MonitorIndex", m_MonitorIndex);
-
-		pt::write_xml(settingsFile, tree);
-	}
-} g_Settings;
-
-constexpr auto settingsFile{ "../WindowSettings.xml" };
 
 MainWindowImpl::MainWindowImpl(OpenGLWindow *pOpenGLWindow) :
 	m_Screens{ QApplication::screens() }
 {
-	g_Settings.Load(settingsFile);
-
 	setCentralWidget(QWidget::createWindowContainer(pOpenGLWindow->GetOpenGLWindowImpl()));
 
 	AddToolbars();
@@ -50,7 +18,6 @@ MainWindowImpl::MainWindowImpl(OpenGLWindow *pOpenGLWindow) :
 
 MainWindowImpl::~MainWindowImpl()
 {
-	g_Settings.Save(settingsFile);
 }
 
 void MainWindowImpl::AddToolbars()
@@ -67,13 +34,15 @@ void MainWindowImpl::AddTBBMonitors(QToolBar *toolbar)
 	for (auto* screen : m_Screens)
 		comboMonitors->addItem("Monitor: " + screen->name());
 
-	if (g_Settings.m_MonitorIndex < 0 || g_Settings.m_MonitorIndex >= m_Screens.size())
+	int nMonitorIndex = QTGUISettings::GetInstance().GetMonitorIndex();
+
+	if (nMonitorIndex < 0 || nMonitorIndex >= m_Screens.size())
 	{
-		std::cerr << __FUNCTION__ << ": " << g_Settings.m_MonitorIndex << " is not a valid monitor index. Choosing 0 as monitor index.\n";
-		g_Settings.m_MonitorIndex = 0;
+		std::cerr << __FUNCTION__ << ": " << nMonitorIndex << " is not a valid monitor index. Choosing 0 as monitor index.\n";
+		QTGUISettings::GetInstance().SetMonitorIndex(0);
 	}
 
-	comboMonitors->setCurrentIndex(g_Settings.m_MonitorIndex);
+	comboMonitors->setCurrentIndex(QTGUISettings::GetInstance().GetMonitorIndex());
 
 	toolbar->addWidget(comboMonitors);
 
@@ -82,7 +51,7 @@ void MainWindowImpl::AddTBBMonitors(QToolBar *toolbar)
 
 void MainWindowImpl::Show()
 {
-	ShowWindow(g_Settings.m_MonitorIndex);
+	ShowWindow(QTGUISettings::GetInstance().GetMonitorIndex());
 }
 
 void MainWindowImpl::ShowWindow(int monitorIndex)
@@ -91,5 +60,5 @@ void MainWindowImpl::ShowWindow(int monitorIndex)
 	QRect rect = m_Screens[monitorIndex]->availableGeometry();
 	move(rect.topLeft());
 	showMaximized();
-	g_Settings.m_MonitorIndex = monitorIndex;
+	QTGUISettings::GetInstance().SetMonitorIndex(monitorIndex);
 }

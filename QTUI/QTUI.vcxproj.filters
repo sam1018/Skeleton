@@ -39,6 +39,12 @@
     <ClCompile Include="tmp\moc\moc_OpenGLWindowImpl.cpp">
       <Filter>MOC Files</Filter>
     </ClCompile>
+    <ClCompile Include="CoreGUIApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QTGUISettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainWindow.h">
@@ -56,5 +62,14 @@
     <ClInclude Include="OpenGLWindowImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CoreGUIApplication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QTGUISettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\QTGUISettings.xml" />
   </ItemGroup>
 </Project>

@@ -2,11 +2,16 @@
 
 #include "SkeletonInterface.h"
 
-class SKELETONINTERFACE_DECLSPEC IMainWindow
+namespace MW
 {
-public:
-	IMainWindow();
-	virtual ~IMainWindow();
+	SKELETONINTERFACE_DECLSPEC void Show();
 
-	virtual void Show() = 0;
-};
+	class SKELETONINTERFACE_DECLSPEC IMainWindow
+	{
+	public:
+		IMainWindow();
+		virtual ~IMainWindow();
+
+		virtual void Show() = 0;
+	};
+}

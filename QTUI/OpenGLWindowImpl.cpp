@@ -1,10 +1,10 @@
 #include "OpenGLWindowImpl.h"
-#include <QtCore\QTimer>
 #include <QtGui\QOpenGLContext>
 #include "OpenGLWindow.h"
 
 OpenGLWindowImpl::OpenGLWindowImpl(OpenGLWindow* obj) :
-	m_pContext{ new QOpenGLContext() },
+	m_pContext{ std::make_unique<QOpenGLContext>() },
+	m_pTimer{ std::make_unique<QTimer>() },
 	m_pParentObj{ obj }
 {
 	QTimer *timer = new QTimer(this);

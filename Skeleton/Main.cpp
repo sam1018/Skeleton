@@ -2,21 +2,24 @@
 #include "World.h"
 #include <Windows.h>
 #include <iostream>
+#include "SkeletonSettings.h"
+
+constexpr auto g_SettingsFile{ "../SkeletonSettings.xml" };
 
 int main(int argc, char** argv)
 {
 	try
 	{
-		// Initialize the world
-		World::GetInstance().Arguements(argc, argv);
-		World::GetInstance().LoadSettings("../SkeletonSettings.xml");
-		World::GetInstance().LoadPlugins();
-		World::GetInstance().LoadObjects();
+		// Settings file must be loaded first
+		// As later initializations depends on it
+		SkeletonSettings::GetInstance().Load(g_SettingsFile);
+
+		World::GetInstance().InitializePlugins(argc, argv);
 
 		// Show the application
 		World::GetInstance().Show();
 
-		if (World::GetInstance().HideCmdPromptAfterInitialization())
+		if (SkeletonSettings::GetInstance().HideCmdPromptAfterInitialization())
 		{
 			HWND hwnd = GetConsoleWindow();
 			ShowWindow(hwnd, 0);
