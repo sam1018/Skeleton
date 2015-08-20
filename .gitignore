@@ -210,3 +210,5 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+QTUI/tmp/moc/moc_MainWindowImpl.cpp
+QTUI/tmp/moc/moc_OpenGLWindowImpl.cpp
