@@ -1,7 +1,10 @@
 #include "Plugin.h"
 #include <functional>
 #include <windows.h> 
-#include <strsafe.h>
+#include <boost\system\error_code.hpp>
+#include <boost\system\system_error.hpp>
+
+using namespace boost::system;
 
 typedef int(*InitFunc)(int argc, char** argv);
 
@@ -19,39 +22,6 @@ std::string WStringToString(std::wstring src)
 	return dest;
 }
 
-std::string GetErrorMsg(LPCTSTR errDesc)
-{
-	LPVOID lpMsgBuf;
-	LPVOID lpDisplayBuf;
-	DWORD dw = GetLastError();
-
-	FormatMessage(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER |
-		FORMAT_MESSAGE_FROM_SYSTEM |
-		FORMAT_MESSAGE_IGNORE_INSERTS,
-		NULL,
-		dw,
-		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		(LPTSTR)&lpMsgBuf,
-		0, NULL);
-
-	// Display the error message and exit the process
-
-	lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT,
-		(lstrlen((LPCTSTR)lpMsgBuf) + lstrlen((LPCTSTR)errDesc) + 40) * sizeof(TCHAR));
-	StringCchPrintf((LPTSTR)lpDisplayBuf,
-		LocalSize(lpDisplayBuf) / sizeof(TCHAR),
-		TEXT("ERROR!!! %s !!! Last error code %d: %s"),
-		errDesc, dw, lpMsgBuf);
-
-	std::wstring ret((LPTSTR)lpDisplayBuf);
-
-	LocalFree(lpMsgBuf);
-	LocalFree(lpDisplayBuf);
-
-	return WStringToString(ret);
-}
-
 struct Plugin::PluginImpl
 {
 	HINSTANCE hinstLib = nullptr;
@@ -63,6 +33,11 @@ struct Plugin::PluginImpl
 	}
 };
 
+void ThrowSystemError(std::string msg)
+{
+	throw system_error(error_code(GetLastError(), system_category()), msg);
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 /////////////          Plugin Definition                           ////////////
@@ -73,15 +48,11 @@ Plugin::Plugin(std::string moduleName) :
 	pluginImpl{ std::make_unique<PluginImpl>() }
 {
 	std::wstring fileName = GetModuleNameForWindows(moduleName);
-	pluginImpl->hinstLib = LoadLibrary(fileName.c_str());
-	pluginImpl->moduleName = moduleName;
-	std::wstring errDesc = L"Loading module: \"" + fileName + L"\" failed";
 
-	if (!pluginImpl->hinstLib)
-	{
-		std::exception e{ GetErrorMsg(errDesc.c_str()).c_str() };
-		throw e;
-	}
+	pluginImpl->hinstLib = LoadLibrary(fileName.c_str());
+
+	if(!pluginImpl->hinstLib)
+		ThrowSystemError(moduleName);
 }
 
 
@@ -98,13 +69,8 @@ Plugin::~Plugin()
 void* Plugin::GetFunctionAddress(std::string functionName)
 {
 	void* ret = GetProcAddress(pluginImpl->hinstLib, functionName.c_str());
-	std::wstring errDesc = L"Loading function: \"" + StringToWString(functionName) + L"\" failed";
-
 	if (!ret)
-	{
-		std::exception e{ (GetErrorMsg(errDesc.c_str())).c_str() };
-		throw e;
-	}
+		ThrowSystemError(functionName);
 
 	return ret;
 }
@@ -112,7 +78,6 @@ void* Plugin::GetFunctionAddress(std::string functionName)
 void Plugin::PluginInitialize(int argc, char** argv)
 {
 	bool ret = PluginCallerBody<bool, int, char**>(__func__, argc, argv);
-
 	if (!ret)
 	{
 		std::exception e{ ("Initialization for plugin: \"" + pluginImpl->moduleName + "\" Failed.").c_str() };
