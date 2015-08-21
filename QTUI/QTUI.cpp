@@ -3,6 +3,7 @@
 #include "OpenGLWindow.h"
 #include "QTUISettings.h"
 #include "CoreGUIApplication.h"
+#include "../SkeletonInterface/Routines.h"
 #include <memory>
 
 
@@ -25,7 +26,7 @@ struct QTUIGlobalData
 
 } *globalData;
 
-constexpr auto settingsFile{ "../QTUISettings.xml" };
+constexpr auto settingsFile{ "QTUISettings.xml" };
 
 
 // We cannot let this function get inlined
@@ -41,13 +42,13 @@ extern "C"
 {
 	QTUI_DECLSPEC void PluginInitialize(int argc, char** argv)
 	{
-		GetQTUISettings().Load(settingsFile);
+		GetQTUISettings().Load(Routines::GetSettingsFileFullPath_Load(settingsFile));
 		globalData = new QTUIGlobalData(argc, argv);
 	}
 
 	QTUI_DECLSPEC void PluginDestroy()
 	{
-		GetQTUISettings().Save(settingsFile);
+		GetQTUISettings().Save(Routines::GetSettingsFileFullPath_Save(settingsFile));
 		delete globalData;
 	}
 }

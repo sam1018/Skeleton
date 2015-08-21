@@ -67,6 +67,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\QTUISettings.xml" />
+    <Xml Include="..\x64\Settings\QTUISettings.xml" />
   </ItemGroup>
 </Project>

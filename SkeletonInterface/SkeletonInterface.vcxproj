@@ -93,6 +93,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,6 +112,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(BOOST_ROOT)/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -152,6 +155,7 @@
     <ClInclude Include="ICoreGUIApplication.h" />
     <ClInclude Include="IMainWindow.h" />
     <ClInclude Include="IOpenGLWindow.h" />
+    <ClInclude Include="Routines.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SkeletonInterface.h" />
   </ItemGroup>
@@ -159,6 +163,7 @@
     <ClCompile Include="ICoreGUIApplication.cpp" />
     <ClCompile Include="IMainWindow.cpp" />
     <ClCompile Include="IOpenGLWindow.cpp" />
+    <ClCompile Include="Routines.cpp" />
     <ClCompile Include="Settings.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

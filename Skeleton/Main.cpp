@@ -1,19 +1,22 @@
 #include "World.h"
 #include "SkeletonSettings.h"
+#include "../SkeletonInterface/Routines.h"
 #include <iostream>
 #include <Windows.h>
 
 
-constexpr auto settingsFile{ "../SkeletonSettings.xml" };
+constexpr auto settingsFile{ "SkeletonSettings.xml" };
 
 
 int main(int argc, char** argv)
 {
 	try
 	{
+		Routines::SetBinFilePath(argv[0]);
+
 		// Settings file must be loaded first
 		// As later initializations depends on it
-		SkeletonSettings::GetInstance().Load(settingsFile);
+		SkeletonSettings::GetInstance().Load(Routines::GetSettingsFileFullPath_Load(settingsFile));
 
 		World::GetInstance().InitializePlugins(argc, argv);
 

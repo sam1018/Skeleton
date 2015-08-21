@@ -177,7 +177,7 @@
     <ClInclude Include="QTUI.h" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\QTUISettings.xml" />
+    <Xml Include="..\x64\Settings\QTUISettings.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
