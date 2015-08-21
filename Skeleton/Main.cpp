@@ -1,10 +1,11 @@
-#include <iostream>
 #include "World.h"
-#include <Windows.h>
-#include <iostream>
 #include "SkeletonSettings.h"
+#include <iostream>
+#include <Windows.h>
 
-constexpr auto g_SettingsFile{ "../SkeletonSettings.xml" };
+
+constexpr auto settingsFile{ "../SkeletonSettings.xml" };
+
 
 int main(int argc, char** argv)
 {
@@ -12,14 +13,14 @@ int main(int argc, char** argv)
 	{
 		// Settings file must be loaded first
 		// As later initializations depends on it
-		SkeletonSettings::GetInstance().Load(g_SettingsFile);
+		SkeletonSettings::GetInstance().Load(settingsFile);
 
 		World::GetInstance().InitializePlugins(argc, argv);
 
 		// Show the application
 		World::GetInstance().Show();
 
-		if (SkeletonSettings::GetInstance().m_bHideCmdPromptAfterInitialization)
+		if (SkeletonSettings::GetInstance().hideCmdPromptAfterInitialization)
 		{
 			HWND hwnd = GetConsoleWindow();
 			ShowWindow(hwnd, 0);

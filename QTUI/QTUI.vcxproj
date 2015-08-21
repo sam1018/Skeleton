@@ -173,11 +173,11 @@
     <ClInclude Include="MainWindowImpl.h" />
     <ClInclude Include="OpenGLWindow.h" />
     <ClInclude Include="OpenGLWindowImpl.h" />
-    <ClInclude Include="QTGUISettings.h" />
+    <ClInclude Include="QTUISettings.h" />
     <ClInclude Include="QTUI.h" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\QTGUISettings.xml" />
+    <Xml Include="..\QTUISettings.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

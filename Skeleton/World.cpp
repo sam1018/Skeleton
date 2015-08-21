@@ -3,13 +3,19 @@
 #include "../SkeletonInterface/IMainWindow.h"
 #include "../SkeletonInterface/ICoreGUIApplication.h"
 
-struct World::ImplData
+struct World::WorldImpl
 {
-	PluginsManager m_PluginsManager;
+	PluginsManager pluginsManager;
 };
 
-World::World() : 
-	m_pImplData {std::make_unique<World::ImplData>()}
+
+///////////////////////////////////////////////////////////////////////////////
+/////////////          World Definition                            ////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
+World::World() :
+	worldImpl{ std::make_unique<World::WorldImpl>() }
 {
 }
 
@@ -25,7 +31,7 @@ World& World::GetInstance()
 
 void World::InitializePlugins(int argc, char** argv)
 {
-	m_pImplData->m_PluginsManager.Initialize(argc, argv);
+	worldImpl->pluginsManager.Initialize(argc, argv);
 }
 
 void World::Show()

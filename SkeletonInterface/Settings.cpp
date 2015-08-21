@@ -9,15 +9,15 @@ namespace pt = boost::property_tree;
 
 struct Item
 {
-	ValueType mValue;
-	std::string mPath;
+	ValueType value;
+	std::string path;
 };
 
 using Items = std::vector <Item>;
 
 struct AttribAccessor::ItemsImpl
 {
-	Items mItems;
+	Items items;
 };
 
 class ValueAccessor : public boost::static_visitor<>
@@ -29,25 +29,25 @@ public:
 		LOAD_FROM_TREE
 	};
 
-	ValueAccessor(pt::ptree &pTree, std::string &path, AccessType accessType) :
-		m_pTree{ pTree },
-		mPath{ path },
-		mAccessType{ accessType }
+	ValueAccessor(pt::ptree &tree, std::string &path, AccessType accessType) :
+		tree{ tree },
+		path{ path },
+		accessType{ accessType }
 	{}
 
 	template <typename T>
 	void operator()(T &item)
 	{
-		if (mAccessType == AccessType::STORE_IN_TREE)
-			m_pTree.put(mPath, item);
+		if (accessType == AccessType::STORE_IN_TREE)
+			tree.put(path, item);
 		else
-			item = m_pTree.get<T>(mPath);
+			item = tree.get<T>(path);
 	}
 
 private:
-	pt::ptree &m_pTree;
-	const std::string &mPath;
-	AccessType mAccessType;
+	pt::ptree &tree;
+	const std::string &path;
+	AccessType accessType;
 };
 
 void AccessTree(std::string fileName, Items &items, ValueAccessor::AccessType accessType)
@@ -59,16 +59,22 @@ void AccessTree(std::string fileName, Items &items, ValueAccessor::AccessType ac
 
 	for (auto &item : items)
 	{
-		ValueAccessor f(tree, item.mPath, accessType);
-		boost::apply_visitor(f, item.mValue);
+		ValueAccessor f(tree, item.path, accessType);
+		boost::apply_visitor(f, item.value);
 	}
 
 	if (accessType == ValueAccessor::AccessType::STORE_IN_TREE)
 		pt::write_xml(fileName, tree);
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+/////////////          AttribAccessor Definition                   ////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
 AttribAccessor::AttribAccessor() :
-	m_pItemsImpl{ std::make_unique<ItemsImpl>() }
+	itemsImpl{ std::make_unique<ItemsImpl>() }
 {
 }
 
@@ -78,15 +84,15 @@ AttribAccessor::~AttribAccessor()
 
 void AttribAccessor::Load(std::string fileName)
 {
-	AccessTree(fileName, m_pItemsImpl->mItems, ValueAccessor::AccessType::LOAD_FROM_TREE);
+	AccessTree(fileName, itemsImpl->items, ValueAccessor::AccessType::LOAD_FROM_TREE);
 }
 
 void AttribAccessor::Save(std::string fileName)
 {
-	AccessTree(fileName, m_pItemsImpl->mItems, ValueAccessor::AccessType::STORE_IN_TREE);
+	AccessTree(fileName, itemsImpl->items, ValueAccessor::AccessType::STORE_IN_TREE);
 }
 
 void AttribAccessor::InternalRegisterItem(ValueType value, std::string path)
 {
-	m_pItemsImpl->mItems.push_back(Item{ value, path });
+	itemsImpl->items.push_back(Item{ value, path });
 }

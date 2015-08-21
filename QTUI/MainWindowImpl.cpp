@@ -1,17 +1,23 @@
 #include "MainWindowImpl.h"
 #include "QTUI.h"
 #include "OpenGLWindow.h"
-#include "QTGUISettings.h"
-#include <QtWidgets\QApplication>
-#include <QtGui\QScreen>
-#include <QtWidgets\QComboBox>
-#include <QtWidgets\QToolBar>
+#include "QTUISettings.h"
 #include <iostream>
+#include <QtGui\QScreen>
+#include <QtWidgets\QToolBar>
+#include <QtWidgets\QComboBox>
+#include <QtWidgets\QApplication>
 
-MainWindowImpl::MainWindowImpl(OpenGLWindow *pOpenGLWindow) :
-	m_Screens{ QApplication::screens() }
+
+///////////////////////////////////////////////////////////////////////////////
+/////////////          MainWindowImpl Definition                   ////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
+MainWindowImpl::MainWindowImpl(OpenGLWindow *openGLWindow) :
+	screens{ QApplication::screens() }
 {
-	setCentralWidget(QWidget::createWindowContainer(pOpenGLWindow->GetOpenGLWindowImpl()));
+	setCentralWidget(QWidget::createWindowContainer(openGLWindow->GetOpenGLWindowImpl()));
 
 	AddToolbars();
 }
@@ -31,18 +37,16 @@ void MainWindowImpl::AddTBBMonitors(QToolBar *toolbar)
 {
 	QComboBox *comboMonitors = new QComboBox;
 
-	for (auto* screen : m_Screens)
+	for (auto* screen : screens)
 		comboMonitors->addItem("Monitor: " + screen->name());
 
-	int nMonitorIndex = QTGUISettings::GetInstance().m_MonitorIndex;
-
-	if (nMonitorIndex < 0 || nMonitorIndex >= m_Screens.size())
+	if (GetQTUISettings().monitorIndex < 0 || GetQTUISettings().monitorIndex >= screens.size())
 	{
-		std::cerr << __FUNCTION__ << ": " << nMonitorIndex << " is not a valid monitor index. Choosing 0 as monitor index.\n";
-		QTGUISettings::GetInstance().m_MonitorIndex = 0;
+		std::cerr << __FUNCTION__ << ": " << GetQTUISettings().monitorIndex << " is not a valid monitor index. Choosing 0 as monitor index.\n";
+		GetQTUISettings().monitorIndex = 0;
 	}
 
-	comboMonitors->setCurrentIndex(QTGUISettings::GetInstance().m_MonitorIndex);
+	comboMonitors->setCurrentIndex(GetQTUISettings().monitorIndex);
 
 	toolbar->addWidget(comboMonitors);
 
@@ -51,14 +55,14 @@ void MainWindowImpl::AddTBBMonitors(QToolBar *toolbar)
 
 void MainWindowImpl::Show()
 {
-	ShowWindow(QTGUISettings::GetInstance().m_MonitorIndex);
+	ShowWindow(GetQTUISettings().monitorIndex);
 }
 
 void MainWindowImpl::ShowWindow(int monitorIndex)
 {
 	showNormal();
-	QRect rect = m_Screens[monitorIndex]->availableGeometry();
+	QRect rect = screens[monitorIndex]->availableGeometry();
 	move(rect.topLeft());
 	showMaximized();
-	QTGUISettings::GetInstance().m_MonitorIndex = monitorIndex;
+	GetQTUISettings().monitorIndex = monitorIndex;
 }

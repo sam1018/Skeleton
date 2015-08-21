@@ -17,5 +17,5 @@ public:
 
 private:
 	// MainWindowImpl is responsible for destroying it
-	OpenGLWindowImpl* m_pImpl;
+	OpenGLWindowImpl* openGLWindowImpl;
 };

@@ -1,8 +1,14 @@
 #include "OpenGLWindow.h"
 #include "OpenGLWindowImpl.h"
 
+
+///////////////////////////////////////////////////////////////////////////////
+/////////////          OpenGLWindow Definition                     ////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
 OpenGLWindow::OpenGLWindow() :
-	m_pImpl{ new OpenGLWindowImpl{this} }
+	openGLWindowImpl{ new OpenGLWindowImpl{this} }
 {
 }
 
@@ -18,5 +24,5 @@ void OpenGLWindow::Update()
 
 QWindow* OpenGLWindow::GetOpenGLWindowImpl()
 {
-	return m_pImpl;
+	return openGLWindowImpl;
 }

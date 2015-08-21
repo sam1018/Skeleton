@@ -15,5 +15,5 @@ public:
 	void Show();
 
 private:
-	std::unique_ptr <MainWindowImpl> m_pMainWindowImpl;
+	std::unique_ptr <MainWindowImpl> mainWindowImpl;
 };

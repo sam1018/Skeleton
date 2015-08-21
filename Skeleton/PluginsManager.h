@@ -31,5 +31,5 @@ public:
 
 private:
 	struct PluginsManagerImpl;
-	std::unique_ptr <PluginsManagerImpl> m_pImpl;
+	std::unique_ptr <PluginsManagerImpl> pluginsManagerImpl;
 };

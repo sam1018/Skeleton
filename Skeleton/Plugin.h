@@ -33,6 +33,6 @@ private:
 	std::wstring GetModuleNameForWindows(std::string moduleName);
 
 private:
-	struct ImplData;
-	std::unique_ptr <ImplData> m_pImplData;
+	struct PluginImpl;
+	std::unique_ptr <PluginImpl> pluginImpl;
 };

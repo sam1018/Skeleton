@@ -2,23 +2,33 @@
 
 using namespace GUI;
 
-ICoreGUIApplication *m_pCoreGUIApplication;
+ICoreGUIApplication *coreGUIApplication;
 
-ICoreGUIApplication::ICoreGUIApplication()
+
+void ThrowUninitializedClass(std::string className)
 {
-	m_pCoreGUIApplication = this;
+	throw std::exception((className + " class is not initialized").c_str());
 }
 
-
-ICoreGUIApplication::~ICoreGUIApplication()
-{
-	m_pCoreGUIApplication = nullptr;
-}
 
 int GUI::Run()
 {
-	if (!m_pCoreGUIApplication)
+	if (!coreGUIApplication)
 		ThrowUninitializedClass("ICoreGUIApplication");
 
-	return m_pCoreGUIApplication->Run();
+	return coreGUIApplication->Run();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+/////////////          ICoreGUIApplication Definition              ////////////
+///////////////////////////////////////////////////////////////////////////////
+
+ICoreGUIApplication::ICoreGUIApplication()
+{
+	coreGUIApplication = this;
+}
+
+ICoreGUIApplication::~ICoreGUIApplication()
+{
+	coreGUIApplication = nullptr;
 }

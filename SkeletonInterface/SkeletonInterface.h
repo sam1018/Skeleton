@@ -8,4 +8,6 @@
 #define SKELETONINTERFACE_DECLSPEC    __declspec(dllimport)
 #endif
 
+
+// Internal Routines
 void ThrowUninitializedClass(std::string className);

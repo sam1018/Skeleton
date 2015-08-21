@@ -13,5 +13,5 @@ public:
 
 private:
 	struct CoreGUIApplicationImpl;
-	std::unique_ptr<CoreGUIApplicationImpl> m_pImpl;
+	std::unique_ptr<CoreGUIApplicationImpl> coreGUIApplicationImpl;
 };

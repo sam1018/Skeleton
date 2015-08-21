@@ -5,7 +5,6 @@
 
 class IMainWindow;
 
-// Singleton class, contains core logic
 class World
 {
 private:
@@ -22,6 +21,6 @@ public:
 	int Run();
 
 private:
-	struct ImplData;
-	std::unique_ptr <ImplData> m_pImplData;
+	struct WorldImpl;
+	std::unique_ptr <WorldImpl> worldImpl;
 };

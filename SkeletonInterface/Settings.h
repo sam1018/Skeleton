@@ -47,7 +47,7 @@ namespace Settings
 		// We can safely ignore C4251 in this case
 #pragma warning( push )
 #pragma warning( disable : 4251 )
-		std::unique_ptr<ItemsImpl> m_pItemsImpl;
+		std::unique_ptr<ItemsImpl> itemsImpl;
 #pragma warning( pop ) 		
 	};
 }

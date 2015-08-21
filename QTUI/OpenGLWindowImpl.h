@@ -1,7 +1,6 @@
 #pragma once
 
 #include <memory>
-#include <QtCore\QTimer>
 #include <QtGui\QWindow>
 
 
@@ -24,9 +23,10 @@ public:
 	void Update();
 
 private:
-	std::unique_ptr <QOpenGLContext> m_pContext;
-	std::unique_ptr <QTimer> m_pTimer;
+	std::unique_ptr <QTimer> timer;
+	std::unique_ptr <QOpenGLContext> context;
 
 	// Destroying m_pParentObj is not our responsibility
-	OpenGLWindow *m_pParentObj;
+	// QT mainwindow will handle it
+	OpenGLWindow *parentObj;
 };

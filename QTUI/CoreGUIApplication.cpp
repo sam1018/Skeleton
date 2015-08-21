@@ -1,12 +1,16 @@
 #include "CoreGUIApplication.h"
 #include <QtWidgets\QApplication.h>
 
+///////////////////////////////////////////////////////////////////////////////
+/////////////          CoreGUIApplication Definition               ////////////
+///////////////////////////////////////////////////////////////////////////////
+
 struct CoreGUIApplication::CoreGUIApplicationImpl
 {
-	std::unique_ptr<QApplication> m_pApp;
+	std::unique_ptr<QApplication> app;
 
 	CoreGUIApplicationImpl(int argc, char **argv) :
-		m_pApp{ std::make_unique<QApplication>(argc, argv) }
+		app{ std::make_unique<QApplication>(argc, argv) }
 	{
 	}
 
@@ -16,7 +20,7 @@ struct CoreGUIApplication::CoreGUIApplicationImpl
 };
 
 CoreGUIApplication::CoreGUIApplication(int argc, char **argv) :
-	m_pImpl{ std::make_unique<CoreGUIApplicationImpl>(argc, argv) }
+	coreGUIApplicationImpl{ std::make_unique<CoreGUIApplicationImpl>(argc, argv) }
 {
 }
 
@@ -27,5 +31,5 @@ CoreGUIApplication::~CoreGUIApplication()
 
 int CoreGUIApplication::Run()
 {
-	return m_pImpl->m_pApp->exec();
+	return coreGUIApplicationImpl->app->exec();
 }

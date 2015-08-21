@@ -1,21 +1,21 @@
 #include "QTUI.h"
-#include <memory>
-#include "OpenGLWindow.h"
 #include "MainWindow.h"
+#include "OpenGLWindow.h"
+#include "QTUISettings.h"
 #include "CoreGUIApplication.h"
-#include "QTGUISettings.h"
+#include <memory>
 
 
 struct QTUIGlobalData
 {
-	std::unique_ptr <CoreGUIApplication> m_pApp;
-	std::unique_ptr <OpenGLWindow> m_pOpenGLWindow;
-	std::unique_ptr <MainWindow> m_pMainWindow;
+	std::unique_ptr <CoreGUIApplication> app;
+	std::unique_ptr <OpenGLWindow> openGLWindow;
+	std::unique_ptr <MainWindow> mainWindow;
 
 	QTUIGlobalData(int argc, char** argv) :
-		m_pApp{ std::make_unique<CoreGUIApplication>(argc, argv) },
-		m_pOpenGLWindow{ std::make_unique<OpenGLWindow>() },
-		m_pMainWindow{ std::make_unique<MainWindow>(m_pOpenGLWindow.get()) }
+		app{ std::make_unique<CoreGUIApplication>(argc, argv) },
+		openGLWindow{ std::make_unique<OpenGLWindow>() },
+		mainWindow{ std::make_unique<MainWindow>(openGLWindow.get()) }
 	{
 	}
 
@@ -23,21 +23,31 @@ struct QTUIGlobalData
 	{
 	}
 
-} *g_GlobalData;
+} *globalData;
 
-constexpr auto settingsFile{ "../QTGUISettings.xml" };
+constexpr auto settingsFile{ "../QTUISettings.xml" };
+
+
+// We cannot let this function get inlined
+// Or it will create linker error
+QTUISettings& GetQTUISettings()
+{
+	static QTUISettings settings;
+	return settings;
+}
+
 
 extern "C"
 {
 	QTUI_DECLSPEC void PluginInitialize(int argc, char** argv)
 	{
-		QTGUISettings::GetInstance().Load(settingsFile);
-		g_GlobalData = new QTUIGlobalData(argc, argv);
+		GetQTUISettings().Load(settingsFile);
+		globalData = new QTUIGlobalData(argc, argv);
 	}
 
 	QTUI_DECLSPEC void PluginDestroy()
 	{
-		QTGUISettings::GetInstance().Save(settingsFile);
-		delete g_GlobalData;
+		GetQTUISettings().Save(settingsFile);
+		delete globalData;
 	}
 }

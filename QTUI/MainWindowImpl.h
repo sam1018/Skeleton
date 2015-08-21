@@ -14,7 +14,7 @@ class MainWindowImpl : public QMainWindow
 	Q_OBJECT
 
 public:
-	MainWindowImpl(OpenGLWindow *pOpenGLWindow);
+	MainWindowImpl(OpenGLWindow *openGLWindow);
 	~MainWindowImpl();
 
 	void Show();
@@ -31,5 +31,5 @@ private:
 	// So that, the time screens combo is populated, and the time a combo item is clicked, there is
 	// no descrepency between the list
 	// TODO: handle monitor events to update the screens combo run time
-	QList <QScreen*> m_Screens;
+	QList <QScreen*> screens;
 };

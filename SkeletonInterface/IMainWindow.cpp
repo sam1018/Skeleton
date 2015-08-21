@@ -2,21 +2,28 @@
 
 using namespace GUI;
 
-IMainWindow *m_pMainWindow;
+IMainWindow *mainWindow;
+
+void GUI::Show()
+{
+	if (!mainWindow)
+		ThrowUninitializedClass("IMainWindow");
+	mainWindow->Show();
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+/////////////          IMainWindow Definition                      ////////////
+///////////////////////////////////////////////////////////////////////////////
+
 
 IMainWindow::IMainWindow()
 {
-	m_pMainWindow = this;
+	mainWindow = this;
 }
 
 IMainWindow::~IMainWindow()
 {
-	m_pMainWindow = nullptr;
+	mainWindow = nullptr;
 }
 
-void GUI::Show()
-{
-	if (!m_pMainWindow)
-		ThrowUninitializedClass("IMainWindow");
-	m_pMainWindow->Show();
-}

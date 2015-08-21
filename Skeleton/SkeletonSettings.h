@@ -5,19 +5,19 @@
 
 struct SkeletonSettings
 {
-	Settings::AttribAccessor Accessor;
-	std::string m_UIPluginName;
-	bool m_bHideCmdPromptAfterInitialization;
+	Settings::AttribAccessor accessor;
+	std::string uiPluginName;
+	bool hideCmdPromptAfterInitialization;
 
 	SkeletonSettings()
 	{
-		Accessor.RegisterItem(m_UIPluginName, "SkeletonSettings.PluginsList.UIPlugin");
-		Accessor.RegisterItem(m_bHideCmdPromptAfterInitialization, "SkeletonSettings.HideCmdPromptAfterInitialization");
+		accessor.RegisterItem(uiPluginName, "SkeletonSettings.PluginsList.UIPlugin");
+		accessor.RegisterItem(hideCmdPromptAfterInitialization, "SkeletonSettings.HideCmdPromptAfterInitialization");
 	}
 
 	void Load(std::string fileName)
 	{
-		Accessor.Load(fileName);
+		accessor.Load(fileName);
 	}
 
 	static SkeletonSettings& GetInstance()

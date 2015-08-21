@@ -1,6 +1,6 @@
 #include "Plugin.h"
-#include <windows.h> 
 #include <functional>
+#include <windows.h> 
 #include <strsafe.h>
 
 typedef int(*InitFunc)(int argc, char** argv);
@@ -44,7 +44,7 @@ std::string GetErrorMsg(LPCTSTR errDesc)
 		TEXT("ERROR!!! %s !!! Last error code %d: %s"),
 		errDesc, dw, lpMsgBuf);
 
-	std::wstring ret((LPTSTR)lpDisplayBuf );
+	std::wstring ret((LPTSTR)lpDisplayBuf);
 
 	LocalFree(lpMsgBuf);
 	LocalFree(lpDisplayBuf);
@@ -52,25 +52,32 @@ std::string GetErrorMsg(LPCTSTR errDesc)
 	return WStringToString(ret);
 }
 
-struct Plugin::ImplData
+struct Plugin::PluginImpl
 {
-	HINSTANCE m_HinstLib = nullptr;
-	std::string m_ModuleName;
+	HINSTANCE hinstLib = nullptr;
+	std::string moduleName;
 
-	~ImplData()
+	~PluginImpl()
 	{
-		FreeLibrary(m_HinstLib);
+		FreeLibrary(hinstLib);
 	}
 };
 
-Plugin::Plugin(std::string moduleName) : m_pImplData{std::make_unique<ImplData>()}
+
+///////////////////////////////////////////////////////////////////////////////
+/////////////          Plugin Definition                           ////////////
+///////////////////////////////////////////////////////////////////////////////
+
+
+Plugin::Plugin(std::string moduleName) :
+	pluginImpl{ std::make_unique<PluginImpl>() }
 {
 	std::wstring fileName = GetModuleNameForWindows(moduleName);
-	m_pImplData->m_HinstLib = LoadLibrary(fileName.c_str());
-	m_pImplData->m_ModuleName = moduleName;
+	pluginImpl->hinstLib = LoadLibrary(fileName.c_str());
+	pluginImpl->moduleName = moduleName;
 	std::wstring errDesc = L"Loading module: \"" + fileName + L"\" failed";
 
-	if (!m_pImplData->m_HinstLib)
+	if (!pluginImpl->hinstLib)
 	{
 		std::exception e{ GetErrorMsg(errDesc.c_str()).c_str() };
 		throw e;
@@ -90,12 +97,12 @@ Plugin::~Plugin()
 
 void* Plugin::GetFunctionAddress(std::string functionName)
 {
-	void* ret = GetProcAddress(m_pImplData->m_HinstLib, functionName.c_str());
+	void* ret = GetProcAddress(pluginImpl->hinstLib, functionName.c_str());
 	std::wstring errDesc = L"Loading function: \"" + StringToWString(functionName) + L"\" failed";
 
 	if (!ret)
 	{
-		std::exception e{ (GetErrorMsg(errDesc.c_str())).c_str()};
+		std::exception e{ (GetErrorMsg(errDesc.c_str())).c_str() };
 		throw e;
 	}
 
@@ -108,7 +115,7 @@ void Plugin::PluginInitialize(int argc, char** argv)
 
 	if (!ret)
 	{
-		std::exception e{ ("Initialization for plugin: \"" + m_pImplData->m_ModuleName + "\" Failed.").c_str() };
+		std::exception e{ ("Initialization for plugin: \"" + pluginImpl->moduleName + "\" Failed.").c_str() };
 		throw e;
 	}
 }

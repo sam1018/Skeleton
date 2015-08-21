@@ -38,9 +38,6 @@
     <ClCompile Include="IOpenGLWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SkeletonInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ICoreGUIApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
