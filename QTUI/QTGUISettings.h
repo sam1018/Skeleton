@@ -1,18 +1,31 @@
 #pragma once
 
+#include "../SkeletonInterface/Settings.h"
 #include <string>
 
-class QTGUISettings
+struct QTGUISettings
 {
-public:
-	static QTGUISettings& GetInstance();
-	void Load(std::string fileName);
-	void Save(std::string fileName);
-
-	// Setters and Getters
-	int GetMonitorIndex();
-	void SetMonitorIndex(int nMonitorIndex);
-
-private:
+	Settings::AttribAccessor Accessor;
 	int m_MonitorIndex;
+
+	QTGUISettings()
+	{
+		Accessor.RegisterItem(m_MonitorIndex, "QTGUISettings.MonitorIndex");
+	}
+
+	void Load(std::string fileName)
+	{
+		Accessor.Load(fileName);
+	}
+
+	void Save(std::string fileName)
+	{
+		Accessor.Save(fileName);
+	}
+
+	static QTGUISettings& GetInstance()
+	{
+		static QTGUISettings settings;
+		return settings;
+	}
 };

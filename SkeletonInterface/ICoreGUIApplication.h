@@ -2,7 +2,7 @@
 
 #include "SkeletonInterface.h"
 
-namespace CGA
+namespace GUI
 {
 	SKELETONINTERFACE_DECLSPEC int Run();
 

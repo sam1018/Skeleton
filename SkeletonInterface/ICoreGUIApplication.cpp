@@ -1,6 +1,6 @@
 #include "ICoreGUIApplication.h"
 
-using namespace CGA;
+using namespace GUI;
 
 ICoreGUIApplication *m_pCoreGUIApplication;
 
@@ -15,7 +15,7 @@ ICoreGUIApplication::~ICoreGUIApplication()
 	m_pCoreGUIApplication = nullptr;
 }
 
-int CGA::Run()
+int GUI::Run()
 {
 	if (!m_pCoreGUIApplication)
 		ThrowUninitializedClass("ICoreGUIApplication");

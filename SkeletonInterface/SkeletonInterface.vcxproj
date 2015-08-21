@@ -103,7 +103,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;SKELETONINTERFACE_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <AdditionalIncludeDirectories>%BOOST_ROOT%\include\boost-1_59</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -151,12 +152,14 @@
     <ClInclude Include="ICoreGUIApplication.h" />
     <ClInclude Include="IMainWindow.h" />
     <ClInclude Include="IOpenGLWindow.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="SkeletonInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ICoreGUIApplication.cpp" />
     <ClCompile Include="IMainWindow.cpp" />
     <ClCompile Include="IOpenGLWindow.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="SkeletonInterface.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

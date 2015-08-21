@@ -1,6 +1,6 @@
 #include "IMainWindow.h"
 
-using namespace MW;
+using namespace GUI;
 
 IMainWindow *m_pMainWindow;
 
@@ -14,7 +14,7 @@ IMainWindow::~IMainWindow()
 	m_pMainWindow = nullptr;
 }
 
-void MW::Show()
+void GUI::Show()
 {
 	if (!m_pMainWindow)
 		ThrowUninitializedClass("IMainWindow");

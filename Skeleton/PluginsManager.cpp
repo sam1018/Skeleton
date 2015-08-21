@@ -25,7 +25,7 @@ PluginsManager::~PluginsManager()
 void PluginsManager::LoadPlugins()
 {
 	m_pImpl->m_PluginsArray[PluginIndex(PluginType::QTUI)] = 
-		std::make_unique<Plugin>(SkeletonSettings::GetInstance().UIPluginName());
+		std::make_unique<Plugin>(SkeletonSettings::GetInstance().m_UIPluginName);
 }
 
 void PluginsManager::Initialize(int argc, char **argv)

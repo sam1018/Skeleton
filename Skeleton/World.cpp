@@ -30,10 +30,10 @@ void World::InitializePlugins(int argc, char** argv)
 
 void World::Show()
 {
-	MW::Show();
+	GUI::Show();
 }
 
 int World::Run()
 {
-	return CGA::Run();
+	return GUI::Run();
 }

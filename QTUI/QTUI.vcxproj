@@ -104,7 +104,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;QTUI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%QTDIR%\Include;%BOOST_ROOT%</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%QTDIR%\Include;%BOOST_ROOT%\include\boost-1_59</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,7 +163,6 @@
     <ClCompile Include="MainWindowImpl.cpp" />
     <ClCompile Include="OpenGLWindow.cpp" />
     <ClCompile Include="OpenGLWindowImpl.cpp" />
-    <ClCompile Include="QTGUISettings.cpp" />
     <ClCompile Include="QTUI.cpp" />
     <ClCompile Include="tmp\moc\moc_MainWindowImpl.cpp" />
     <ClCompile Include="tmp\moc\moc_OpenGLWindowImpl.cpp" />

@@ -2,7 +2,7 @@
 
 #include "SkeletonInterface.h"
 
-namespace MW
+namespace GUI
 {
 	SKELETONINTERFACE_DECLSPEC void Show();
 

@@ -19,7 +19,7 @@ int main(int argc, char** argv)
 		// Show the application
 		World::GetInstance().Show();
 
-		if (SkeletonSettings::GetInstance().HideCmdPromptAfterInitialization())
+		if (SkeletonSettings::GetInstance().m_bHideCmdPromptAfterInitialization)
 		{
 			HWND hwnd = GetConsoleWindow();
 			ShowWindow(hwnd, 0);

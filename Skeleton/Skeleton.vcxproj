@@ -104,7 +104,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%BOOST_ROOT%</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%BOOST_ROOT%\include\boost-1_59</AdditionalIncludeDirectories>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -154,7 +154,6 @@
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
-    <ClCompile Include="SkeletonSettings.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>

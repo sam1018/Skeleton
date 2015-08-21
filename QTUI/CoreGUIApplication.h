@@ -3,7 +3,7 @@
 #include "../SkeletonInterface/ICoreGUIApplication.h"
 #include <memory>
 
-class CoreGUIApplication : public CGA::ICoreGUIApplication
+class CoreGUIApplication : public GUI::ICoreGUIApplication
 {
 public:
 	CoreGUIApplication(int, char**);
