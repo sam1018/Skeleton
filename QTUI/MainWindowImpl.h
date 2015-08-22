@@ -7,14 +7,12 @@
 ///  So only MainWindow is supposed to include it /////
 ///////////////////////////////////////////////////////
 
-class OpenGLWindow;
-
 class MainWindowImpl : public QMainWindow
 {
 	Q_OBJECT
 
 public:
-	MainWindowImpl(OpenGLWindow *openGLWindow);
+	MainWindowImpl();
 	~MainWindowImpl();
 
 	void Show();

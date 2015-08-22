@@ -33,6 +33,9 @@
     <ClInclude Include="Routines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IOutputWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IMainWindow.cpp">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Routines.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IOutputWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

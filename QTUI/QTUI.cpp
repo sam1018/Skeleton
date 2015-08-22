@@ -10,13 +10,11 @@
 struct QTUIGlobalData
 {
 	std::unique_ptr <CoreGUIApplication> app;
-	std::unique_ptr <OpenGLWindow> openGLWindow;
 	std::unique_ptr <MainWindow> mainWindow;
 
 	QTUIGlobalData(int argc, char** argv) :
 		app{ std::make_unique<CoreGUIApplication>(argc, argv) },
-		openGLWindow{ std::make_unique<OpenGLWindow>() },
-		mainWindow{ std::make_unique<MainWindow>(openGLWindow.get()) }
+		mainWindow{ std::make_unique<MainWindow>() }
 	{
 	}
 

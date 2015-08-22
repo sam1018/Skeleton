@@ -1,6 +1,4 @@
 #include "MainWindowImpl.h"
-#include "QTUI.h"
-#include "OpenGLWindow.h"
 #include "QTUISettings.h"
 #include <iostream>
 #include <QtGui\QScreen>
@@ -14,11 +12,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-MainWindowImpl::MainWindowImpl(OpenGLWindow *openGLWindow) :
+MainWindowImpl::MainWindowImpl() :
 	screens{ QApplication::screens() }
 {
-	setCentralWidget(QWidget::createWindowContainer(openGLWindow->GetOpenGLWindowImpl()));
-
 	AddToolbars();
 }
 

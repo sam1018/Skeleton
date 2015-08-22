@@ -155,6 +155,7 @@
     <ClInclude Include="ICoreGUIApplication.h" />
     <ClInclude Include="IMainWindow.h" />
     <ClInclude Include="IOpenGLWindow.h" />
+    <ClInclude Include="IOutputWindow.h" />
     <ClInclude Include="Routines.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SkeletonInterface.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="ICoreGUIApplication.cpp" />
     <ClCompile Include="IMainWindow.cpp" />
     <ClCompile Include="IOpenGLWindow.cpp" />
+    <ClCompile Include="IOutputWindow.cpp" />
     <ClCompile Include="Routines.cpp" />
     <ClCompile Include="Settings.cpp" />
   </ItemGroup>

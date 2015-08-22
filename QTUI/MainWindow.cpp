@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include "OpenGLWindow.h"
 #include "MainWindowImpl.h"
 
 
@@ -7,9 +8,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-MainWindow::MainWindow(OpenGLWindow *openGLWindow) :
-	mainWindowImpl{ std::make_unique <MainWindowImpl>(openGLWindow) }
+MainWindow::MainWindow() :
+	mainWindowImpl{ std::make_unique <MainWindowImpl>() },
+	openGLWindow{ std::make_unique<OpenGLWindow>() }
 {
+	mainWindowImpl->setCentralWidget(QWidget::createWindowContainer(openGLWindow->GetOpenGLWindowImpl()));
 }
 
 
