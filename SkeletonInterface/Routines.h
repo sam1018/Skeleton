@@ -34,4 +34,10 @@ namespace Routines
 	// else if $(GetFactorySettingsDir())/filename exist, this name is returned
 	// else throws error
 	std::string SKELETONINTERFACE_DECLSPEC GetSettingsFileFullPath_Load(std::string fileName);
+
+	// Returns the binary executable name
+	std::string SKELETONINTERFACE_DECLSPEC GetApplicationName();
+
+	// Returns company name
+	std::string SKELETONINTERFACE_DECLSPEC GetCompanyName();
 }

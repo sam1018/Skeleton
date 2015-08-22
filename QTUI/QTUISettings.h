@@ -7,11 +7,9 @@
 struct QTUISettings
 {
 	Settings::AttribAccessor accessor;
-	int monitorIndex;
 
 	QTUISettings()
 	{
-		accessor.RegisterItem(monitorIndex, "QTUISettings.MonitorIndex");
 	}
 
 	void Load(std::string fileName)
@@ -24,7 +22,3 @@ struct QTUISettings
 		accessor.Save(fileName);
 	}
 };
-
-
-// Call this function to get settings attributes
-QTUISettings& GetQTUISettings();

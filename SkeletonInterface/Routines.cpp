@@ -25,7 +25,7 @@ std::string Routines::GetUserDir()
 	p /= std::getnev("HOME");
 #endif
 
-	p /= binFilePath.stem();
+	p /= GetApplicationName();
 
 	create_directory(p);
 
@@ -80,4 +80,14 @@ std::string Routines::GetSettingsFileFullPath_Load(std::string fileName)
 		throw std::exception((fileName + " not found").c_str());
 
 	return p.generic_string();
+}
+
+std::string Routines::GetApplicationName()
+{
+	return binFilePath.stem().generic_string();
+}
+
+std::string Routines::GetCompanyName()
+{
+	return "HOME";
 }

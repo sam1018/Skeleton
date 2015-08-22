@@ -1,10 +1,45 @@
 #include "MainWindowImpl.h"
-#include "QTUISettings.h"
-#include <iostream>
-#include <QtGui\QScreen>
+#include "../SkeletonInterface/Routines.h"
+#include <QtCore\QSettings>
 #include <QtWidgets\QToolBar>
-#include <QtWidgets\QComboBox>
-#include <QtWidgets\QApplication>
+
+
+class QSettingsHelper
+{
+public:
+	QSettingsHelper() :
+		settings{ Routines::GetCompanyName().c_str(), Routines::GetApplicationName().c_str() }
+	{
+	}
+
+	static QSettingsHelper& GetInstance()
+	{
+		static QSettingsHelper theQSettingsHelper;
+		return theQSettingsHelper;
+	}
+
+	void Save(MainWindowImpl *mainWindowImpl)
+	{
+		settings.setValue(geometryKey.c_str(), mainWindowImpl->saveGeometry());
+		settings.setValue(windowStateKey.c_str(), mainWindowImpl->saveState());
+	}
+
+	void Load(MainWindowImpl *mainWindowImpl)
+	{
+		mainWindowImpl->restoreGeometry(settings.value(geometryKey.c_str()).toByteArray());
+		mainWindowImpl->restoreState(settings.value(windowStateKey.c_str()).toByteArray());
+	}
+
+	bool HasGeometryInfo()
+	{
+		return settings.contains(geometryKey.c_str());
+	}
+
+private:
+	QSettings settings;
+	const std::string geometryKey{ "geometry" };
+	const std::string windowStateKey{ "windowState" };
+};
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -12,8 +47,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-MainWindowImpl::MainWindowImpl() :
-	screens{ QApplication::screens() }
+MainWindowImpl::MainWindowImpl()
 {
 	AddToolbars();
 }
@@ -22,43 +56,26 @@ MainWindowImpl::~MainWindowImpl()
 {
 }
 
+void MainWindowImpl::Show()
+{
+	if (QSettingsHelper::GetInstance().HasGeometryInfo())
+	{
+		QSettingsHelper::GetInstance().Load(this);
+		show();
+	}
+	else
+		showMaximized();
+}
+
+void MainWindowImpl::closeEvent(QCloseEvent *event)
+{
+	QSettingsHelper::GetInstance().Save(this);
+	QMainWindow::closeEvent(event);
+}
+
 void MainWindowImpl::AddToolbars()
 {
 	QToolBar *viewsTB = addToolBar("Views");
 
-	AddTBBMonitors(viewsTB);
-}
-
-void MainWindowImpl::AddTBBMonitors(QToolBar *toolbar)
-{
-	QComboBox *comboMonitors = new QComboBox;
-
-	for (auto* screen : screens)
-		comboMonitors->addItem("Monitor: " + screen->name());
-
-	if (GetQTUISettings().monitorIndex < 0 || GetQTUISettings().monitorIndex >= screens.size())
-	{
-		std::cerr << __FUNCTION__ << ": " << GetQTUISettings().monitorIndex << " is not a valid monitor index. Choosing 0 as monitor index.\n";
-		GetQTUISettings().monitorIndex = 0;
-	}
-
-	comboMonitors->setCurrentIndex(GetQTUISettings().monitorIndex);
-
-	toolbar->addWidget(comboMonitors);
-
-	connect(comboMonitors, SIGNAL(currentIndexChanged(int)), this, SLOT(ShowWindow(int)));
-}
-
-void MainWindowImpl::Show()
-{
-	ShowWindow(GetQTUISettings().monitorIndex);
-}
-
-void MainWindowImpl::ShowWindow(int monitorIndex)
-{
-	showNormal();
-	QRect rect = screens[monitorIndex]->availableGeometry();
-	move(rect.topLeft());
-	showMaximized();
-	GetQTUISettings().monitorIndex = monitorIndex;
+	viewsTB->setObjectName("Views TB");
 }
