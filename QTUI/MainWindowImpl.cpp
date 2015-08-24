@@ -75,7 +75,38 @@ void MainWindowImpl::closeEvent(QCloseEvent *event)
 
 void MainWindowImpl::AddToolbars()
 {
-	QToolBar *viewsTB = addToolBar("Views");
+	QToolBar *outputWindowTest = addToolBar("OutputWindowTest");
 
-	viewsTB->setObjectName("Views TB");
+	outputWindowTest->setObjectName("OutputWindowTest");
+
+	outputWindowTest->addAction("AddCatDebug", this, SLOT(AddCatDebug()));
+	outputWindowTest->addAction("AppendToDebug", this, SLOT(AppendToDebug()));
+	outputWindowTest->addAction("AddCatDebug2", this, SLOT(AddCatDebug2()));
+	outputWindowTest->addAction("AppendToDebug2", this, SLOT(AppendToDebug2()));
+}
+
+#include "../SkeletonInterface/IOutputWindow.h"
+
+OutWnd::OutWndCatID debugID;
+OutWnd::OutWndCatID debugID2;
+void MainWindowImpl::AddCatDebug()
+{
+	debugID = OutWnd::RegisterOutputWindowCategory("Debug");
+}
+
+void MainWindowImpl::AppendToDebug()
+{
+	static int x = 0;
+	OutWnd::OutputWindowSetText(debugID, (std::string("Some Text: ") + std::to_string(x++)), true, true);
+}
+
+void MainWindowImpl::AddCatDebug2()
+{
+	debugID2 = OutWnd::RegisterOutputWindowCategory("Debug 2");
+}
+
+void MainWindowImpl::AppendToDebug2()
+{
+	static int x = 0;
+	OutWnd::OutputWindowSetText(debugID2, (std::string("Some Some Other Text XXXXXXXXXXXXXXXXXXXX Text: ") + std::to_string(x++)), true, true);
 }

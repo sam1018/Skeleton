@@ -1,11 +1,10 @@
 #include "OutputWindow.h"
-#include <QtWidgets\QDockWidget>
+#include "OutputWindowImpl.h"
 
 
 OutputWindow::OutputWindow() :
-	outputWindow{ std::make_unique<QDockWidget>() }
+	outputWindowImpl{ std::make_unique<OutputWindowImpl>(this) }
 {
-	outputWindow->setObjectName("Output Window");
 }
 
 
@@ -13,7 +12,22 @@ OutputWindow::~OutputWindow()
 {
 }
 
+void OutputWindow::AddCategory(std::string categoryName)
+{
+	outputWindowImpl->AddCategory(categoryName);
+}
+
+void OutputWindow::SetCategory(std::string categoryName)
+{
+	outputWindowImpl->SetCategory(categoryName);
+}
+
+void OutputWindow::UpdateText(std::string categoryName)
+{
+	outputWindowImpl->UpdateText(categoryName.c_str());
+}
+
 QDockWidget* OutputWindow::GetDockWidget()
 {
-	return outputWindow.get();
+	return outputWindowImpl.get();
 }

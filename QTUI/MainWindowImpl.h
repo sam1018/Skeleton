@@ -20,6 +20,12 @@ public:
 protected:
 	void closeEvent(QCloseEvent *event);
 
+	public slots:
+	void AddCatDebug();
+	void AppendToDebug();
+	void AddCatDebug2();
+	void AppendToDebug2();
+
 private:
 	void AddToolbars();
 };

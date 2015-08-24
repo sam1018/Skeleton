@@ -115,10 +115,10 @@
     <CustomBuildStep>
       <Command>%QTDIR%\bin\moc.exe MainWindowImpl.h -o tmp\moc\moc_MainWindowImpl.cpp
 %QTDIR%\bin\moc.exe OpenGLWindowImpl.h -o tmp\moc\moc_OpenGLWindowImpl.cpp
-</Command>
+%QTDIR%\bin\moc.exe OutputWindowImpl.h -o tmp\moc\moc_OutputWindowImpl.cpp</Command>
       <Message>Moc'ing ...</Message>
-      <Outputs>tmp\moc\moc_MainWindowImpl.cpp;tmp\moc\moc_OpenGLWindowImpl.cpp</Outputs>
-      <Inputs>MainWindowImpl.h;OpenGLWindowImpl.h</Inputs>
+      <Outputs>tmp\moc\moc_MainWindowImpl.cpp;tmp\moc\moc_OpenGLWindowImpl.cpp;tmp\moc\moc_OutputWindowImpl.cpp</Outputs>
+      <Inputs>MainWindowImpl.h;OpenGLWindowImpl.h;OutputWindowImpl.h</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -164,9 +164,11 @@
     <ClCompile Include="OpenGLWindow.cpp" />
     <ClCompile Include="OpenGLWindowImpl.cpp" />
     <ClCompile Include="OutputWindow.cpp" />
+    <ClCompile Include="OutputWindowImpl.cpp" />
     <ClCompile Include="QTUI.cpp" />
     <ClCompile Include="tmp\moc\moc_MainWindowImpl.cpp" />
     <ClCompile Include="tmp\moc\moc_OpenGLWindowImpl.cpp" />
+    <ClCompile Include="tmp\moc\moc_OutputWindowImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoreGUIApplication.h" />
@@ -175,6 +177,7 @@
     <ClInclude Include="OpenGLWindow.h" />
     <ClInclude Include="OpenGLWindowImpl.h" />
     <ClInclude Include="OutputWindow.h" />
+    <ClInclude Include="OutputWindowImpl.h" />
     <ClInclude Include="QTUISettings.h" />
     <ClInclude Include="QTUI.h" />
   </ItemGroup>
