@@ -13,18 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="UIItems">
+      <UniqueIdentifier>{0ea1979c-11b2-461e-acac-5968b8a6937b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SkeletonInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IMainWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IOpenGLWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ICoreGUIApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
@@ -33,28 +27,64 @@
     <ClInclude Include="Routines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IOutputWindow.h">
+    <ClInclude Include="Plugin.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginsManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticPlugins.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ICoreGUIApplication.h">
+      <Filter>UIItems</Filter>
+    </ClInclude>
+    <ClInclude Include="IMainWindow.h">
+      <Filter>UIItems</Filter>
+    </ClInclude>
+    <ClInclude Include="IOpenGLWindow.h">
+      <Filter>UIItems</Filter>
+    </ClInclude>
+    <ClInclude Include="IOutputWindow.h">
+      <Filter>UIItems</Filter>
+    </ClInclude>
+    <ClInclude Include="IPluginExplorer.h">
+      <Filter>UIItems</Filter>
+    </ClInclude>
+    <ClInclude Include="UIItem.h">
+      <Filter>UIItems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IMainWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IOpenGLWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ICoreGUIApplication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Routines.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IOutputWindow.cpp">
+    <ClCompile Include="Plugin.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginsManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ICoreGUIApplication.cpp">
+      <Filter>UIItems</Filter>
+    </ClCompile>
+    <ClCompile Include="IMainWindow.cpp">
+      <Filter>UIItems</Filter>
+    </ClCompile>
+    <ClCompile Include="IOpenGLWindow.cpp">
+      <Filter>UIItems</Filter>
+    </ClCompile>
+    <ClCompile Include="IOutputWindow.cpp">
+      <Filter>UIItems</Filter>
+    </ClCompile>
+    <ClCompile Include="IPluginExplorer.cpp">
+      <Filter>UIItems</Filter>
+    </ClCompile>
+    <ClCompile Include="UIItem.cpp">
+      <Filter>UIItems</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -6,14 +6,7 @@
 struct SkeletonSettings
 {
 	Settings::AttribAccessor accessor;
-	std::string uiPluginName;
 	bool hideCmdPromptAfterInitialization;
-
-	SkeletonSettings()
-	{
-		accessor.RegisterItem(uiPluginName, "SkeletonSettings.PluginsList.UIPlugin");
-		accessor.RegisterItem(hideCmdPromptAfterInitialization, "SkeletonSettings.HideCmdPromptAfterInitialization");
-	}
 
 	void Load(std::string fileName)
 	{
@@ -24,5 +17,11 @@ struct SkeletonSettings
 	{
 		static SkeletonSettings settings;
 		return settings;
+	}
+
+private:
+	SkeletonSettings()
+	{
+		accessor.RegisterItem(hideCmdPromptAfterInitialization, "SkeletonSettings.HideCmdPromptAfterInitialization");
 	}
 };

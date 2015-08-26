@@ -1,13 +1,14 @@
 #include "IOutputWindow.h"
+#include <mutex>
 #include <vector>
 #include <algorithm>
 
-using namespace GUI;
 using namespace OutWnd;
+
+const std::string OutWnd::OutWndPluginExplorerCategory{ "Plugin Explorer" };
 
 class OutWndImpl
 {
-
 	struct Category
 	{
 		OutWndCatID id;
@@ -36,6 +37,9 @@ class OutWndImpl
 			throw std::runtime_error((item + ": No such output window category.").c_str());
 	}
 
+	OutWndImpl() {}
+	~OutWndImpl() {}
+
 public:
 	static OutWndImpl& GetInstance()
 	{
@@ -46,17 +50,27 @@ public:
 	void SetOutputWindow(IOutputWindow *param)
 	{
 		outputWindow = param;
+
+		if (outputWindow)
+		{
+			for (auto &item : categories)
+				outputWindow->AddCategory(item.categoryName);
+		}
 	}
 
 	OutWndCatID RegisterOutputWindowCategory(std::string categoryName)
 	{
+		std::lock_guard<std::mutex> lock(m);
+
 		auto iter = GetCategoryByName(categoryName);
 
 		OutWndCatID ret = nextId;
 		if (iter == categories.end())
 		{
 			categories.push_back(Category{ nextId++, categoryName, "" });
-			outputWindow->AddCategory(categoryName);
+
+			if (outputWindow)
+				outputWindow->AddCategory(categoryName);
 		}
 		else
 			ret = iter->id;
@@ -66,6 +80,8 @@ public:
 
 	void OutputWindowSetText(OutWndCatID id, std::string text, bool append, bool makeCurrrentCategory)
 	{
+		std::lock_guard<std::mutex> lock(m);
+
 		auto iter = GetCategoryByID(id);
 
 		ThrowIfItemNotFound(iter, std::to_string(id));
@@ -75,10 +91,13 @@ public:
 		else
 			iter->text = text;
 
-		if (makeCurrrentCategory)
-			outputWindow->SetCategory(iter->categoryName);
+		if (outputWindow)
+		{
+			if (makeCurrrentCategory)
+				outputWindow->SetCategory(iter->categoryName);
 
-		outputWindow->UpdateText(iter->categoryName.c_str());
+			outputWindow->UpdateText(iter->categoryName.c_str());
+		}
 	}
 
 	// Throws if categoryName is not a valid category
@@ -95,15 +114,25 @@ private:
 	std::vector<Category> categories;
 	OutWndCatID nextId = 23; // it could be 0... doesn't matter why it's 23
 	IOutputWindow *outputWindow = nullptr;
+	std::mutex m;
 };
 
 IOutputWindow::IOutputWindow()
 {
-	OutWndImpl::GetInstance().SetOutputWindow(this);
 }
 
 
 IOutputWindow::~IOutputWindow()
+{
+}
+
+
+void IOutputWindow::InitializeItem()
+{
+	OutWndImpl::GetInstance().SetOutputWindow(this);
+}
+
+void IOutputWindow::Cleanup()
 {
 	OutWndImpl::GetInstance().SetOutputWindow(nullptr);
 }

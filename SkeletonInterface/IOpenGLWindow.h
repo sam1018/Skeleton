@@ -1,25 +1,31 @@
 #pragma once
 
+#include "UIItem.h"
 #include "SkeletonInterface.h"
-
 #include <windows.h>
 #include <gl\GL.h>
 
-class SKELETONINTERFACE_DECLSPEC IOpenGLWindow
+namespace OGLWnd
 {
-public:
-	IOpenGLWindow();
-	virtual ~IOpenGLWindow();
-
-protected:
-	void TestUpdate()
+	class SKELETONINTERFACE_DECLSPEC IOpenGLWindow : public UI::UIItem
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	public:
+		IOpenGLWindow();
+		virtual ~IOpenGLWindow();
 
-		glClearColor(1, 0, 0, 1);
-		glFrontFace(GL_CW);
-		glCullFace(GL_FRONT);
-		glEnable(GL_CULL_FACE);
-		glEnable(GL_DEPTH_TEST);
-	}
-};
+		void InitializeItem();
+		void Cleanup();
+
+	protected:
+		void TestUpdate()
+		{
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			glClearColor(1, 0, 0, 1);
+			glFrontFace(GL_CW);
+			glCullFace(GL_FRONT);
+			glEnable(GL_CULL_FACE);
+			glEnable(GL_DEPTH_TEST);
+		}
+	};
+}

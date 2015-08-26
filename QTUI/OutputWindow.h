@@ -6,7 +6,7 @@
 class OutputWindowImpl;
 class QDockWidget;
 
-class OutputWindow : public GUI::IOutputWindow
+class OutputWindow : public OutWnd::IOutputWindow
 {
 public:
 	OutputWindow();

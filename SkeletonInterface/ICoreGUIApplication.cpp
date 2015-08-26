@@ -1,6 +1,6 @@
 #include "ICoreGUIApplication.h"
 
-using namespace GUI;
+using namespace CGA;
 
 ICoreGUIApplication *coreGUIApplication;
 
@@ -11,7 +11,7 @@ void ThrowUninitializedClass(std::string className)
 }
 
 
-int GUI::Run()
+int CGA::Run()
 {
 	if (!coreGUIApplication)
 		ThrowUninitializedClass("ICoreGUIApplication");
@@ -25,10 +25,18 @@ int GUI::Run()
 
 ICoreGUIApplication::ICoreGUIApplication()
 {
-	coreGUIApplication = this;
 }
 
 ICoreGUIApplication::~ICoreGUIApplication()
+{
+}
+
+void ICoreGUIApplication::InitializeItem()
+{
+	coreGUIApplication = this;
+}
+
+void ICoreGUIApplication::Cleanup()
 {
 	coreGUIApplication = nullptr;
 }

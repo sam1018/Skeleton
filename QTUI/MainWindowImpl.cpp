@@ -7,11 +7,6 @@
 class QSettingsHelper
 {
 public:
-	QSettingsHelper() :
-		settings{ Routines::GetCompanyName().c_str(), Routines::GetApplicationName().c_str() }
-	{
-	}
-
 	static QSettingsHelper& GetInstance()
 	{
 		static QSettingsHelper theQSettingsHelper;
@@ -33,6 +28,12 @@ public:
 	bool HasGeometryInfo()
 	{
 		return settings.contains(geometryKey.c_str());
+	}
+
+private:
+	QSettingsHelper() :
+		settings{ Routines::GetCompanyName().c_str(), Routines::GetApplicationName().c_str() }
+	{
 	}
 
 private:

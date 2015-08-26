@@ -31,6 +31,9 @@ int main(int argc, char** argv)
 
 		// Run the application
 		World::GetInstance().Run();
+
+		// Application finished... Cleanup Time
+		World::GetInstance().Cleanup();
 	}
 	catch (std::exception &e)
 	{

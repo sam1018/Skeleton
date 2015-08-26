@@ -40,4 +40,8 @@ namespace Routines
 
 	// Returns company name
 	std::string SKELETONINTERFACE_DECLSPEC GetCompanyName();
+
+	std::string SKELETONINTERFACE_DECLSPEC GetFileNameFromPath(std::string path);
+
+	bool SKELETONINTERFACE_DECLSPEC IsSamePath(std::string path1, std::string path2);
 }

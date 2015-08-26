@@ -3,15 +3,20 @@
 #include <string>
 #include <memory>
 
+void ThrowPluginLoadFailure(std::string pluginName);
+void ThrowFunctionLoadFailure(std::string functionName);
+
 class Plugin
 {
 public:
-	Plugin(std::string moduleName);
+	Plugin(std::string pluginName);
 	~Plugin();
 
 	void PluginInitialize(int argc, char** argv);
 
 	void PluginDestroy();
+
+	std::string GetPluginName();
 
 	// Purpose: Calls "funcName" function, that's residing within the plugin
 	// Precaution: "funcName" must have "C" linkage
@@ -23,14 +28,15 @@ public:
 	{
 		using FuncType = RetType(*)(ArgsType...);
 		FuncType func = (FuncType)GetFunctionAddress(funcName);
+
+		if (!func)
+			ThrowFunctionLoadFailure(funcName);
+
 		return func(std::forward<ArgsType>(args)...);
 	}
 
 protected:
 	void* GetFunctionAddress(std::string functionName);
-
-private:
-	std::wstring GetModuleNameForWindows(std::string moduleName);
 
 private:
 	struct PluginImpl;

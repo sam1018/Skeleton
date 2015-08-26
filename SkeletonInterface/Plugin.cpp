@@ -25,7 +25,7 @@ std::string WStringToString(std::wstring src)
 struct Plugin::PluginImpl
 {
 	HINSTANCE hinstLib = nullptr;
-	std::string moduleName;
+	std::string pluginName;
 
 	~PluginImpl()
 	{
@@ -33,44 +33,45 @@ struct Plugin::PluginImpl
 	}
 };
 
-void ThrowSystemError(std::string msg)
+void ThrowPluginLoadFailure(std::string pluginName)
 {
-	throw system_error(error_code(GetLastError(), system_category()), msg);
+	throw system_error(error_code(GetLastError(), system_category()), "Failed to load plugin: \"" + pluginName + "\". System Error");
 }
 
+void ThrowFunctionLoadFailure(std::string functionName)
+{
+	throw system_error(error_code(GetLastError(), system_category()), "Failed to load function: \"" + functionName + "\". System Error");
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 /////////////          Plugin Definition                           ////////////
 ///////////////////////////////////////////////////////////////////////////////
 
 
-Plugin::Plugin(std::string moduleName) :
+Plugin::Plugin(std::string pluginName) :
 	pluginImpl{ std::make_unique<PluginImpl>() }
 {
-	std::wstring fileName = GetModuleNameForWindows(moduleName);
+	std::wstring fileName = StringToWString(pluginName);
 
 	pluginImpl->hinstLib = LoadLibrary(fileName.c_str());
 
 	if(!pluginImpl->hinstLib)
-		ThrowSystemError(moduleName);
+		ThrowPluginLoadFailure(pluginName);
+
+	pluginImpl->pluginName = pluginName;
+
 }
 
 
 Plugin::~Plugin()
 {
-	// Eat up, if PluginDestroy() throws
-	try
-	{
-		PluginDestroy();
-	}
-	catch (...) {}
 }
 
 void* Plugin::GetFunctionAddress(std::string functionName)
 {
 	void* ret = GetProcAddress(pluginImpl->hinstLib, functionName.c_str());
 	if (!ret)
-		ThrowSystemError(functionName);
+		ThrowFunctionLoadFailure(functionName);
 
 	return ret;
 }
@@ -80,7 +81,7 @@ void Plugin::PluginInitialize(int argc, char** argv)
 	bool ret = PluginCallerBody<bool, int, char**>(__func__, argc, argv);
 	if (!ret)
 	{
-		std::exception e{ ("Initialization for plugin: \"" + pluginImpl->moduleName + "\" Failed.").c_str() };
+		std::exception e{ ("Initialization for plugin: \"" + pluginImpl->pluginName + "\" Failed.").c_str() };
 		throw e;
 	}
 }
@@ -90,7 +91,7 @@ void Plugin::PluginDestroy()
 	PluginCallerBody<void>(__func__);
 }
 
-std::wstring Plugin::GetModuleNameForWindows(std::string moduleName)
+std::string Plugin::GetPluginName()
 {
-	return StringToWString(moduleName + ".dll");
+	return pluginImpl->pluginName;
 }

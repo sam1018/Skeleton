@@ -111,7 +111,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Imagehlp.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(BOOST_ROOT)/lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -156,17 +156,26 @@
     <ClInclude Include="IMainWindow.h" />
     <ClInclude Include="IOpenGLWindow.h" />
     <ClInclude Include="IOutputWindow.h" />
+    <ClInclude Include="IPluginExplorer.h" />
+    <ClInclude Include="Plugin.h" />
+    <ClInclude Include="PluginsManager.h" />
     <ClInclude Include="Routines.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SkeletonInterface.h" />
+    <ClInclude Include="StaticPlugins.h" />
+    <ClInclude Include="UIItem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ICoreGUIApplication.cpp" />
     <ClCompile Include="IMainWindow.cpp" />
     <ClCompile Include="IOpenGLWindow.cpp" />
     <ClCompile Include="IOutputWindow.cpp" />
+    <ClCompile Include="IPluginExplorer.cpp" />
+    <ClCompile Include="Plugin.cpp" />
+    <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="Routines.cpp" />
     <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="UIItem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

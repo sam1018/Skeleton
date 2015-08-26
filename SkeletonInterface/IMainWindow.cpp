@@ -1,10 +1,10 @@
 #include "IMainWindow.h"
 
-using namespace GUI;
+using namespace MW;
 
 IMainWindow *mainWindow;
 
-void GUI::Show()
+void MW::Show()
 {
 	if (!mainWindow)
 		ThrowUninitializedClass("IMainWindow");
@@ -19,11 +19,18 @@ void GUI::Show()
 
 IMainWindow::IMainWindow()
 {
-	mainWindow = this;
 }
 
 IMainWindow::~IMainWindow()
 {
-	mainWindow = nullptr;
 }
 
+void IMainWindow::InitializeItem()
+{
+	mainWindow = this;
+}
+
+void IMainWindow::Cleanup()
+{
+	mainWindow = nullptr;
+}

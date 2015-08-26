@@ -20,7 +20,5 @@ public:
 
 	int Run();
 
-private:
-	struct WorldImpl;
-	std::unique_ptr <WorldImpl> worldImpl;
+	void Cleanup();
 };

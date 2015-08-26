@@ -91,3 +91,17 @@ std::string Routines::GetCompanyName()
 {
 	return "HOME";
 }
+
+std::string Routines::GetFileNameFromPath(std::string filepath)
+{
+	path p(filepath);
+
+	return p.stem().generic_string();
+}
+
+bool Routines::IsSamePath(std::string path1, std::string path2)
+{
+	path p1(path1), p2(path2);
+
+	return p1 == p2;
+}

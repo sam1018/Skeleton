@@ -6,8 +6,9 @@
 class MainWindowImpl;
 class OpenGLWindow;
 class OutputWindow;
+class PluginExplorer;
 
-class MainWindow : public GUI::IMainWindow
+class MainWindow : public MW::IMainWindow
 {
 public:
 	MainWindow();
@@ -30,6 +31,7 @@ private:
 
 	std::unique_ptr<OpenGLWindow> openGLWindow;
 	std::unique_ptr<OutputWindow> outputWindow;
+	std::unique_ptr<PluginExplorer> pluginExplorer;
 
 	///////////////////////////////////////////////////////////////////////////
 	// End window declaration

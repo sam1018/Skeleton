@@ -5,7 +5,7 @@
 class QWindow;
 class OpenGLWindowImpl;
 
-class OpenGLWindow : public IOpenGLWindow
+class OpenGLWindow : public OGLWnd::IOpenGLWindow
 {
 public:
 	OpenGLWindow();

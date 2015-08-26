@@ -1,10 +1,10 @@
 #include "IOpenGLWindow.h"
 
+using namespace OGLWnd;
 
 ///////////////////////////////////////////////////////////////////////////////
 /////////////          IOpenGLWindow Definition                    ////////////
 ///////////////////////////////////////////////////////////////////////////////
-
 
 IOpenGLWindow::IOpenGLWindow()
 {
@@ -12,5 +12,13 @@ IOpenGLWindow::IOpenGLWindow()
 
 
 IOpenGLWindow::~IOpenGLWindow()
+{
+}
+
+void IOpenGLWindow::InitializeItem()
+{
+}
+
+void IOpenGLWindow::Cleanup()
 {
 }

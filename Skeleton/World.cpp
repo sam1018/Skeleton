@@ -1,12 +1,8 @@
 #include "World.h"
-#include "PluginsManager.h"
+#include "../SkeletonInterface/UIItem.h"
 #include "../SkeletonInterface/IMainWindow.h"
+#include "../SkeletonInterface/PluginsManager.h"
 #include "../SkeletonInterface/ICoreGUIApplication.h"
-
-struct World::WorldImpl
-{
-	PluginsManager pluginsManager;
-};
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -14,8 +10,7 @@ struct World::WorldImpl
 ///////////////////////////////////////////////////////////////////////////////
 
 
-World::World() :
-	worldImpl{ std::make_unique<World::WorldImpl>() }
+World::World()
 {
 }
 
@@ -31,15 +26,23 @@ World& World::GetInstance()
 
 void World::InitializePlugins(int argc, char** argv)
 {
-	worldImpl->pluginsManager.Initialize(argc, argv);
+	PluginsManager::GetInstance().Initialize(argc, argv);
+
+	UI::InitializeItems();
 }
 
 void World::Show()
 {
-	GUI::Show();
+	MW::Show();
 }
 
 int World::Run()
 {
-	return GUI::Run();
+	return CGA::Run();
+}
+
+void World::Cleanup()
+{
+	UI::Cleanup();
+	PluginsManager::GetInstance().Destroy();
 }
