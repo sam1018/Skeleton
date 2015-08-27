@@ -14,12 +14,12 @@ namespace OutWnd
 		void InitializeItem();
 		void Cleanup();
 
-		virtual void AddCategory(std::string categoryName) = 0;
-		virtual void SetCategory(std::string categoryName) = 0;
-		virtual void UpdateText(std::string categoryName) = 0;
+		virtual void AddCategory(const std::string &categoryName) = 0;
+
+		virtual void Refresh(const std::string &categoryName, const std::string &text) = 0;
 
 		// Throws if categoryName is not a valid category
-		std::string GetTextForCategory(std::string categoryName);
+		std::string GetTextForCategory(const std::string &categoryName);
 	};
 
 	// Common Categories
@@ -32,10 +32,10 @@ namespace OutWnd
 	// One category name can be registered only once
 	// Calling this function using same category name multiple times will return same OutWndCatID
 	// Thread safety: Thread safe through locking
-	OutWndCatID SKELETONINTERFACE_DECLSPEC RegisterOutputWindowCategory(std::string categoryName);
+	OutWndCatID SKELETONINTERFACE_DECLSPEC RegisterOutputWindowCategory(const std::string &categoryName);
 
 	// Thread safety: Thread safe through locking
-	void SKELETONINTERFACE_DECLSPEC OutputWindowSetText(OutWndCatID id, std::string text, bool append, bool makeCurrrentCategory);
+	void SKELETONINTERFACE_DECLSPEC OutputWindowSetText(OutWndCatID id, const std::string &text, bool append, bool makeCurrrentCategory);
 
 	template< class Elem = char, class Tr = std::char_traits< Elem > >
 	class StdRedirector : public std::basic_streambuf< Elem, Tr >
@@ -55,7 +55,7 @@ namespace OutWnd
 		/**
 		* Override xsputn and make it forward data to the callback function.
 		*/
-		std::streamsize xsputn(const Elem* _Ptr, std::streamsize _Count)
+		std::streamsize xsputn(const Elem *_Ptr, std::streamsize _Count)
 		{
 			OutWnd::OutputWindowSetText(outWndId, _Ptr, true, true);
 			return _Count;
@@ -66,8 +66,9 @@ namespace OutWnd
 		*/
 		typename Tr::int_type overflow(typename Tr::int_type v)
 		{
-			Elem ch = Tr::to_char_type(v);
-			OutWnd::OutputWindowSetText(outWndId, &ch, true, true);
+			std::string s;
+			s += Tr::to_char_type(v);
+			OutWnd::OutputWindowSetText(outWndId, s, true, true);
 			return Tr::not_eof(v);
 		}
 

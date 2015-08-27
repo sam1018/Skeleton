@@ -19,7 +19,6 @@ OpenGLWindow::~OpenGLWindow()
 
 void OpenGLWindow::Update()
 {
-	TestUpdate();
 }
 
 QWindow* OpenGLWindow::GetOpenGLWindowImpl()

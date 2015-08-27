@@ -27,7 +27,10 @@ OutputWindowImpl::OutputWindowImpl(OutputWindow *wnd) :
 	widget->setLayout(layout);
 	setWidget(widget);
 
-	connect(comboCatagory, SIGNAL(currentTextChanged(const QString&)), this, SLOT(UpdateText(const QString&)));
+	// AddCategory and Refresh may get called from other thread than the GUI thread
+	// The below signal slot mechanism makes sure it is handled in the main thread
+	connect(this, SIGNAL(AddCategorySignal(const QString&)), this, SLOT(AddCategoryHandler(const QString&)), Qt::QueuedConnection);
+	connect(this, SIGNAL(RefreshSignal(const QString&, const QString&)), this, SLOT(RefreshHandler(const QString&, const QString&)), Qt::QueuedConnection);
 }
 
 
@@ -35,17 +38,23 @@ OutputWindowImpl::~OutputWindowImpl()
 {
 }
 
-void OutputWindowImpl::AddCategory(std::string categoryName)
+void OutputWindowImpl::AddCategory(const std::string &categoryName)
 {
-	comboCatagory->addItem(categoryName.c_str());
+	emit AddCategorySignal(QString(categoryName.c_str()));
 }
 
-void OutputWindowImpl::SetCategory(std::string categoryName)
+void OutputWindowImpl::AddCategoryHandler(const QString &categoryName)
 {
-	comboCatagory->setCurrentText(categoryName.c_str());
+	comboCatagory->addItem(categoryName);
 }
 
-void OutputWindowImpl::UpdateText(const QString& categoryName)
+void OutputWindowImpl::Refresh(const std::string &categoryName, const std::string &text)
 {
-	textEdit->setPlainText(outputWindow->GetTextForCategory(categoryName.toStdString()).c_str());
+	emit RefreshSignal(QString(categoryName.c_str()), QString(text.c_str()));
+}
+
+void OutputWindowImpl::RefreshHandler(const QString &categoryName, const QString &text)
+{
+	comboCatagory->setCurrentText(categoryName);
+	textEdit->setPlainText(text);
 }

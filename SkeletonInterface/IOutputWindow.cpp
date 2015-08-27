@@ -19,7 +19,7 @@ class OutWndImpl
 	using Categories = std::vector<Category>;
 	using CategoryIter = std::vector<Category>::iterator;
 
-	CategoryIter GetCategoryByName(std::string categoryName)
+	CategoryIter GetCategoryByName(const std::string &categoryName)
 	{
 		return std::find_if(categories.begin(), categories.end(),
 			[categoryName](auto &item) { return item.categoryName == categoryName; });
@@ -31,7 +31,7 @@ class OutWndImpl
 			[id](auto &item) { return item.id == id; });
 	}
 
-	void ThrowIfItemNotFound(CategoryIter iter, std::string item)
+	void ThrowIfItemNotFound(CategoryIter iter, const std::string &item)
 	{
 		if (iter == categories.end())
 			throw std::runtime_error((item + ": No such output window category.").c_str());
@@ -58,7 +58,7 @@ public:
 		}
 	}
 
-	OutWndCatID RegisterOutputWindowCategory(std::string categoryName)
+	OutWndCatID RegisterOutputWindowCategory(const std::string &categoryName)
 	{
 		std::lock_guard<std::mutex> lock(m);
 
@@ -70,7 +70,12 @@ public:
 			categories.push_back(Category{ nextId++, categoryName, "" });
 
 			if (outputWindow)
+			{
+				// This function may get called outside of main thread
+				// QT Plugin needs to make sure this situation is properly handled
+				// Because, in QT this is not acceptable to send event to an object outside of GUI thread
 				outputWindow->AddCategory(categoryName);
+			}
 		}
 		else
 			ret = iter->id;
@@ -78,7 +83,7 @@ public:
 		return ret;
 	}
 
-	void OutputWindowSetText(OutWndCatID id, std::string text, bool append, bool makeCurrrentCategory)
+	void OutputWindowSetText(OutWndCatID id, const std::string &text, bool append, bool makeCurrrentCategory)
 	{
 		std::lock_guard<std::mutex> lock(m);
 
@@ -94,14 +99,17 @@ public:
 		if (outputWindow)
 		{
 			if (makeCurrrentCategory)
-				outputWindow->SetCategory(iter->categoryName);
-
-			outputWindow->UpdateText(iter->categoryName.c_str());
+			{
+				// This function may get called outside of main thread
+				// QT Plugin needs to make sure this situation is properly handled
+				// Because, in QT this is not acceptable to send event to an object outside of GUI thread
+				outputWindow->Refresh(iter->categoryName, iter->text);
+			}
 		}
 	}
 
 	// Throws if categoryName is not a valid category
-	std::string GetTextForCategory(std::string categoryName)
+	std::string GetTextForCategory(const std::string &categoryName)
 	{
 		auto iter = GetCategoryByName(categoryName);
 
@@ -137,17 +145,17 @@ void IOutputWindow::Cleanup()
 	OutWndImpl::GetInstance().SetOutputWindow(nullptr);
 }
 
-std::string IOutputWindow::GetTextForCategory(std::string categoryName)
+std::string IOutputWindow::GetTextForCategory(const std::string &categoryName)
 {
 	return OutWndImpl::GetInstance().GetTextForCategory(categoryName);
 }
 
-OutWnd::OutWndCatID OutWnd::RegisterOutputWindowCategory(std::string categoryName)
+OutWnd::OutWndCatID OutWnd::RegisterOutputWindowCategory(const std::string &categoryName)
 {
 	return OutWndImpl::GetInstance().RegisterOutputWindowCategory(categoryName);
 }
 
-void OutWnd::OutputWindowSetText(OutWndCatID id, std::string text, bool append, bool makeCurrrentCategory)
+void OutWnd::OutputWindowSetText(OutWndCatID id, const std::string &text, bool append, bool makeCurrrentCategory)
 {
 	OutWndImpl::GetInstance().OutputWindowSetText(id, text, append, makeCurrrentCategory);
 }

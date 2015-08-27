@@ -12,9 +12,8 @@ public:
 	OutputWindow();
 	~OutputWindow();
 
-	void AddCategory(std::string categoryName);
-	void SetCategory(std::string categoryName);
-	void UpdateText(std::string categoryName);
+	void AddCategory(const std::string &categoryName);
+	void Refresh(const std::string &categoryName, const std::string &text);
 
 	QDockWidget* GetDockWidget();
 

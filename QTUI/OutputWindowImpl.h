@@ -14,11 +14,16 @@ public:
 	OutputWindowImpl(OutputWindow *wnd);
 	~OutputWindowImpl();
 
-	void AddCategory(std::string categoryName);
-	void SetCategory(std::string categoryName);
+	void AddCategory(const std::string &categoryName);
+	void Refresh(const std::string &categoryName, const std::string &text);
 
 	public slots:
-	void UpdateText(const QString& categoryName);
+	void AddCategoryHandler(const QString &categoryName);
+	void RefreshHandler(const QString &categoryName, const QString &text);
+
+signals:
+	void AddCategorySignal(const QString &categoryName);
+	void RefreshSignal(const QString &categoryName, const QString &text);
 
 private:
 	// although not specifically mentioned in QT documentation,

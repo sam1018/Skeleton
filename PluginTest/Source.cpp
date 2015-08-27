@@ -16,7 +16,7 @@ extern "C" void __declspec(dllexport) TestFuncRandNums()
 
 void Msg()
 {
-	std::cout << "Fixed String. Will be run in threaded mode. Check for data corruption.\n";
+	std::cout << "Fixed String. Will be run in multi threaded mode. Check for data corruption.\n";
 }
 
 extern "C" void __declspec(dllexport) TestFuncRandThreadedMsg()
@@ -25,7 +25,7 @@ extern "C" void __declspec(dllexport) TestFuncRandThreadedMsg()
 
 	for (int i = 0; i < 10; i++)
 	{
-		vt[i] = std::thread(Msg);
+		vt.push_back(std::thread(Msg));
 	}
 
 	for (int i = 0; i < 10; i++)
@@ -42,4 +42,23 @@ extern "C" void __declspec(dllexport) TestFunc10sSleep()
 	auto end = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double, nano> duration = end - start;
 	std::cout << "Sleep time: " << (end - start).count() << "ns\n";
+}
+
+extern "C" void __declspec(dllexport) TestFunc2Plus5()
+{
+	std::cout << 2 + 5 << "\n";
+}
+
+#include <windows.h>
+#include <gl\GL.h>
+
+extern "C" void __declspec(dllexport) TestFuncOpenGlSetBackColor()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glClearColor(1, 0, 0, 1);
+	glFrontFace(GL_CW);
+	glCullFace(GL_FRONT);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 }

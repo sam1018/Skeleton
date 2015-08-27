@@ -12,19 +12,14 @@ OutputWindow::~OutputWindow()
 {
 }
 
-void OutputWindow::AddCategory(std::string categoryName)
+void OutputWindow::AddCategory(const std::string &categoryName)
 {
 	outputWindowImpl->AddCategory(categoryName);
 }
 
-void OutputWindow::SetCategory(std::string categoryName)
+void OutputWindow::Refresh(const std::string &categoryName, const std::string &text)
 {
-	outputWindowImpl->SetCategory(categoryName);
-}
-
-void OutputWindow::UpdateText(std::string categoryName)
-{
-	outputWindowImpl->UpdateText(categoryName.c_str());
+	outputWindowImpl->Refresh(categoryName, text);
 }
 
 QDockWidget* OutputWindow::GetDockWidget()
