@@ -108,16 +108,6 @@ public:
 		}
 	}
 
-	// Throws if categoryName is not a valid category
-	std::string GetTextForCategory(const std::string &categoryName)
-	{
-		auto iter = GetCategoryByName(categoryName);
-
-		ThrowIfItemNotFound(iter, categoryName);
-
-		return iter->text;
-	}
-
 private:
 	std::vector<Category> categories;
 	OutWndCatID nextId = 23; // it could be 0... doesn't matter why it's 23
@@ -143,11 +133,6 @@ void IOutputWindow::InitializeItem()
 void IOutputWindow::Cleanup()
 {
 	OutWndImpl::GetInstance().SetOutputWindow(nullptr);
-}
-
-std::string IOutputWindow::GetTextForCategory(const std::string &categoryName)
-{
-	return OutWndImpl::GetInstance().GetTextForCategory(categoryName);
 }
 
 OutWnd::OutWndCatID OutWnd::RegisterOutputWindowCategory(const std::string &categoryName)

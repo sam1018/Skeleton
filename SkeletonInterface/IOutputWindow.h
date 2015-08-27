@@ -14,12 +14,19 @@ namespace OutWnd
 		void InitializeItem();
 		void Cleanup();
 
+		// Threading instructions for AddCategory and Refresh for the implementer:
+		// These two functions may get called from another thread than the GUI thread
+		// So take necessary precautions if this is a problem in your GUI toolkit (ex: QT)
+		//
+		// It is ok, if implementation queues this operation for later execution, as long as
+		// clients are able to call Refresh immediately after AddCategory
+		//
+		// For example, if implementation queues this operation for later execution,
+		// and client calls Refresh right after calling AddCategory, and in the GUI thread,
+		// AddCategory gets called before Refresh, then there is no problem
+		// But if Refresh gets called before AddCategory, then that's a problem implementar needs to take care
 		virtual void AddCategory(const std::string &categoryName) = 0;
-
 		virtual void Refresh(const std::string &categoryName, const std::string &text) = 0;
-
-		// Throws if categoryName is not a valid category
-		std::string GetTextForCategory(const std::string &categoryName);
 	};
 
 	// Common Categories

@@ -29,8 +29,8 @@ OutputWindowImpl::OutputWindowImpl(OutputWindow *wnd) :
 
 	// AddCategory and Refresh may get called from other thread than the GUI thread
 	// The below signal slot mechanism makes sure it is handled in the main thread
-	connect(this, SIGNAL(AddCategorySignal(const QString&)), this, SLOT(AddCategoryHandler(const QString&)), Qt::QueuedConnection);
-	connect(this, SIGNAL(RefreshSignal(const QString&, const QString&)), this, SLOT(RefreshHandler(const QString&, const QString&)), Qt::QueuedConnection);
+	connect(this, SIGNAL(AddCategorySignal(const QString&)), this, SLOT(AddCategoryHandler(const QString&)));
+	connect(this, SIGNAL(RefreshSignal(const QString&, const QString&)), this, SLOT(RefreshHandler(const QString&, const QString&)));
 }
 
 
