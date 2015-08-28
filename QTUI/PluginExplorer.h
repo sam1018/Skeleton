@@ -12,6 +12,10 @@ public:
 	PluginExplorer();
 	~PluginExplorer();
 
+	void* GetImpl();
+
+	void AddPluginDataToTree(const std::string &pluginName, const std::vector<std::string> &functions);
+
 	QDockWidget* GetDockWidget();
 
 private:

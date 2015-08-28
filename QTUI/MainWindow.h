@@ -7,12 +7,15 @@ class MainWindowImpl;
 class OpenGLWindow;
 class OutputWindow;
 class PluginExplorer;
+class CommonControls;
 
 class MainWindow : public MW::IMainWindow
 {
 public:
 	MainWindow();
 	~MainWindow();
+
+	void* GetImpl();
 
 	void Show();
 
@@ -32,6 +35,7 @@ private:
 	std::unique_ptr<OpenGLWindow> openGLWindow;
 	std::unique_ptr<OutputWindow> outputWindow;
 	std::unique_ptr<PluginExplorer> pluginExplorer;
+	std::unique_ptr<CommonControls> commonControls;
 
 	///////////////////////////////////////////////////////////////////////////
 	// End window declaration

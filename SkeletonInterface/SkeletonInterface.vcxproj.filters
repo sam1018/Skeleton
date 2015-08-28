@@ -54,6 +54,9 @@
     <ClInclude Include="UIItem.h">
       <Filter>UIItems</Filter>
     </ClInclude>
+    <ClInclude Include="CommonControls.h">
+      <Filter>UIItems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Settings.cpp">
@@ -84,6 +87,9 @@
       <Filter>UIItems</Filter>
     </ClCompile>
     <ClCompile Include="UIItem.cpp">
+      <Filter>UIItems</Filter>
+    </ClCompile>
+    <ClCompile Include="CommonControls.cpp">
       <Filter>UIItems</Filter>
     </ClCompile>
   </ItemGroup>

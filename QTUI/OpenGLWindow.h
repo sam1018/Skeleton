@@ -11,6 +11,8 @@ public:
 	OpenGLWindow();
 	~OpenGLWindow();
 
+	// Use GetOpenGLWindowImpl() to get object with proper type
+	void* GetImpl();
 	QWindow* GetOpenGLWindowImpl();
 
 	void Update();

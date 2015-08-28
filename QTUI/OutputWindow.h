@@ -12,6 +12,8 @@ public:
 	OutputWindow();
 	~OutputWindow();
 
+	void* GetImpl();
+
 	void AddCategory(const std::string &categoryName);
 	void Refresh(const std::string &categoryName, const std::string &text);
 

@@ -31,6 +31,7 @@ namespace OutWnd
 
 	// Common Categories
 	extern const std::string SKELETONINTERFACE_DECLSPEC OutWndPluginExplorerCategory;
+	extern const std::string SKELETONINTERFACE_DECLSPEC OutWndErrorMssgCategory;
 
 	// Output Window Category ID
 	using OutWndCatID = int;

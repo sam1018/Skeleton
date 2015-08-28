@@ -15,6 +15,8 @@ public:
 	PluginExplorerImpl(PluginExplorer *wnd);
 	~PluginExplorerImpl();
 
+	void AddPluginDataToTree(const std::string &pluginName, const std::vector<std::string> &functions);
+
 	public slots:
 	void LoadPlugin();
 	void ExecuteFunction(QTreeWidgetItem *item, int column);

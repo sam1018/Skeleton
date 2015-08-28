@@ -159,7 +159,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CommonControls.cpp" />
     <ClCompile Include="CoreGUIApplication.cpp" />
+    <ClCompile Include="CoreGUIApplicationImpl.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MainWindowImpl.cpp" />
     <ClCompile Include="OpenGLWindow.cpp" />
@@ -175,7 +177,9 @@
     <ClCompile Include="tmp\moc\moc_PluginExplorerImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommonControls.h" />
     <ClInclude Include="CoreGUIApplication.h" />
+    <ClInclude Include="CoreGUIApplicationImpl.h" />
     <ClInclude Include="MainWindow.h" />
     <ClInclude Include="MainWindowImpl.h" />
     <ClInclude Include="OpenGLWindow.h" />

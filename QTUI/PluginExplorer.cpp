@@ -12,6 +12,16 @@ PluginExplorer::~PluginExplorer()
 {
 }
 
+void* PluginExplorer::GetImpl()
+{
+	return pluginExplorerImpl.get();
+}
+
+void PluginExplorer::AddPluginDataToTree(const std::string &pluginName, const std::vector<std::string> &functions)
+{
+	pluginExplorerImpl->AddPluginDataToTree(pluginName, functions);
+}
+
 QDockWidget* PluginExplorer::GetDockWidget()
 {
 	return pluginExplorerImpl.get();

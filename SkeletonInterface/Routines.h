@@ -9,6 +9,8 @@ namespace Routines
 	// main function is responsible to set this by using argv[0]
 	void SKELETONINTERFACE_DECLSPEC SetBinFilePath(std::string path);
 
+	std::string SKELETONINTERFACE_DECLSPEC GetBinDirectory();
+
 	// Returns $(HOME_DIR)/Skeleton/, creates the folder if not present
 	// throws error if cannot be created
 	// https://en.wikipedia.org/wiki/Home_directory

@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CommonControls.h" />
     <ClInclude Include="ICoreGUIApplication.h" />
     <ClInclude Include="IMainWindow.h" />
     <ClInclude Include="IOpenGLWindow.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="UIItem.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommonControls.cpp" />
     <ClCompile Include="ICoreGUIApplication.cpp" />
     <ClCompile Include="IMainWindow.cpp" />
     <ClCompile Include="IOpenGLWindow.cpp" />

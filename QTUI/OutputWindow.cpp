@@ -12,6 +12,11 @@ OutputWindow::~OutputWindow()
 {
 }
 
+void* OutputWindow::GetImpl()
+{
+	return outputWindowImpl.get();
+}
+
 void OutputWindow::AddCategory(const std::string &categoryName)
 {
 	outputWindowImpl->AddCategory(categoryName);

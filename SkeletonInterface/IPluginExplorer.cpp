@@ -1,15 +1,17 @@
-#include "IPluginExplorer.h"
+#include "Routines.h"
 #include "IOutputWindow.h"
 #include "PluginsManager.h"
-#include <Windows.h>
+#include "IPluginExplorer.h"
+#include "CommonControls.h"
+#include <iostream>
 
-// I hate warnings
-#pragma warning( push )
-#pragma warning( disable : 4091 )
-#include <Imagehlp.h>
-#pragma warning( pop )
+
 
 using namespace PE;
+
+
+void ListDLLFunctions(std::string sADllName, std::vector<std::string>& slListOfDllFunctions);
+
 
 struct IPluginExplorer::IPluginExplorerImpl
 {
@@ -19,6 +21,93 @@ struct IPluginExplorer::IPluginExplorerImpl
 		outWndID{ OutWnd::RegisterOutputWindowCategory(OutWnd::OutWndPluginExplorerCategory) }
 	{}
 };
+
+
+IPluginExplorer::IPluginExplorer() :
+	pluginExplorerImpl{ std::make_unique<IPluginExplorer::IPluginExplorerImpl>() }
+{
+}
+
+IPluginExplorer::~IPluginExplorer()
+{
+}
+
+void IPluginExplorer::InitializeItem()
+{
+}
+
+void IPluginExplorer::Cleanup()
+{
+}
+
+void IPluginExplorer::LoadPlugin(const std::string &pluginName, std::vector<std::string> &functions)
+{
+	// Clear the output window
+	OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, "", false, false);
+
+	OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, "Searching module for exported functions............... ", true, true);
+	ListDLLFunctions(pluginName, functions);
+	if (functions.empty())
+		OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, "No exported functions found.", true, true);
+	else
+		OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, std::to_string(functions.size()) + " exported functions found.", true, true);
+}
+
+void IPluginExplorer::LoadPlugin()
+{
+	std::string pluginName = CommCtrls::FileDialog::GetOpenFileName(this, "Open As", Routines::GetBinDirectory(), ("dll Files (*.dll)"));
+	std::vector<std::string> functions;
+	LoadPlugin(pluginName, functions);
+	AddPluginDataToTree(pluginName, functions);
+}
+
+void IPluginExplorer::ExecuteFunction(const std::string &pluginName, const std::string &functionName)
+{
+	// Clear the output window
+	OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, "", false, false);
+
+	auto msg{ "Attempting to run function \"" + functionName +
+		"\" In plugin \"" + pluginName + "\"\n" };
+
+	OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, msg, true, true);
+
+	OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, "Result: ", true, true);
+
+	OutWnd::StdRedirector<> redirOut{ std::cout, pluginExplorerImpl->outWndID };
+	OutWnd::StdRedirector<> redirErr{ std::cerr, pluginExplorerImpl->outWndID };
+
+	auto success{ true };
+
+	try
+	{
+		PluginsManager::GetInstance().ExecuteFunctionDynamic(pluginName, functionName);
+	}
+	catch (std::exception &e)
+	{
+		success = false;
+		OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, e.what(), true, true);
+	}
+	catch (...)
+	{
+		success = false;
+		OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, "Something went wrong.\n", true, true);
+	}
+
+	if (success)
+		OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, "Call to function \"" + functionName + "\" ended successfully.\n", true, true);
+}
+
+
+
+
+
+#include <Windows.h>
+
+// I hate warnings
+#pragma warning( push )
+#pragma warning( disable : 4091 )
+#include <Imagehlp.h>
+#pragma warning( pop )
 
 void ListDLLFunctions(std::string sADllName, std::vector<std::string>& slListOfDllFunctions)
 {
@@ -48,39 +137,4 @@ void ListDLLFunctions(std::string sADllName, std::vector<std::string>& slListOfD
 		}
 		UnMapAndLoad(&LoadedImage);
 	}
-}
-
-IPluginExplorer::IPluginExplorer() :
-	pluginExplorerImpl{ std::make_unique<IPluginExplorer::IPluginExplorerImpl>() }
-{
-}
-
-IPluginExplorer::~IPluginExplorer()
-{
-}
-
-void IPluginExplorer::InitializeItem()
-{
-}
-
-void IPluginExplorer::Cleanup()
-{
-}
-
-void IPluginExplorer::LoadPlugin(std::string pluginName, std::vector<std::string>& functions)
-{
-	// Clear the output window
-	OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, "", false, false);
-
-	OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, "Searching module for exported functions............... ", true, true);
-	ListDLLFunctions(pluginName, functions);
-	if (functions.empty())
-		OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, "No exported functions found.", true, true);
-	else
-		OutWnd::OutputWindowSetText(pluginExplorerImpl->outWndID, std::to_string(functions.size()) + " exported functions found.", true, true);
-}
-
-void IPluginExplorer::ExecuteFunction(std::string pluginName, std::string functionName)
-{
-	PluginsManager::GetInstance().ExecuteFunctionDynamic(pluginName, functionName);
 }

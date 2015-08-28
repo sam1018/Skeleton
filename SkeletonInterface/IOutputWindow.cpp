@@ -6,6 +6,7 @@
 using namespace OutWnd;
 
 const std::string OutWnd::OutWndPluginExplorerCategory{ "Plugin Explorer" };
+const std::string OutWnd::OutWndErrorMssgCategory{ "Error Messages" };
 
 class OutWndImpl
 {

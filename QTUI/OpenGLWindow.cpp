@@ -21,6 +21,11 @@ void OpenGLWindow::Update()
 {
 }
 
+void* OpenGLWindow::GetImpl()
+{
+	return openGLWindowImpl;
+}
+
 QWindow* OpenGLWindow::GetOpenGLWindowImpl()
 {
 	return openGLWindowImpl;

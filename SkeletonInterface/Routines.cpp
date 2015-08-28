@@ -12,6 +12,11 @@ void Routines::SetBinFilePath(std::string path)
 	binFilePath /= path;
 }
 
+std::string SKELETONINTERFACE_DECLSPEC Routines::GetBinDirectory()
+{
+	return binFilePath.parent_path().generic_string();
+}
+
 std::string Routines::GetUserDir()
 {
 	path p;
@@ -45,7 +50,7 @@ std::string Routines::GetUserSettingsDir()
 
 std::string Routines::GetFactorySettingsDir()
 {
-	path p(binFilePath.parent_path());
+	path p(GetBinDirectory());
 
 	p /= "../";
 	p /= settingsDirName;

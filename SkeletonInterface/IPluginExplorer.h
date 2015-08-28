@@ -7,6 +7,12 @@
 
 namespace PE
 {
+	// Requirements for interface implementer
+	//
+	// Button control: To load plugin
+	// Text = "Load Plugin", Click Function = "LoadPlugin"
+	// Tree control: To display plugins and functions...
+	// And, Item Double Click Handler Function = "ExecuteFunction"
 	class SKELETONINTERFACE_DECLSPEC IPluginExplorer : public UI::UIItem
 	{
 	public:
@@ -16,8 +22,12 @@ namespace PE
 		void InitializeItem();
 		void Cleanup();
 
-		void LoadPlugin(std::string pluginName, std::vector<std::string>& functions);
-		void ExecuteFunction(std::string pluginName, std::string functionName);
+		void LoadPlugin();
+		void LoadPlugin(const std::string &pluginName, std::vector<std::string> &functions);
+		virtual void AddPluginDataToTree(const std::string &pluginName, const std::vector<std::string> &functions) = 0;
+
+		// Give the plugin name with full path and function name to execute
+		void ExecuteFunction(const std::string &pluginName, const std::string &functionName);
 
 	private:
 		struct IPluginExplorerImpl;

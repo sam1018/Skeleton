@@ -14,6 +14,8 @@ namespace UI
 		UIItem();
 		virtual ~UIItem() = 0;
 
+		virtual void* GetImpl() = 0;
+
 		virtual void InitializeItem() = 0;
 		virtual void Cleanup() = 0;
 	};
