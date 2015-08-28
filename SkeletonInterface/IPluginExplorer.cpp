@@ -111,20 +111,18 @@ void IPluginExplorer::ExecuteFunction(const std::string &pluginName, const std::
 
 void ListDLLFunctions(std::string sADllName, std::vector<std::string>& slListOfDllFunctions)
 {
-	DWORD *dNameRVAs(0);
-	_IMAGE_EXPORT_DIRECTORY *ImageExportDirectory;
 	unsigned long cDirSize;
 	_LOADED_IMAGE LoadedImage;
 	std::string sName;
 	slListOfDllFunctions.clear();
 	if (MapAndLoad(sADllName.c_str(), NULL, &LoadedImage, TRUE, TRUE))
 	{
-		ImageExportDirectory = (_IMAGE_EXPORT_DIRECTORY*)
+		_IMAGE_EXPORT_DIRECTORY *ImageExportDirectory = (_IMAGE_EXPORT_DIRECTORY*)
 			ImageDirectoryEntryToData(LoadedImage.MappedAddress,
 				false, IMAGE_DIRECTORY_ENTRY_EXPORT, &cDirSize);
 		if (ImageExportDirectory != NULL)
 		{
-			dNameRVAs = (DWORD *)ImageRvaToVa(LoadedImage.FileHeader,
+			DWORD *dNameRVAs = (DWORD *)ImageRvaToVa(LoadedImage.FileHeader,
 				LoadedImage.MappedAddress,
 				ImageExportDirectory->AddressOfNames, NULL);
 			for (size_t i = 0; i < ImageExportDirectory->NumberOfNames; i++)

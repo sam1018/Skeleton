@@ -20,9 +20,9 @@ bool CoreGUIApplicationImpl::notify(QObject * receiver, QEvent * e)
 	{
 		return QApplication::notify(receiver, e);
 	}
-	catch (std::exception &e)
+	catch (std::exception &ex)
 	{
-		OutWnd::OutputWindowSetText(outWndId, e.what() + "\n"s, true, true);
+		OutWnd::OutputWindowSetText(outWndId, ex.what() + "\n"s, true, true);
 	}
 	catch (...)
 	{

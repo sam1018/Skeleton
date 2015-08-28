@@ -11,7 +11,7 @@ class OutputWindowImpl : public QDockWidget
 	Q_OBJECT
 
 public:
-	OutputWindowImpl(OutputWindow *wnd);
+	explicit OutputWindowImpl(OutputWindow *wnd);
 	~OutputWindowImpl();
 
 	void AddCategory(const std::string &categoryName);

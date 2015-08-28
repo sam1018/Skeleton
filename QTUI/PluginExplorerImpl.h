@@ -12,7 +12,7 @@ class PluginExplorerImpl : public QDockWidget
 	Q_OBJECT
 
 public:
-	PluginExplorerImpl(PluginExplorer *wnd);
+	explicit PluginExplorerImpl(PluginExplorer *wnd);
 	~PluginExplorerImpl();
 
 	void AddPluginDataToTree(const std::string &pluginName, const std::vector<std::string> &functions);

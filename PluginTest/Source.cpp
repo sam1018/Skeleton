@@ -41,7 +41,7 @@ extern "C" void __declspec(dllexport) TestFunc10sSleep()
 	std::this_thread::sleep_for(10s);
 	auto end = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double, nano> duration = end - start;
-	std::cout << "Sleep time: " << (end - start).count() << "ns\n";
+	std::cout << "Sleep time: " << duration.count() << "ns\n";
 }
 
 extern "C" void __declspec(dllexport) TestFunc2Plus5()

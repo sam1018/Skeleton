@@ -9,7 +9,7 @@ void ThrowFunctionLoadFailure(std::string functionName);
 class Plugin
 {
 public:
-	Plugin(std::string pluginName);
+	explicit Plugin(std::string pluginName);
 	~Plugin();
 
 	void PluginInitialize(int argc, char** argv);

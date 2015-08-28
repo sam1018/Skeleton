@@ -16,7 +16,7 @@ class OpenGLWindowImpl : public QWindow
 	Q_OBJECT
 
 public:
-	OpenGLWindowImpl(OpenGLWindow* obj);
+	explicit OpenGLWindowImpl(OpenGLWindow* obj);
 	~OpenGLWindowImpl();
 
 	private slots:
