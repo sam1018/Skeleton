@@ -1,5 +1,5 @@
 #include "Plugin.h"
-#include <functional>
+#include "FunctionManager.h"
 #include <windows.h> 
 #include <boost\system\error_code.hpp>
 #include <boost\system\system_error.hpp>
@@ -65,6 +65,7 @@ Plugin::Plugin(std::string pluginName) :
 
 Plugin::~Plugin()
 {
+	FctEx::FunctionManager::GetInstance().PluginUnloaded(this);
 }
 
 void* Plugin::GetFunctionAddress(std::string functionName)

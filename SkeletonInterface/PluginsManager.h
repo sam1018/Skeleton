@@ -22,6 +22,11 @@ constexpr int PluginIndex(PluginType pluginType)
 
 class Plugin;
 
+
+// We have to work with two different kinds of plugins
+// 1. Static plugin: These plugins are required to run the application
+// They are loaded during application loading
+// 2. Dynamic plugin: These are the plugins loaded by the user, on demand
 class SKELETONINTERFACE_DECLSPEC PluginsManager
 {
 private:

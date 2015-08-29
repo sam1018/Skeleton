@@ -57,4 +57,9 @@ void OutputWindowImpl::RefreshHandler(const QString &categoryName, const QString
 {
 	comboCatagory->setCurrentText(categoryName);
 	textEdit->setPlainText(text);
+
+	//move the cursor to the end of the text
+	QTextCursor cursor(textEdit->textCursor());
+	cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+	textEdit->setTextCursor(cursor);
 }

@@ -66,6 +66,9 @@
     <ClCompile Include="CommonControls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tmp\moc\moc_CoreGUIApplicationImpl.cpp">
+      <Filter>MOC Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainWindow.h">

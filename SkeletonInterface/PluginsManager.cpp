@@ -1,10 +1,12 @@
-#include "PluginsManager.h"
 #include "Plugin.h"
 #include "Routines.h"
 #include "StaticPlugins.h"
 #include "IOutputWindow.h"
+#include "PluginsManager.h"
 #include "IPluginExplorer.h"
+#include "FunctionManager.h"
 #include <array>
+#include <functional>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
@@ -70,7 +72,9 @@ void PluginsManager::ExecuteFunctionDynamic(std::string pluginName, std::string 
 	if (plugin == nullptr)
 		ThrowPluginLoadFailure(pluginName);
 
-	plugin->PluginCallerBody<void>(functionName);
+	using namespace FctEx;
+	std::function<void(void)> f = (void(*)(void))plugin->GetFunctionAddress(functionName);
+	FunctionManager::GetInstance().RegisterFunction(f, CallType::OneTime, plugin);
 }
 
 Plugin* PluginsManager::GetDynamicPlugin(std::string pluginName)

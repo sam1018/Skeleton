@@ -13,7 +13,7 @@ struct Item
 	std::string path;
 };
 
-using Items = std::vector <Item>;
+using Items = std::vector<Item>;
 
 struct AttribAccessor::ItemsImpl
 {

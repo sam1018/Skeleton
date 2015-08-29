@@ -17,13 +17,24 @@ OpenGLWindow::~OpenGLWindow()
 {
 }
 
-void OpenGLWindow::Update()
-{
-}
-
 void* OpenGLWindow::GetImpl()
 {
 	return openGLWindowImpl;
+}
+
+void OpenGLWindow::SetupThread()
+{
+	openGLWindowImpl->SetupThread();
+}
+
+bool OpenGLWindow::ReadyFrameToDraw()
+{
+	return openGLWindowImpl->ReadyFrameToDraw();
+}
+
+void OpenGLWindow::DrawComplete()
+{
+	openGLWindowImpl->DrawComplete();
 }
 
 QWindow* OpenGLWindow::GetOpenGLWindowImpl()

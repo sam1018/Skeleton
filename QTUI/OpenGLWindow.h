@@ -15,7 +15,9 @@ public:
 	void* GetImpl();
 	QWindow* GetOpenGLWindowImpl();
 
-	void Update();
+	void SetupThread();
+	bool ReadyFrameToDraw();
+	void DrawComplete();
 
 private:
 	// MainWindowImpl is responsible for destroying it

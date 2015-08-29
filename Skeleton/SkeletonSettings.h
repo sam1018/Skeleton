@@ -7,6 +7,7 @@ struct SkeletonSettings
 {
 	Settings::AttribAccessor accessor;
 	bool hideCmdPromptAfterInitialization;
+	int fps;
 
 	void Load(std::string fileName)
 	{
@@ -23,5 +24,6 @@ private:
 	SkeletonSettings()
 	{
 		accessor.RegisterItem(hideCmdPromptAfterInitialization, "SkeletonSettings.HideCmdPromptAfterInitialization");
+		accessor.RegisterItem(fps, "SkeletonSettings.FPS");
 	}
 };

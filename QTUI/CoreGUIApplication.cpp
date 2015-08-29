@@ -8,7 +8,7 @@
 
 
 CoreGUIApplication::CoreGUIApplication(int argc, char **argv) :
-	coreGUIApplicationImpl{ std::make_unique<CoreGUIApplicationImpl>(argc, argv) }
+	coreGUIApplicationImpl{ std::make_unique<CoreGUIApplicationImpl>(argc, argv, this) }
 {
 }
 
@@ -25,4 +25,9 @@ void* CoreGUIApplication::GetImpl()
 int CoreGUIApplication::Run()
 {
 	return coreGUIApplicationImpl->exec();
+}
+
+void CoreGUIApplication::SetupFPS(int fps)
+{
+	coreGUIApplicationImpl->SetupFPS(fps);
 }

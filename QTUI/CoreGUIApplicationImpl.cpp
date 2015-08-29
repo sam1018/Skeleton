@@ -1,8 +1,11 @@
+#include "CoreGUIApplication.h"
 #include "CoreGUIApplicationImpl.h"
+#include <QtCore\QTimer>
 
-CoreGUIApplicationImpl::CoreGUIApplicationImpl(int argc, char **argv) :
+CoreGUIApplicationImpl::CoreGUIApplicationImpl(int argc, char **argv, CoreGUIApplication *par) :
 	QApplication(argc, argv),
-	outWndId{ OutWnd::RegisterOutputWindowCategory(OutWnd::OutWndErrorMssgCategory) }
+	outWndId{ OutWnd::RegisterOutputWindowCategory(OutWnd::OutWndErrorMssgCategory) },
+	parent{ par }
 {
 }
 
@@ -30,4 +33,16 @@ bool CoreGUIApplicationImpl::notify(QObject * receiver, QEvent * e)
 	}
 
 	return false;
+}
+
+void CoreGUIApplicationImpl::SetupFPS(int fps)
+{
+	QTimer *timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(Update()));
+	timer->start(1000 / fps);
+}
+
+void CoreGUIApplicationImpl::Update()
+{
+	parent->FPSHandler();
 }

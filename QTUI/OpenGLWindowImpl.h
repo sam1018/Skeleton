@@ -13,17 +13,15 @@ class OpenGLWindow;
 
 class OpenGLWindowImpl : public QWindow
 {
-	Q_OBJECT
-
 public:
 	explicit OpenGLWindowImpl(OpenGLWindow* obj);
 	~OpenGLWindowImpl();
 
-	private slots:
-	void Update();
+	void SetupThread();
+	bool ReadyFrameToDraw();
+	void DrawComplete(); 
 
 private:
-	std::unique_ptr <QTimer> timer;
 	std::unique_ptr <QOpenGLContext> context;
 
 	// Destroying m_pParentObj is not our responsibility

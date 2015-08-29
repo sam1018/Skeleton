@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <functional>
 
 void ThrowPluginLoadFailure(std::string pluginName);
 void ThrowFunctionLoadFailure(std::string functionName);
@@ -35,7 +36,6 @@ public:
 		return func(std::forward<ArgsType>(args)...);
 	}
 
-protected:
 	void* GetFunctionAddress(std::string functionName);
 
 private:

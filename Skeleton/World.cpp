@@ -1,7 +1,9 @@
 #include "World.h"
+#include "SkeletonSettings.h"
 #include "../SkeletonInterface/UIItem.h"
 #include "../SkeletonInterface/IMainWindow.h"
 #include "../SkeletonInterface/PluginsManager.h"
+#include "../SkeletonInterface/FunctionManager.h"
 #include "../SkeletonInterface/ICoreGUIApplication.h"
 
 
@@ -29,6 +31,10 @@ void World::InitializePlugins(int argc, char** argv)
 	PluginsManager::GetInstance().Initialize(argc, argv);
 
 	UI::InitializeItems();
+
+	CGA::FinishInitialization();
+
+	CGA::SetupFPS(SkeletonSettings::GetInstance().fps);
 }
 
 void World::Show()

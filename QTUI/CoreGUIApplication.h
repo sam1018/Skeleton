@@ -15,6 +15,8 @@ public:
 
 	int Run();
 
+	void SetupFPS(int fps);
+
 private:
 	std::unique_ptr<CoreGUIApplicationImpl> coreGUIApplicationImpl;
 };

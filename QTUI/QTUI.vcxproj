@@ -114,12 +114,12 @@
     </Link>
     <CustomBuildStep>
       <Command>%QTDIR%\bin\moc.exe MainWindowImpl.h -o tmp\moc\moc_MainWindowImpl.cpp
-%QTDIR%\bin\moc.exe OpenGLWindowImpl.h -o tmp\moc\moc_OpenGLWindowImpl.cpp
 %QTDIR%\bin\moc.exe OutputWindowImpl.h -o tmp\moc\moc_OutputWindowImpl.cpp
-%QTDIR%\bin\moc.exe PluginExplorerImpl.h -o tmp\moc\moc_PluginExplorerImpl.cpp</Command>
+%QTDIR%\bin\moc.exe PluginExplorerImpl.h -o tmp\moc\moc_PluginExplorerImpl.cpp
+%QTDIR%\bin\moc.exe CoreGUIApplicationImpl.h -o tmp\moc\moc_CoreGUIApplicationImpl.cpp</Command>
       <Message>Moc'ing ...</Message>
-      <Outputs>tmp\moc\moc_MainWindowImpl.cpp;tmp\moc\moc_OpenGLWindowImpl.cpp;tmp\moc\moc_OutputWindowImpl.cpp;tmp\moc\moc_PluginExplorerImpl.cpp</Outputs>
-      <Inputs>MainWindowImpl.h;OpenGLWindowImpl.h;OutputWindowImpl.h;PluginExplorerImpl.h</Inputs>
+      <Outputs>tmp\moc\moc_MainWindowImpl.cpp;tmp\moc\moc_OutputWindowImpl.cpp;tmp\moc\moc_PluginExplorerImpl.cpp;tmp\moc\moc_CoreGUIApplicationImpl.cpp</Outputs>
+      <Inputs>MainWindowImpl.h;OutputWindowImpl.h;PluginExplorerImpl.h;CoreGUIApplicationImpl.h</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -171,6 +171,7 @@
     <ClCompile Include="PluginExplorer.cpp" />
     <ClCompile Include="PluginExplorerImpl.cpp" />
     <ClCompile Include="QTUI.cpp" />
+    <ClCompile Include="tmp\moc\moc_CoreGUIApplicationImpl.cpp" />
     <ClCompile Include="tmp\moc\moc_MainWindowImpl.cpp" />
     <ClCompile Include="tmp\moc\moc_OpenGLWindowImpl.cpp" />
     <ClCompile Include="tmp\moc\moc_OutputWindowImpl.cpp" />
