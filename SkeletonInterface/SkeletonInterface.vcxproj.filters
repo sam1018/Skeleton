@@ -13,52 +13,61 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="UIItems">
-      <UniqueIdentifier>{0ea1979c-11b2-461e-acac-5968b8a6937b}</UniqueIdentifier>
+    <Filter Include="UI Interfaces">
+      <UniqueIdentifier>{7710ef64-e81b-4e72-8802-651670783a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vitals Interfaces">
+      <UniqueIdentifier>{bb37b24f-a8a6-4876-a257-4898941f815f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SkeletonInterface.h">
+    <ClInclude Include="..\inc\UI\CommonControls.h">
+      <Filter>UI Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\UI\ICoreGUIApplication.h">
+      <Filter>UI Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\UI\IMainWindow.h">
+      <Filter>UI Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\UI\IOpenGLWindow.h">
+      <Filter>UI Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\UI\IOutputWindow.h">
+      <Filter>UI Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\UI\IPluginExplorer.h">
+      <Filter>UI Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\Routines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Settings.h">
+    <ClInclude Include="..\inc\Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Routines.h">
+    <ClInclude Include="..\inc\SkeletonInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Plugin.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\inc\Vitals\IPluginsManager.h">
+      <Filter>Vitals Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="PluginsManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\inc\Vitals\IVitalsInterfaceManager.h">
+      <Filter>Vitals Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="StaticPlugins.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\inc\UI\IUIInterfaceManager.h">
+      <Filter>UI Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="ICoreGUIApplication.h">
-      <Filter>UIItems</Filter>
+    <ClInclude Include="..\inc\Vitals\IPlugin.h">
+      <Filter>Vitals Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="IMainWindow.h">
-      <Filter>UIItems</Filter>
+    <ClInclude Include="..\inc\Vitals\ICallerManager.h">
+      <Filter>Vitals Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="IOpenGLWindow.h">
-      <Filter>UIItems</Filter>
+    <ClInclude Include="..\inc\Vitals\Caller.h">
+      <Filter>Vitals Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="IOutputWindow.h">
-      <Filter>UIItems</Filter>
-    </ClInclude>
-    <ClInclude Include="IPluginExplorer.h">
-      <Filter>UIItems</Filter>
-    </ClInclude>
-    <ClInclude Include="UIItem.h">
-      <Filter>UIItems</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonControls.h">
-      <Filter>UIItems</Filter>
-    </ClInclude>
-    <ClInclude Include="FunctionManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\inc\UI\UIItem.h">
+      <Filter>UI Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -68,35 +77,44 @@
     <ClCompile Include="Routines.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Plugin.cpp">
+    <ClCompile Include="IVitalsInterfaceManager.cpp">
+      <Filter>Vitals Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="IPluginsManager.cpp">
+      <Filter>Vitals Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="ICallerManager.cpp">
+      <Filter>Vitals Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="Caller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PluginsManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="IPlugin.cpp">
+      <Filter>Vitals Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="ICoreGUIApplication.cpp">
-      <Filter>UIItems</Filter>
-    </ClCompile>
-    <ClCompile Include="IMainWindow.cpp">
-      <Filter>UIItems</Filter>
-    </ClCompile>
-    <ClCompile Include="IOpenGLWindow.cpp">
-      <Filter>UIItems</Filter>
-    </ClCompile>
-    <ClCompile Include="IOutputWindow.cpp">
-      <Filter>UIItems</Filter>
-    </ClCompile>
-    <ClCompile Include="IPluginExplorer.cpp">
-      <Filter>UIItems</Filter>
-    </ClCompile>
-    <ClCompile Include="UIItem.cpp">
-      <Filter>UIItems</Filter>
+    <ClCompile Include="IUIInterfaceManager.cpp">
+      <Filter>UI Interfaces</Filter>
     </ClCompile>
     <ClCompile Include="CommonControls.cpp">
-      <Filter>UIItems</Filter>
+      <Filter>UI Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="FunctionManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ICoreGUIApplication.cpp">
+      <Filter>UI Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="IMainWindow.cpp">
+      <Filter>UI Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="IOpenGLWindow.cpp">
+      <Filter>UI Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="IOutputWindow.cpp">
+      <Filter>UI Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="IPluginExplorer.cpp">
+      <Filter>UI Interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="UIItem.cpp">
+      <Filter>UI Interfaces</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

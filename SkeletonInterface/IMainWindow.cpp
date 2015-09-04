@@ -1,4 +1,4 @@
-#include "IMainWindow.h"
+#include "UI\IMainWindow.h"
 
 using namespace MW;
 

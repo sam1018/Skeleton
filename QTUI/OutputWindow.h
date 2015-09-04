@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SkeletonInterface/IOutputWindow.h"
+#include "UI/IOutputWindow.h"
 #include <memory>
 
 class OutputWindowImpl;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SkeletonInterface/IOpenGLWindow.h"
+#include "UI/IOpenGLWindow.h"
 
 class QWindow;
 class OpenGLWindowImpl;

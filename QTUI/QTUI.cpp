@@ -3,7 +3,8 @@
 #include "OpenGLWindow.h"
 #include "QTUISettings.h"
 #include "CoreGUIApplication.h"
-#include "../SkeletonInterface/Routines.h"
+#include "Routines.h"
+#include "UI\IUIInterfaceManager.h"
 #include <memory>
 
 
@@ -24,6 +25,9 @@ struct QTUIGlobalData
 
 } *globalData;
 
+class UIInterfaceManager : public UI::IUIInterfaceManager
+{} uiInterfaceManager;
+
 constexpr auto settingsFile{ "QTUISettings.xml" };
 
 
@@ -38,13 +42,18 @@ QTUISettings& GetQTUISettings()
 
 extern "C"
 {
-	QTUI_DECLSPEC void PluginInitialize(int argc, char** argv)
+	QTUI_DECLSPEC void InitializeModule(int argc, char** argv, int)
 	{
 		GetQTUISettings().Load(Routines::GetSettingsFileFullPath_Load(settingsFile));
 		globalData = new QTUIGlobalData(argc, argv);
 	}
 
-	QTUI_DECLSPEC void PluginDestroy()
+	QTUI_DECLSPEC UI::IUIInterfaceManager* GetInterfaceManager()
+	{
+		return &uiInterfaceManager;
+	}
+
+	QTUI_DECLSPEC void DestroyModule()
 	{
 		GetQTUISettings().Save(Routines::GetSettingsFileFullPath_Save(settingsFile));
 		delete globalData;

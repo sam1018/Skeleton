@@ -36,9 +36,6 @@
     <ClCompile Include="OpenGLWindowImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tmp\moc\moc_OpenGLWindowImpl.cpp">
-      <Filter>MOC Files</Filter>
-    </ClCompile>
     <ClCompile Include="CoreGUIApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

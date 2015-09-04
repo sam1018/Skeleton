@@ -1,7 +1,7 @@
 #pragma once
 
 #include "QTUI.h"
-#include "../SkeletonInterface/Settings.h"
+#include "Settings.h"
 #include <string>
 
 struct QTUISettings

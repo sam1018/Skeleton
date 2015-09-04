@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Vitals\IPlugin.h"
 #include <string>
 #include <memory>
 #include <functional>
@@ -7,7 +8,7 @@
 void ThrowPluginLoadFailure(std::string pluginName);
 void ThrowFunctionLoadFailure(std::string functionName);
 
-class Plugin
+class Plugin : public VT::IPlugin
 {
 public:
 	explicit Plugin(std::string pluginName);

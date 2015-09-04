@@ -1,10 +1,9 @@
 #include "Plugin.h"
-#include "FunctionManager.h"
+#include "CallerManager.h"
+#include "Vitals\IVitalsInterfaceManager.h"
+#include <system_error>
 #include <windows.h> 
-#include <boost\system\error_code.hpp>
-#include <boost\system\system_error.hpp>
 
-using namespace boost::system;
 
 typedef int(*InitFunc)(int argc, char** argv);
 
@@ -35,12 +34,12 @@ struct Plugin::PluginImpl
 
 void ThrowPluginLoadFailure(std::string pluginName)
 {
-	throw system_error(error_code(GetLastError(), system_category()), "Failed to load plugin: \"" + pluginName + "\". System Error");
+	throw std::system_error(std::error_code(GetLastError(), std::system_category()), "Failed to load plugin: \"" + pluginName + "\". System Error");
 }
 
 void ThrowFunctionLoadFailure(std::string functionName)
 {
-	throw system_error(error_code(GetLastError(), system_category()), "Failed to load function: \"" + functionName + "\". System Error");
+	throw std::system_error(std::error_code(GetLastError(), std::system_category()), "Failed to load function: \"" + functionName + "\". System Error");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -59,13 +58,12 @@ Plugin::Plugin(std::string pluginName) :
 		ThrowPluginLoadFailure(pluginName);
 
 	pluginImpl->pluginName = pluginName;
-
 }
 
 
 Plugin::~Plugin()
 {
-	FctEx::FunctionManager::GetInstance().PluginUnloaded(this);
+	VT::GetCallerManager()->PluginUnloaded(this);
 }
 
 void* Plugin::GetFunctionAddress(std::string functionName)

@@ -1,28 +1,24 @@
 #include "Plugin.h"
 #include "Routines.h"
-#include "StaticPlugins.h"
-#include "IOutputWindow.h"
 #include "PluginsManager.h"
-#include "IPluginExplorer.h"
-#include "FunctionManager.h"
+#include "CallerManager.h"
+#include "UI/IOutputWindow.h"
+#include "UI/IPluginExplorer.h"
+#include "Vitals\IVitalsInterfaceManager.h"
 #include <array>
 #include <functional>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
+using namespace VT;
 
-using PluginsArrayStatic = std::array<std::unique_ptr<Plugin>, PluginTypeCount()>;
 using PluginsArrayDynamic = std::vector<std::unique_ptr<Plugin>>;
 
 
 struct PluginsManager::PluginsManagerImpl
 {
-	PluginsArrayStatic pluginsArrayStatic;
 	PluginsArrayDynamic pluginsArrayDynamic;
 };
-
-
-constexpr auto settingsFile{ "StaticPlugins.xml" };
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -33,48 +29,21 @@ constexpr auto settingsFile{ "StaticPlugins.xml" };
 PluginsManager::PluginsManager() :
 	pluginsManagerImpl{ std::make_unique<PluginsManager::PluginsManagerImpl>() }
 {
-	StaticPlugins::GetInstance().Load(Routines::GetSettingsFileFullPath_Load(settingsFile));
-	LoadPluginsStatic();
 }
 
 PluginsManager::~PluginsManager()
 {
 }
 
-PluginsManager& PluginsManager::GetInstance()
-{
-	static PluginsManager thePluginsManager;
-	return thePluginsManager;
-}
-
-void PluginsManager::LoadPluginsStatic()
-{
-	pluginsManagerImpl->pluginsArrayStatic[PluginIndex(PluginType::QTUI)] =
-		std::make_unique<Plugin>(StaticPlugins::GetInstance().uiPluginName);
-}
-
-void PluginsManager::Initialize(int argc, char **argv)
-{
-	for (auto &p : pluginsManagerImpl->pluginsArrayStatic)
-		p->PluginInitialize(argc, argv);
-}
-
-void PluginsManager::Destroy()
-{
-	for (auto &p : pluginsManagerImpl->pluginsArrayStatic)
-		p->PluginDestroy();
-}
-
-void PluginsManager::ExecuteFunctionDynamic(std::string pluginName, std::string functionName)
+void PluginsManager::ExecuteFunctionDynamic_(std::string pluginName, std::string functionName)
 {
 	Plugin *plugin = GetDynamicPlugin(pluginName);
 
 	if (plugin == nullptr)
 		ThrowPluginLoadFailure(pluginName);
 
-	using namespace FctEx;
 	std::function<void(void)> f = (void(*)(void))plugin->GetFunctionAddress(functionName);
-	FunctionManager::GetInstance().RegisterFunction(f, CallType::OneTime, plugin);
+	GetCallerManager()->RegisterCaller(CreateCaller(f, plugin), CallType::OneTime);
 }
 
 Plugin* PluginsManager::GetDynamicPlugin(std::string pluginName)

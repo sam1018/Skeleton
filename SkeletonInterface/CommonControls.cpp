@@ -1,4 +1,4 @@
-#include "CommonControls.h"
+#include "UI\CommonControls.h"
 
 using namespace CommCtrls;
 

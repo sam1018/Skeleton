@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SkeletonInterface/IPluginExplorer.h"
+#include "UI/IPluginExplorer.h"
 #include <memory>
 
 class QDockWidget;

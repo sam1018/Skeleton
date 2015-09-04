@@ -1,4 +1,4 @@
-#include "IOpenGLWindow.h"
+#include "UI\IOpenGLWindow.h"
 
 using namespace OGLWnd;
 

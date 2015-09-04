@@ -1,10 +1,29 @@
 #include "World.h"
+#include "Module.h"
+#include "Routines.h"
 #include "SkeletonSettings.h"
-#include "../SkeletonInterface/UIItem.h"
-#include "../SkeletonInterface/IMainWindow.h"
-#include "../SkeletonInterface/PluginsManager.h"
-#include "../SkeletonInterface/FunctionManager.h"
-#include "../SkeletonInterface/ICoreGUIApplication.h"
+#include "UI/UIItem.h"
+#include "UI/IMainWindow.h"
+#include "UI/ICoreGUIApplication.h"
+#include "UI/IUIInterfaceManager.h"
+#include "Vitals/IPluginsManager.h"
+#include "Vitals\IVitalsInterfaceManager.h"
+
+struct World::WorldImpl
+{
+	const std::string settingsFile{ "SkeletonSettings.xml" };
+	SkeletonSettings skeletonSettings{ Routines::GetSettingsFileFullPath_Load(settingsFile) };
+	Module<UI::IUIInterfaceManager*> uiModule;
+	Module<VT::IVitalsInterfaceManager*> vitalsModule;
+
+	WorldImpl(int argc, char** argv) :
+		uiModule{ skeletonSettings.uiModule, argc, argv },
+		vitalsModule{ skeletonSettings.vitalsModule, argc, argv }
+	{
+		UI::SetUIInterfaceManager(uiModule.GetInterfaceManager());
+		VT::SetVitalsInterfaceManager(vitalsModule.GetInterfaceManager());
+	}
+};
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -12,43 +31,41 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 
-World::World()
+World::World(int argc, char** argv) :
+	worldImpl{ std::make_unique<WorldImpl>(argc, argv) }
 {
+	Initialize();
 }
 
 World::~World()
 {
 }
 
-World& World::GetInstance()
+void World::Initialize() const
 {
-	static World theWorld;
-	return theWorld;
-}
-
-void World::InitializePlugins(int argc, char** argv)
-{
-	PluginsManager::GetInstance().Initialize(argc, argv);
-
 	UI::InitializeItems();
 
 	CGA::FinishInitialization();
 
-	CGA::SetupFPS(SkeletonSettings::GetInstance().fps);
+	CGA::SetupFPS(worldImpl->skeletonSettings.fps);
 }
 
-void World::Show()
+void World::Show() const
 {
 	MW::Show();
 }
 
-int World::Run()
+int World::Run() const
 {
 	return CGA::Run();
 }
 
-void World::Cleanup()
+void World::Cleanup() const
 {
 	UI::Cleanup();
-	PluginsManager::GetInstance().Destroy();
+}
+
+bool World::IsHideCmdPromptAfterInitialization() const
+{
+	return worldImpl->skeletonSettings.hideCmdPromptAfterInitialization;
 }

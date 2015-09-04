@@ -1,8 +1,9 @@
 #include "Routines.h"
-#include "IOutputWindow.h"
-#include "PluginsManager.h"
-#include "IPluginExplorer.h"
-#include "CommonControls.h"
+#include "UI/IOutputWindow.h"
+#include "Vitals\IVitalsInterfaceManager.h"
+#include "Vitals/IPluginsManager.h"
+#include "UI/IPluginExplorer.h"
+#include "UI/CommonControls.h"
 #include <iostream>
 
 
@@ -80,7 +81,7 @@ void IPluginExplorer::ExecuteFunction(const std::string &pluginName, const std::
 
 	try
 	{
-		PluginsManager::GetInstance().ExecuteFunctionDynamic(pluginName, functionName);
+		VT::GetPluginsManager()->ExecuteFunctionDynamic(pluginName, functionName);
 	}
 	catch (std::exception &e)
 	{

@@ -1,6 +1,7 @@
-#include "IOpenGLWindow.h"
-#include "FunctionManager.h"
-#include "ICoreGUIApplication.h"
+#include "UI\IOpenGLWindow.h"
+#include "Vitals\ICallerManager.h"
+#include "Vitals\IVitalsInterfaceManager.h"
+#include "UI\ICoreGUIApplication.h"
 
 using namespace CGA;
 
@@ -57,22 +58,24 @@ void ICoreGUIApplication::Cleanup()
 
 void ICoreGUIApplication::FinishInitialization()
 {
-	using namespace FctEx;
+	using namespace VT;
+	ICallerManager *fctMngr = GetCallerManager();
 
-	FunctionManager::GetInstance().CallbackSetupThread(OGLWnd::CallbackSetupThread);
-	FunctionManager::GetInstance().CallbackStartCycle(OGLWnd::CallbackStartCycle);
-	FunctionManager::GetInstance().CallbackEndCycle(OGLWnd::CallbackEndCycle);
+	fctMngr->CallbackSetupThread(OGLWnd::CallbackSetupThread);
+	fctMngr->CallbackStartCycle(OGLWnd::CallbackStartCycle);
+	fctMngr->CallbackEndCycle(OGLWnd::CallbackEndCycle);
 
-	FunctionManager::GetInstance().StartThread();
+	fctMngr->StartThread();
 }
 
 void ICoreGUIApplication::FPSHandler()
 {
-	using namespace FctEx;
+	using namespace VT;
+	ICallerManager *fctMngr = GetCallerManager();
 
-	if (FunctionManager::GetInstance().ReadyForNewCycle())
+	if (fctMngr->ReadyForNewCycle())
 	{
 		//OGLWnd::Update();
-		FunctionManager::GetInstance().RequestNewCycle();
+		fctMngr->RequestNewCycle();
 	}
 }

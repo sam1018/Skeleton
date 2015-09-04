@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A305587F-8C2A-4FD0-AA85-C91B9EA523E6}</ProjectGuid>
+    <ProjectGuid>{363D519F-FB88-4332-A469-C4CDD13D52D9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>QTUI</RootNamespace>
+    <RootNamespace>Vitals</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -74,7 +74,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <CustomBuildBeforeTargets>ClCompile</CustomBuildBeforeTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -88,7 +87,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;QTUI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;VITALS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -102,25 +101,16 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;QTUI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;VITALS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>%QTDIR%\Include;../inc;%BOOST_ROOT%\include\boost-1_59</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../inc;%BOOST_ROOT%\include\boost-1_59</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>%QTDIR%\lib;$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SkeletonInterface.lib;qt5cored.lib;qt5widgetsd.lib;qt5guid.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SkeletonInterface.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
     </Link>
-    <CustomBuildStep>
-      <Command>%QTDIR%\bin\moc.exe MainWindowImpl.h -o tmp\moc\moc_MainWindowImpl.cpp
-%QTDIR%\bin\moc.exe OutputWindowImpl.h -o tmp\moc\moc_OutputWindowImpl.cpp
-%QTDIR%\bin\moc.exe PluginExplorerImpl.h -o tmp\moc\moc_PluginExplorerImpl.cpp
-%QTDIR%\bin\moc.exe CoreGUIApplicationImpl.h -o tmp\moc\moc_CoreGUIApplicationImpl.cpp</Command>
-      <Message>Moc'ing ...</Message>
-      <Outputs>tmp\moc\moc_MainWindowImpl.cpp;tmp\moc\moc_OutputWindowImpl.cpp;tmp\moc\moc_PluginExplorerImpl.cpp;tmp\moc\moc_CoreGUIApplicationImpl.cpp</Outputs>
-      <Inputs>MainWindowImpl.h;OutputWindowImpl.h;PluginExplorerImpl.h;CoreGUIApplicationImpl.h</Inputs>
-    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -130,7 +120,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;QTUI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;VITALS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -148,7 +138,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;QTUI_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;VITALS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
@@ -159,40 +149,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CommonControls.cpp" />
-    <ClCompile Include="CoreGUIApplication.cpp" />
-    <ClCompile Include="CoreGUIApplicationImpl.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="MainWindowImpl.cpp" />
-    <ClCompile Include="OpenGLWindow.cpp" />
-    <ClCompile Include="OpenGLWindowImpl.cpp" />
-    <ClCompile Include="OutputWindow.cpp" />
-    <ClCompile Include="OutputWindowImpl.cpp" />
-    <ClCompile Include="PluginExplorer.cpp" />
-    <ClCompile Include="PluginExplorerImpl.cpp" />
-    <ClCompile Include="QTUI.cpp" />
-    <ClCompile Include="tmp\moc\moc_CoreGUIApplicationImpl.cpp" />
-    <ClCompile Include="tmp\moc\moc_MainWindowImpl.cpp" />
-    <ClCompile Include="tmp\moc\moc_OutputWindowImpl.cpp" />
-    <ClCompile Include="tmp\moc\moc_PluginExplorerImpl.cpp" />
+    <ClInclude Include="CallerManager.h" />
+    <ClInclude Include="Plugin.h" />
+    <ClInclude Include="PluginsManager.h" />
+    <ClInclude Include="Vitals.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CommonControls.h" />
-    <ClInclude Include="CoreGUIApplication.h" />
-    <ClInclude Include="CoreGUIApplicationImpl.h" />
-    <ClInclude Include="MainWindow.h" />
-    <ClInclude Include="MainWindowImpl.h" />
-    <ClInclude Include="OpenGLWindow.h" />
-    <ClInclude Include="OpenGLWindowImpl.h" />
-    <ClInclude Include="OutputWindow.h" />
-    <ClInclude Include="OutputWindowImpl.h" />
-    <ClInclude Include="PluginExplorer.h" />
-    <ClInclude Include="PluginExplorerImpl.h" />
-    <ClInclude Include="QTUISettings.h" />
-    <ClInclude Include="QTUI.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\x64\Settings\QTUISettings.xml" />
+    <ClCompile Include="CallerManager.cpp" />
+    <ClCompile Include="Plugin.cpp" />
+    <ClCompile Include="PluginsManager.cpp" />
+    <ClCompile Include="Vitals.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

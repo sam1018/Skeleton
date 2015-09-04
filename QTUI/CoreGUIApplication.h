@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SkeletonInterface/ICoreGUIApplication.h"
+#include "UI/ICoreGUIApplication.h"
 #include <memory>
 
 class CoreGUIApplicationImpl;

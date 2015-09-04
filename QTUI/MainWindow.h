@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SkeletonInterface/IMainWindow.h"
+#include "UI/IMainWindow.h"
 #include <memory>
 
 class MainWindowImpl;

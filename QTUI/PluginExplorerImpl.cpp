@@ -1,6 +1,6 @@
 #include "PluginExplorer.h"
 #include "PluginExplorerImpl.h"
-#include "../SkeletonInterface/Routines.h"
+#include "Routines.h"
 #include <QtWidgets\QVBoxLayout>
 #include <QtWidgets\QPushButton>
 #include <QtWidgets\QTreeWidget>

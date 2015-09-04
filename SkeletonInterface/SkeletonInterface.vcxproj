@@ -106,7 +106,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;SKELETONINTERFACE_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <TreatWarningAsError>false</TreatWarningAsError>
-      <AdditionalIncludeDirectories>%BOOST_ROOT%\include\boost-1_59</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../inc;%BOOST_ROOT%\include\boost-1_59</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -152,31 +152,36 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CommonControls.h" />
-    <ClInclude Include="FunctionManager.h" />
-    <ClInclude Include="ICoreGUIApplication.h" />
-    <ClInclude Include="IMainWindow.h" />
-    <ClInclude Include="IOpenGLWindow.h" />
-    <ClInclude Include="IOutputWindow.h" />
-    <ClInclude Include="IPluginExplorer.h" />
-    <ClInclude Include="Plugin.h" />
-    <ClInclude Include="PluginsManager.h" />
-    <ClInclude Include="Routines.h" />
-    <ClInclude Include="Settings.h" />
-    <ClInclude Include="SkeletonInterface.h" />
-    <ClInclude Include="StaticPlugins.h" />
-    <ClInclude Include="UIItem.h" />
+    <ClInclude Include="..\inc\Routines.h" />
+    <ClInclude Include="..\inc\Settings.h" />
+    <ClInclude Include="..\inc\SkeletonInterface.h" />
+    <ClInclude Include="..\inc\UI\CommonControls.h" />
+    <ClInclude Include="..\inc\UI\ICoreGUIApplication.h" />
+    <ClInclude Include="..\inc\UI\IMainWindow.h" />
+    <ClInclude Include="..\inc\UI\IOpenGLWindow.h" />
+    <ClInclude Include="..\inc\UI\IOutputWindow.h" />
+    <ClInclude Include="..\inc\UI\IPluginExplorer.h" />
+    <ClInclude Include="..\inc\UI\IUIInterfaceManager.h" />
+    <ClInclude Include="..\inc\UI\UIItem.h" />
+    <ClInclude Include="..\inc\Vitals\Caller.h" />
+    <ClInclude Include="..\inc\Vitals\ICallerManager.h" />
+    <ClInclude Include="..\inc\Vitals\IPlugin.h" />
+    <ClInclude Include="..\inc\Vitals\IPluginsManager.h" />
+    <ClInclude Include="..\inc\Vitals\IVitalsInterfaceManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Caller.cpp" />
     <ClCompile Include="CommonControls.cpp" />
-    <ClCompile Include="FunctionManager.cpp" />
     <ClCompile Include="ICoreGUIApplication.cpp" />
+    <ClCompile Include="ICallerManager.cpp" />
     <ClCompile Include="IMainWindow.cpp" />
     <ClCompile Include="IOpenGLWindow.cpp" />
     <ClCompile Include="IOutputWindow.cpp" />
+    <ClCompile Include="IPlugin.cpp" />
     <ClCompile Include="IPluginExplorer.cpp" />
-    <ClCompile Include="Plugin.cpp" />
-    <ClCompile Include="PluginsManager.cpp" />
+    <ClCompile Include="IPluginsManager.cpp" />
+    <ClCompile Include="IUIInterfaceManager.cpp" />
+    <ClCompile Include="IVitalsInterfaceManager.cpp" />
     <ClCompile Include="Routines.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="UIItem.cpp" />

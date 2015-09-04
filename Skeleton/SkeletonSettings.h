@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SkeletonInterface/Settings.h"
+#include "Settings.h"
 #include <string>
 
 struct SkeletonSettings
@@ -8,22 +8,16 @@ struct SkeletonSettings
 	Settings::AttribAccessor accessor;
 	bool hideCmdPromptAfterInitialization;
 	int fps;
+	std::string uiModule;
+	std::string vitalsModule;
 
-	void Load(std::string fileName)
-	{
-		accessor.Load(fileName);
-	}
-
-	static SkeletonSettings& GetInstance()
-	{
-		static SkeletonSettings settings;
-		return settings;
-	}
-
-private:
-	SkeletonSettings()
+	SkeletonSettings(const std::string &fileName)
 	{
 		accessor.RegisterItem(hideCmdPromptAfterInitialization, "SkeletonSettings.HideCmdPromptAfterInitialization");
 		accessor.RegisterItem(fps, "SkeletonSettings.FPS");
+		accessor.RegisterItem(uiModule, "SkeletonSettings.UIModule");
+		accessor.RegisterItem(vitalsModule, "SkeletonSettings.VitalsModule");
+
+		accessor.Load(fileName);
 	}
 };

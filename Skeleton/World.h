@@ -3,22 +3,24 @@
 #include <memory>
 #include <string>
 
-class IMainWindow;
 
 class World
 {
-private:
-	World();
+public:
+	World(int argc, char** argv);
 	~World();
 
-public:
-	static World& GetInstance();
+	void Initialize() const;
 
-	void InitializePlugins(int argc, char** argv);
+	void Show() const;
 
-	void Show();
+	int Run() const;
 
-	int Run();
+	void Cleanup() const;
 
-	void Cleanup();
+	bool IsHideCmdPromptAfterInitialization() const;
+
+private:
+	struct WorldImpl;
+	std::unique_ptr<WorldImpl> worldImpl;
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SkeletonInterface/CommonControls.h"
+#include "UI/CommonControls.h"
 
 class CommonControls : public CommCtrls::ICommonControls
 {
