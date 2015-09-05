@@ -5,17 +5,15 @@
 
 class CoreGUIApplicationImpl;
 
-class CoreGUIApplication : public CGA::ICoreGUIApplication
+class CoreGUIApplication : public UI::ICoreGUIApplication
 {
 public:
 	CoreGUIApplication(int, char**);
 	~CoreGUIApplication();
 
-	void* GetImpl();
-
-	int Run();
-
-	void SetupFPS(int fps);
+private:
+	virtual int Run_();
+	virtual void SetupFPS_(int fps);
 
 private:
 	std::unique_ptr<CoreGUIApplicationImpl> coreGUIApplicationImpl;

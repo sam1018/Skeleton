@@ -6,12 +6,10 @@
 #include <boost\variant.hpp>
 
 
-
 ///////////////////////////////////////////////////////////////////////////////
 ///////////   Users will use CreateCaller function   //////////////////////////
 //////   Check below on how to support a new function signature   /////////////
 ///////////////////////////////////////////////////////////////////////////////
-
 
 
 namespace VT
@@ -25,7 +23,7 @@ namespace VT
 	// Add new signature below to support new function signature type
 	// Then update following places:
 	// 1. FunctionType, add by separating with a comma
-	// 2. TypeCheck, add new check through std::is_same
+	// 2. IsSupportedSignature, add new specialization
 	// <signature list>
 	using FuncSig1 = std::function<void(void)>;
 	// </signature list>
@@ -34,7 +32,7 @@ namespace VT
 	using FunctionType = boost::variant<FuncSig1>;
 	// </1. FunctionType>
 
-	// <2. TypeCheck>
+	// <2. IsSupportedSignature>
 	template<typename T>
 	struct IsSupportedSignature
 	{
@@ -46,10 +44,8 @@ namespace VT
 	{
 		static const bool value = true;
 	};
-	// </2. TypeCheck>
+	// </2. IsSupportedSignature>
 	//////////////////////////////////////////////////////////////////////////
-
-
 
 
 	class SKELETONINTERFACE_DECLSPEC Caller
@@ -83,6 +79,4 @@ namespace VT
 
 		return Caller{ FunctionType{f}, plugin };
 	}
-
-	void ExecuteCaller(const Caller &caller);
 }

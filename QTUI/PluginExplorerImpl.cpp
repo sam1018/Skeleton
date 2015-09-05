@@ -1,6 +1,8 @@
 #include "PluginExplorer.h"
 #include "PluginExplorerImpl.h"
 #include "Routines.h"
+#include "Vitals\IMessagePrinter.h"
+#include "Vitals\IVitalsInterfaceManager.h"
 #include <QtWidgets\QVBoxLayout>
 #include <QtWidgets\QPushButton>
 #include <QtWidgets\QTreeWidget>
@@ -26,8 +28,7 @@ std::string GetPluginPath(QTreeWidgetItem *item)
 
 PluginExplorerImpl::PluginExplorerImpl(PluginExplorer *wnd) :
 	QDockWidget("Plugin Explorer"),
-	pluginExplorer{ wnd },
-	outWndId{ OutWnd::RegisterOutputWindowCategory(OutWnd::OutWndPluginExplorerCategory) }
+	pluginExplorer{ wnd }
 {
 	setObjectName("Plugin Explorer");
 

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "UI/IOutputWindow.h"
 #include <QtWidgets\QDockWidget>
 
 class PluginExplorer;
@@ -27,5 +26,4 @@ private:
 private:
 	PluginExplorer *pluginExplorer;
 	QTreeWidget *treeWidget;
-	OutWnd::OutWndCatID outWndId;
 };

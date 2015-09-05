@@ -150,12 +150,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CallerManager.h" />
+    <ClInclude Include="MessagePrinter.h" />
     <ClInclude Include="Plugin.h" />
     <ClInclude Include="PluginsManager.h" />
     <ClInclude Include="Vitals.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CallerManager.cpp" />
+    <ClCompile Include="MessagePrinter.cpp" />
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="PluginsManager.cpp" />
     <ClCompile Include="Vitals.cpp" />

@@ -12,12 +12,13 @@ PluginExplorer::~PluginExplorer()
 {
 }
 
-void* PluginExplorer::GetImpl()
+void* PluginExplorer::GetControlImplementationSpecific_()
 {
 	return pluginExplorerImpl.get();
 }
 
-void PluginExplorer::AddPluginDataToTree(const std::string &pluginName, const std::vector<std::string> &functions)
+void PluginExplorer::AddPluginDataToTree_(const std::string &pluginName, 
+	const std::vector<std::string> &functions)
 {
 	pluginExplorerImpl->AddPluginDataToTree(pluginName, functions);
 }

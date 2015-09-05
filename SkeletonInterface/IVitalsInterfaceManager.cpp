@@ -1,7 +1,16 @@
 #include "Vitals\IVitalsInterfaceManager.h"
+#include <cassert>
 
 using namespace VT;
 
+
+
+#define ADD_PROP(RetType, FuncName) \
+RetType FuncName() \
+{ \
+	assert(vitalsInterfaceManager != nullptr); \
+	return vitalsInterfaceManager->FuncName(); \
+}
 
 namespace VT
 {
@@ -13,20 +22,19 @@ namespace VT
 			vitalsInterfaceManager = val;
 		}
 
-		IPluginsManager* GetPluginsManager()
-		{
-			return vitalsInterfaceManager->GetPluginsManager();
-		}
-
-		ICallerManager* GetCallerManager()
-		{
-			return vitalsInterfaceManager->GetCallerManager();
-		}
+		ADD_PROP(IPluginsManager*, GetPluginsManager)
+		ADD_PROP(ICallerManager*, GetCallerManager)
+		ADD_PROP(IMessagePrinter*, GetMessagePrinter)
 
 	private:
 		IVitalsInterfaceManager *vitalsInterfaceManager;
 
 	} vtInterfaceMngrAccessor;
+}
+
+
+IVitalsInterfaceManager::~IVitalsInterfaceManager()
+{
 }
 
 
@@ -45,6 +53,7 @@ ICallerManager* VT::GetCallerManager()
 	return vtInterfaceMngrAccessor.GetCallerManager();
 }
 
-IVitalsInterfaceManager::~IVitalsInterfaceManager()
+IMessagePrinter* VT::GetMessagePrinter()
 {
+	return vtInterfaceMngrAccessor.GetMessagePrinter();
 }

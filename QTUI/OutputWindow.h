@@ -6,18 +6,18 @@
 class OutputWindowImpl;
 class QDockWidget;
 
-class OutputWindow : public OutWnd::IOutputWindow
+class OutputWindow : public UI::IOutputWindow
 {
 public:
 	OutputWindow();
 	~OutputWindow();
 
-	void* GetImpl();
-
-	void AddCategory(const std::string &categoryName);
-	void Refresh(const std::string &categoryName, const std::string &text);
-
 	QDockWidget* GetDockWidget();
+
+private:
+	virtual void AddCategory_(const std::string &categoryName);
+	virtual void Refresh_(const std::string &categoryName, const std::string &text);
+
 
 private:
 	std::unique_ptr<OutputWindowImpl> outputWindowImpl;

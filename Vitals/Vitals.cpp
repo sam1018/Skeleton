@@ -1,6 +1,7 @@
 #include "Vitals.h"
 #include "PluginsManager.h"
 #include "CallerManager.h"
+#include "MessagePrinter.h"
 #include "Vitals\IVitalsInterfaceManager.h"
 
 class VitalsInterfaceManager : public VT::IVitalsInterfaceManager
@@ -24,9 +25,15 @@ private:
 		return &CallerManager;
 	}
 
+	virtual VT::IMessagePrinter* GetMessagePrinter()
+	{
+		return &messagePrinter;
+	}
+
 private:
 	CallerManager CallerManager;
 	PluginsManager pluginsManager;
+	MessagePrinter messagePrinter;
 
 } vitalsInterfaceManager;
 

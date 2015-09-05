@@ -1,21 +1,18 @@
 #pragma once
 
-#include "UIItem.h"
 #include "SkeletonInterface.h"
 
-namespace MW
+namespace UI
 {
-	SKELETONINTERFACE_DECLSPEC void Show();
-
-	class SKELETONINTERFACE_DECLSPEC IMainWindow : public UI::UIItem
+	class SKELETONINTERFACE_DECLSPEC IMainWindow
 	{
 	public:
 		IMainWindow();
 		virtual ~IMainWindow();
 
-		void InitializeItem();
-		void Cleanup();
+		void Show();
 
-		virtual void Show() = 0;
+	private:
+		virtual void Show_() = 0;
 	};
 }

@@ -14,12 +14,12 @@ public:
 	~PluginsManager();
 
 private:
-	void ExecuteFunctionDynamic_(std::string pluginName, std::string functionName);
+	void ExecuteFunction_(const std::string &pluginName, const std::string &functionName);
 
 	// Returns the asked plugin
 	// Loads the plugin if not already loaded
 	// Returns nullptr if the plugin cannot be loaded
-	Plugin* GetDynamicPlugin(std::string pluginName);
+	Plugin* GetDynamicPlugin(const std::string &pluginName);
 
 private:
 	struct PluginsManagerImpl;

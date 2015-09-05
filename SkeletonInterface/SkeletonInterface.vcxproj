@@ -155,27 +155,28 @@
     <ClInclude Include="..\inc\Routines.h" />
     <ClInclude Include="..\inc\Settings.h" />
     <ClInclude Include="..\inc\SkeletonInterface.h" />
-    <ClInclude Include="..\inc\UI\CommonControls.h" />
+    <ClInclude Include="..\inc\UI\ICommonControls.h" />
     <ClInclude Include="..\inc\UI\ICoreGUIApplication.h" />
     <ClInclude Include="..\inc\UI\IMainWindow.h" />
     <ClInclude Include="..\inc\UI\IOpenGLWindow.h" />
     <ClInclude Include="..\inc\UI\IOutputWindow.h" />
     <ClInclude Include="..\inc\UI\IPluginExplorer.h" />
     <ClInclude Include="..\inc\UI\IUIInterfaceManager.h" />
-    <ClInclude Include="..\inc\UI\UIItem.h" />
     <ClInclude Include="..\inc\Vitals\Caller.h" />
     <ClInclude Include="..\inc\Vitals\ICallerManager.h" />
+    <ClInclude Include="..\inc\Vitals\IMessagePrinter.h" />
     <ClInclude Include="..\inc\Vitals\IPlugin.h" />
     <ClInclude Include="..\inc\Vitals\IPluginsManager.h" />
     <ClInclude Include="..\inc\Vitals\IVitalsInterfaceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Caller.cpp" />
-    <ClCompile Include="CommonControls.cpp" />
+    <ClCompile Include="ICommonControls.cpp" />
     <ClCompile Include="ICoreGUIApplication.cpp" />
     <ClCompile Include="ICallerManager.cpp" />
     <ClCompile Include="IMainWindow.cpp" />
     <ClCompile Include="IOpenGLWindow.cpp" />
+    <ClCompile Include="IMessagePrinter.cpp" />
     <ClCompile Include="IOutputWindow.cpp" />
     <ClCompile Include="IPlugin.cpp" />
     <ClCompile Include="IPluginExplorer.cpp" />
@@ -184,7 +185,6 @@
     <ClCompile Include="IVitalsInterfaceManager.cpp" />
     <ClCompile Include="Routines.cpp" />
     <ClCompile Include="Settings.cpp" />
-    <ClCompile Include="UIItem.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

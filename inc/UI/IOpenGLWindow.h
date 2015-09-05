@@ -1,26 +1,23 @@
 #pragma once
 
-#include "UIItem.h"
 #include "SkeletonInterface.h"
 
-namespace OGLWnd
+namespace UI
 {
-	void CallbackSetupThread();
-	bool CallbackStartCycle();
-	void CallbackEndCycle();
-
-	class SKELETONINTERFACE_DECLSPEC IOpenGLWindow : public UI::UIItem
+	class SKELETONINTERFACE_DECLSPEC IOpenGLWindow
 	{
 	public:
 		IOpenGLWindow();
 		virtual ~IOpenGLWindow();
 
-		void InitializeItem();
-		void Cleanup();
-
 		// Following functions will be called from the thread responsible for drawing
-		virtual void SetupThread() = 0;
-		virtual bool ReadyFrameToDraw() = 0;
-		virtual void DrawComplete() = 0;
+		void CallbackSetupThread();
+		bool CallbackStartCycle();
+		void CallbackEndCycle();
+
+	private:
+		virtual void SetupThread_() = 0;
+		virtual bool ReadyFrameToDraw_() = 0;
+		virtual void DrawComplete_() = 0;
 	};
 }

@@ -7,9 +7,9 @@ namespace VT
 	class IPluginsManager
 	{
 	public:
-		void ExecuteFunctionDynamic(std::string pluginName, std::string functionName);
+		void ExecuteFunction(const std::string &pluginName, const std::string &functionName);
 
 	private:
-		virtual void ExecuteFunctionDynamic_(std::string pluginName, std::string functionName) = 0;
+		virtual void ExecuteFunction_(const std::string &pluginName, const std::string &functionName) = 0;
 	};
 }

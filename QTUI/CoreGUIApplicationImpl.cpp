@@ -1,10 +1,11 @@
 #include "CoreGUIApplication.h"
 #include "CoreGUIApplicationImpl.h"
+#include "Vitals\IMessagePrinter.h"
+#include "Vitals\IVitalsInterfaceManager.h"
 #include <QtCore\QTimer>
 
 CoreGUIApplicationImpl::CoreGUIApplicationImpl(int argc, char **argv, CoreGUIApplication *par) :
 	QApplication(argc, argv),
-	outWndId{ OutWnd::RegisterOutputWindowCategory(OutWnd::OutWndErrorMssgCategory) },
 	parent{ par }
 {
 }
@@ -19,17 +20,19 @@ bool CoreGUIApplicationImpl::notify(QObject * receiver, QEvent * e)
 {
 	using namespace std::string_literals;
 
+	auto messagePrinter{ VT::GetMessagePrinter() };
+
 	try
 	{
 		return QApplication::notify(receiver, e);
 	}
 	catch (std::exception &ex)
 	{
-		OutWnd::OutputWindowSetText(outWndId, ex.what() + "\n"s, true, true);
+		messagePrinter->PrintMessage(VT::MsgCat_ErrorMsg, ex.what() + "\n"s, true, true);
 	}
 	catch (...)
 	{
-		OutWnd::OutputWindowSetText(outWndId, "Something went wrong.\n", true, true);
+		messagePrinter->PrintMessage(VT::MsgCat_ErrorMsg, "Something went wrong.\n", true, true);
 	}
 
 	return false;

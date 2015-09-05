@@ -4,29 +4,55 @@
 #include "QTUISettings.h"
 #include "CoreGUIApplication.h"
 #include "Routines.h"
+#include "OpenGLWindow.h"
 #include "UI\IUIInterfaceManager.h"
+#include "CommonControls.h"
 #include <memory>
 
 
-struct QTUIGlobalData
+class UIInterfaceManager : public UI::IUIInterfaceManager
 {
+public:
+	UIInterfaceManager(int argc, char** argv) :
+		app{ std::make_unique<CoreGUIApplication>(argc, argv) },
+		commonControls{ std::make_unique<CommonControls>() },
+		openGLWindow{ std::make_unique<OpenGLWindow>() },
+		mainWindow{ std::make_unique<MainWindow>(openGLWindow.get()) }
+	{
+	}
+
+	virtual ~UIInterfaceManager()
+	{
+	}
+
+private:
+	virtual UI::ICommonControls* GetCommonControls()
+	{
+		return commonControls.get();
+	}
+
+	virtual UI::ICoreGUIApplication* GetCoreGUIApplication()
+	{
+		return app.get();
+	}
+
+	virtual UI::IMainWindow* GetMainWindow()
+	{
+		return mainWindow.get();
+	}
+
+	virtual UI::IOpenGLWindow* GetOpenGLWindow()
+	{
+		return openGLWindow.get();
+	}
+
+private:
 	std::unique_ptr <CoreGUIApplication> app;
+	std::unique_ptr<CommonControls> commonControls;
+	std::unique_ptr<OpenGLWindow> openGLWindow;
 	std::unique_ptr <MainWindow> mainWindow;
 
-	QTUIGlobalData(int argc, char** argv) :
-		app{ std::make_unique<CoreGUIApplication>(argc, argv) },
-		mainWindow{ std::make_unique<MainWindow>() }
-	{
-	}
-
-	~QTUIGlobalData()
-	{
-	}
-
-} *globalData;
-
-class UIInterfaceManager : public UI::IUIInterfaceManager
-{} uiInterfaceManager;
+} *uiInterfaceManager;
 
 constexpr auto settingsFile{ "QTUISettings.xml" };
 
@@ -45,17 +71,17 @@ extern "C"
 	QTUI_DECLSPEC void InitializeModule(int argc, char** argv, int)
 	{
 		GetQTUISettings().Load(Routines::GetSettingsFileFullPath_Load(settingsFile));
-		globalData = new QTUIGlobalData(argc, argv);
+		uiInterfaceManager = new UIInterfaceManager(argc, argv);
 	}
 
 	QTUI_DECLSPEC UI::IUIInterfaceManager* GetInterfaceManager()
 	{
-		return &uiInterfaceManager;
+		return uiInterfaceManager;
 	}
 
 	QTUI_DECLSPEC void DestroyModule()
 	{
 		GetQTUISettings().Save(Routines::GetSettingsFileFullPath_Save(settingsFile));
-		delete globalData;
+		delete uiInterfaceManager;
 	}
 }

@@ -6,17 +6,18 @@
 class QDockWidget;
 class PluginExplorerImpl;
 
-class PluginExplorer : public PE::IPluginExplorer
+class PluginExplorer : public UI::IPluginExplorer
 {
 public:
 	PluginExplorer();
 	~PluginExplorer();
 
-	void* GetImpl();
-
-	void AddPluginDataToTree(const std::string &pluginName, const std::vector<std::string> &functions);
-
 	QDockWidget* GetDockWidget();
+
+private:
+	virtual void AddPluginDataToTree_(const std::string &pluginName, 
+		const std::vector<std::string> &functions);
+	virtual void* GetControlImplementationSpecific_();
 
 private:
 	std::unique_ptr<PluginExplorerImpl> pluginExplorerImpl;

@@ -139,18 +139,22 @@ template <typename InterfaceManagerType>
 class Module
 {
 public:
-	Module(const std::string &name, int argc, char** argv) :
-		moduleImpl{ name, argc, argv }
-	{}
-
+	void Initialize(const std::string &name, int argc, char** argv);
 	InterfaceManagerType GetInterfaceManager() const;
 
 private:
-	ModuleImpl<InterfaceManagerType> moduleImpl;
+	using ImplType = ModuleImpl<InterfaceManagerType>;
+	std::unique_ptr<ImplType> moduleImpl;
 };
+
+template <typename InterfaceManagerType>
+void Module<InterfaceManagerType>::Initialize(const std::string &name, int argc, char** argv)
+{
+	moduleImpl = std::make_unique<ImplType>(name, argc, argv);
+}
 
 template <typename InterfaceManagerType>
 InterfaceManagerType Module<InterfaceManagerType>::GetInterfaceManager() const
 {
-	return moduleImpl.GetInterfaceManager();
+	return moduleImpl->GetInterfaceManager();
 }

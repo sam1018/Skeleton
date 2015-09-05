@@ -35,7 +35,7 @@ PluginsManager::~PluginsManager()
 {
 }
 
-void PluginsManager::ExecuteFunctionDynamic_(std::string pluginName, std::string functionName)
+void PluginsManager::ExecuteFunction_(const std::string &pluginName, const std::string &functionName)
 {
 	Plugin *plugin = GetDynamicPlugin(pluginName);
 
@@ -46,7 +46,7 @@ void PluginsManager::ExecuteFunctionDynamic_(std::string pluginName, std::string
 	GetCallerManager()->RegisterCaller(CreateCaller(f, plugin), CallType::OneTime);
 }
 
-Plugin* PluginsManager::GetDynamicPlugin(std::string pluginName)
+Plugin* PluginsManager::GetDynamicPlugin(const std::string &pluginName)
 {
 	for (auto &plugin : pluginsManagerImpl->pluginsArrayDynamic)
 	{

@@ -9,15 +9,14 @@ class OutputWindow;
 class PluginExplorer;
 class CommonControls;
 
-class MainWindow : public MW::IMainWindow
+class MainWindow : public UI::IMainWindow
 {
 public:
-	MainWindow();
+	MainWindow(OpenGLWindow *oglWnd);
 	~MainWindow();
 
-	void* GetImpl();
-
-	void Show();
+private:
+	void Show_();
 
 private:
 	// Implementation class for MainWindow
@@ -32,10 +31,8 @@ private:
 	// as long as they are usable by mainWindowImpl
 	///////////////////////////////////////////////////////////////////////////
 
-	std::unique_ptr<OpenGLWindow> openGLWindow;
 	std::unique_ptr<OutputWindow> outputWindow;
 	std::unique_ptr<PluginExplorer> pluginExplorer;
-	std::unique_ptr<CommonControls> commonControls;
 
 	///////////////////////////////////////////////////////////////////////////
 	// End window declaration

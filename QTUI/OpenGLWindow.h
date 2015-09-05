@@ -5,19 +5,18 @@
 class QWindow;
 class OpenGLWindowImpl;
 
-class OpenGLWindow : public OGLWnd::IOpenGLWindow
+class OpenGLWindow : public UI::IOpenGLWindow
 {
 public:
 	OpenGLWindow();
 	~OpenGLWindow();
 
-	// Use GetOpenGLWindowImpl() to get object with proper type
-	void* GetImpl();
 	QWindow* GetOpenGLWindowImpl();
 
-	void SetupThread();
-	bool ReadyFrameToDraw();
-	void DrawComplete();
+private:
+	virtual void SetupThread_();
+	virtual bool ReadyFrameToDraw_();
+	virtual void DrawComplete_();
 
 private:
 	// MainWindowImpl is responsible for destroying it

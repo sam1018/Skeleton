@@ -1,26 +1,6 @@
 #include "UI\IOpenGLWindow.h"
 
-using namespace OGLWnd;
-
-
-IOpenGLWindow *openGLWindow;
-
-
-void OGLWnd::CallbackSetupThread()
-{
-	openGLWindow->SetupThread();
-}
-
-bool OGLWnd::CallbackStartCycle()
-{
-	return openGLWindow->ReadyFrameToDraw();
-}
-
-void OGLWnd::CallbackEndCycle()
-{
-	openGLWindow->DrawComplete();
-}
-
+using namespace UI;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -36,12 +16,17 @@ IOpenGLWindow::~IOpenGLWindow()
 {
 }
 
-void IOpenGLWindow::InitializeItem()
+void IOpenGLWindow::CallbackSetupThread()
 {
-	openGLWindow = this;
+	SetupThread_();
 }
 
-void IOpenGLWindow::Cleanup()
+bool IOpenGLWindow::CallbackStartCycle()
 {
-	openGLWindow = nullptr;
+	return ReadyFrameToDraw_();
+}
+
+void IOpenGLWindow::CallbackEndCycle()
+{
+	DrawComplete_();
 }

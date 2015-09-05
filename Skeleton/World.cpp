@@ -2,7 +2,6 @@
 #include "Module.h"
 #include "Routines.h"
 #include "SkeletonSettings.h"
-#include "UI/UIItem.h"
 #include "UI/IMainWindow.h"
 #include "UI/ICoreGUIApplication.h"
 #include "UI/IUIInterfaceManager.h"
@@ -13,15 +12,16 @@ struct World::WorldImpl
 {
 	const std::string settingsFile{ "SkeletonSettings.xml" };
 	SkeletonSettings skeletonSettings{ Routines::GetSettingsFileFullPath_Load(settingsFile) };
-	Module<UI::IUIInterfaceManager*> uiModule;
 	Module<VT::IVitalsInterfaceManager*> vitalsModule;
+	Module<UI::IUIInterfaceManager*> uiModule;
 
-	WorldImpl(int argc, char** argv) :
-		uiModule{ skeletonSettings.uiModule, argc, argv },
-		vitalsModule{ skeletonSettings.vitalsModule, argc, argv }
+	WorldImpl(int argc, char** argv)
 	{
-		UI::SetUIInterfaceManager(uiModule.GetInterfaceManager());
+		vitalsModule.Initialize(skeletonSettings.vitalsModule, argc, argv);
 		VT::SetVitalsInterfaceManager(vitalsModule.GetInterfaceManager());
+
+		uiModule.Initialize(skeletonSettings.uiModule, argc, argv);
+		UI::SetUIInterfaceManager(uiModule.GetInterfaceManager());
 	}
 };
 
@@ -43,26 +43,28 @@ World::~World()
 
 void World::Initialize() const
 {
-	UI::InitializeItems();
+	//UI::InitializeItems();
 
-	CGA::FinishInitialization();
+	UI::ICoreGUIApplication *cga = UI::GetCoreGUIApplication();
 
-	CGA::SetupFPS(worldImpl->skeletonSettings.fps);
+	cga->FinishInitialization();
+
+	cga->SetupFPS(worldImpl->skeletonSettings.fps);
 }
 
 void World::Show() const
 {
-	MW::Show();
+	UI::GetMainWindow()->Show();
 }
 
 int World::Run() const
 {
-	return CGA::Run();
+	return UI::GetCoreGUIApplication()->Run();
 }
 
 void World::Cleanup() const
 {
-	UI::Cleanup();
+	//UI::Cleanup();
 }
 
 bool World::IsHideCmdPromptAfterInitialization() const

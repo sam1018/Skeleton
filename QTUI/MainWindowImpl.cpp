@@ -88,8 +88,8 @@ void MainWindowImpl::closeEvent(QCloseEvent *event)
 
 //#include "../SkeletonInterface/IOutputWindow.h"
 //
-//OutWnd::OutWndCatID debugID;
-//OutWnd::OutWndCatID debugID2;
+//OutWnd::MsgCatID debugID;
+//OutWnd::MsgCatID debugID2;
 //void MainWindowImpl::AddCatDebug()
 //{
 //	debugID = OutWnd::RegisterOutputWindowCategory("Debug");

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "UI/IOutputWindow.h"
 #include <functional>
 #include <QtWidgets\QApplication.h>
 
@@ -22,6 +21,5 @@ public:
 	void Update();
 
 private:
-	OutWnd::OutWndCatID outWndId;
 	CoreGUIApplication *parent;
 };

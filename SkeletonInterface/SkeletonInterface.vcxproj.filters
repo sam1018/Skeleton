@@ -19,11 +19,14 @@
     <Filter Include="Vitals Interfaces">
       <UniqueIdentifier>{bb37b24f-a8a6-4876-a257-4898941f815f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI Interfaces\Sources">
+      <UniqueIdentifier>{8b115647-4f22-4cc4-a070-76c2206eb666}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vitals Interfaces\Sources">
+      <UniqueIdentifier>{c36576c0-ca53-4171-adef-386b173ffd95}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\UI\CommonControls.h">
-      <Filter>UI Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="..\inc\UI\ICoreGUIApplication.h">
       <Filter>UI Interfaces</Filter>
     </ClInclude>
@@ -66,8 +69,11 @@
     <ClInclude Include="..\inc\Vitals\Caller.h">
       <Filter>Vitals Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\UI\UIItem.h">
+    <ClInclude Include="..\inc\UI\ICommonControls.h">
       <Filter>UI Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\Vitals\IMessagePrinter.h">
+      <Filter>Vitals Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -77,44 +83,44 @@
     <ClCompile Include="Routines.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IVitalsInterfaceManager.cpp">
-      <Filter>Vitals Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="IPluginsManager.cpp">
-      <Filter>Vitals Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="ICallerManager.cpp">
-      <Filter>Vitals Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="Caller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IPlugin.cpp">
-      <Filter>Vitals Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="IUIInterfaceManager.cpp">
-      <Filter>UI Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="CommonControls.cpp">
-      <Filter>UI Interfaces</Filter>
+    <ClCompile Include="ICommonControls.cpp">
+      <Filter>UI Interfaces\Sources</Filter>
     </ClCompile>
     <ClCompile Include="ICoreGUIApplication.cpp">
-      <Filter>UI Interfaces</Filter>
+      <Filter>UI Interfaces\Sources</Filter>
     </ClCompile>
     <ClCompile Include="IMainWindow.cpp">
-      <Filter>UI Interfaces</Filter>
+      <Filter>UI Interfaces\Sources</Filter>
     </ClCompile>
     <ClCompile Include="IOpenGLWindow.cpp">
-      <Filter>UI Interfaces</Filter>
+      <Filter>UI Interfaces\Sources</Filter>
     </ClCompile>
     <ClCompile Include="IOutputWindow.cpp">
-      <Filter>UI Interfaces</Filter>
+      <Filter>UI Interfaces\Sources</Filter>
     </ClCompile>
     <ClCompile Include="IPluginExplorer.cpp">
-      <Filter>UI Interfaces</Filter>
+      <Filter>UI Interfaces\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="UIItem.cpp">
-      <Filter>UI Interfaces</Filter>
+    <ClCompile Include="IUIInterfaceManager.cpp">
+      <Filter>UI Interfaces\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Caller.cpp">
+      <Filter>Vitals Interfaces\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ICallerManager.cpp">
+      <Filter>Vitals Interfaces\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="IMessagePrinter.cpp">
+      <Filter>Vitals Interfaces\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="IPlugin.cpp">
+      <Filter>Vitals Interfaces\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="IPluginsManager.cpp">
+      <Filter>Vitals Interfaces\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="IVitalsInterfaceManager.cpp">
+      <Filter>Vitals Interfaces\Sources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

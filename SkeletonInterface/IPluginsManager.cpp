@@ -2,7 +2,7 @@
 
 using namespace VT;
 
-void IPluginsManager::ExecuteFunctionDynamic(std::string pluginName, std::string functionName)
+void IPluginsManager::ExecuteFunction(const std::string &pluginName, const std::string &functionName)
 {
-	ExecuteFunctionDynamic_(pluginName, functionName);
+	ExecuteFunction_(pluginName, functionName);
 }

@@ -1,15 +1,6 @@
 #include "UI\IMainWindow.h"
 
-using namespace MW;
-
-IMainWindow *mainWindow;
-
-void MW::Show()
-{
-	if (!mainWindow)
-		ThrowUninitializedClass("IMainWindow");
-	mainWindow->Show();
-}
+using namespace UI;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -25,12 +16,7 @@ IMainWindow::~IMainWindow()
 {
 }
 
-void IMainWindow::InitializeItem()
+void IMainWindow::Show()
 {
-	mainWindow = this;
-}
-
-void IMainWindow::Cleanup()
-{
-	mainWindow = nullptr;
+	Show_();
 }

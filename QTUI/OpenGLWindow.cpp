@@ -17,22 +17,17 @@ OpenGLWindow::~OpenGLWindow()
 {
 }
 
-void* OpenGLWindow::GetImpl()
-{
-	return openGLWindowImpl;
-}
-
-void OpenGLWindow::SetupThread()
+void OpenGLWindow::SetupThread_()
 {
 	openGLWindowImpl->SetupThread();
 }
 
-bool OpenGLWindow::ReadyFrameToDraw()
+bool OpenGLWindow::ReadyFrameToDraw_()
 {
 	return openGLWindowImpl->ReadyFrameToDraw();
 }
 
-void OpenGLWindow::DrawComplete()
+void OpenGLWindow::DrawComplete_()
 {
 	openGLWindowImpl->DrawComplete();
 }

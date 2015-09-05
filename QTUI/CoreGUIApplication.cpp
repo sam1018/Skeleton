@@ -17,17 +17,12 @@ CoreGUIApplication::~CoreGUIApplication()
 {
 }
 
-void* CoreGUIApplication::GetImpl()
-{
-	return coreGUIApplicationImpl.get();
-}
-
-int CoreGUIApplication::Run()
+int CoreGUIApplication::Run_()
 {
 	return coreGUIApplicationImpl->exec();
 }
 
-void CoreGUIApplication::SetupFPS(int fps)
+void CoreGUIApplication::SetupFPS_(int fps)
 {
 	coreGUIApplicationImpl->SetupFPS(fps);
 }

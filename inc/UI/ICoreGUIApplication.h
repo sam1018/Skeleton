@@ -1,32 +1,26 @@
 #pragma once
 
-#include "UIItem.h"
 #include "SkeletonInterface.h"
 #include <functional>
 
-namespace CGA
+namespace UI
 {
-	SKELETONINTERFACE_DECLSPEC int Run();
-
-	SKELETONINTERFACE_DECLSPEC void SetupFPS(int fps);
-
-	SKELETONINTERFACE_DECLSPEC void FinishInitialization();
-
-	class SKELETONINTERFACE_DECLSPEC ICoreGUIApplication : public UI::UIItem
+	class SKELETONINTERFACE_DECLSPEC ICoreGUIApplication
 	{
 	public:
 		ICoreGUIApplication();
 		virtual ~ICoreGUIApplication() = 0;
 
-		void InitializeItem();
-		void Cleanup();
-
 		void FinishInitialization();
 
-		virtual int Run() = 0;
-
-		virtual void SetupFPS(int fps) = 0;
-
 		void FPSHandler();
+
+		int Run();
+
+		void SetupFPS(int fps);
+
+	private:
+		virtual int Run_() = 0;
+		virtual void SetupFPS_(int fps) = 0;
 	};
 }
