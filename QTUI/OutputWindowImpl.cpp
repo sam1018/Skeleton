@@ -16,6 +16,11 @@ OutputWindowImpl::OutputWindowImpl(OutputWindow *wnd) :
 	textEdit->setReadOnly(true);
 
 	QVBoxLayout *layout = new QVBoxLayout;
+
+	layout->setSpacing(0);
+	layout->setMargin(0);
+	layout->setContentsMargins(0, 0, 0, 0);
+
 	layout->addWidget(comboCatagory);
 	layout->addWidget(textEdit);
 

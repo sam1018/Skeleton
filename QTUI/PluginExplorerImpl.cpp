@@ -33,6 +33,11 @@ PluginExplorerImpl::PluginExplorerImpl(PluginExplorer *wnd) :
 	setObjectName("Plugin Explorer");
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;
+
+	mainLayout->setSpacing(0);
+	mainLayout->setMargin(0);
+	mainLayout->setContentsMargins(0, 0, 0, 0);
+
 	QHBoxLayout *buttonsLayout = new QHBoxLayout;
 	QPushButton *btnLoadPlugin = new QPushButton("Load Plugin");
 	btnLoadPlugin->connect(btnLoadPlugin, SIGNAL(clicked()), this, SLOT(LoadPlugin()));
