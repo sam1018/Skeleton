@@ -18,8 +18,7 @@ using namespace Routines;
 
 struct World::WorldImpl
 {
-	const string settingsFile{ "SkeletonSettings.xml" };
-	SkeletonSettings skeletonSettings{ GetSettingsFileFullPath_Load(settingsFile) };
+	SkeletonSettings skeletonSettings{ GlobalSettingsFilePath() };
 	Module<IVitalsInterfaceManager*> vitalsModule;
 	Module<IUIInterfaceManager*> uiModule;
 

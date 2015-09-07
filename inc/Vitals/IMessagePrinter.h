@@ -2,10 +2,36 @@
 
 #include "../SkeletonInterface.h"
 #include "../UI/IOutputWindow.h"
+#include "../Settings.h"
+#include"../Routines.h"
 #include <string>
+
+
+#define PRINT_MESSAGE(id, text, append, makeCurrentCategory) \
+VT::GetMessagePrinter()->PrintMessage(id, text, append, makeCurrentCategory, __FILE__, __LINE__);
+
 
 namespace VT
 {
+	struct MessagePrinterSettings
+	{
+		Settings::AttribAccessor accessor;
+		bool showFileName;
+		bool showLineNumber;
+		bool appendNewLine;
+
+		MessagePrinterSettings()
+		{
+			accessor.RegisterItem(showFileName, "SkeletonSettings.MessagePrinter.ShowFileName");
+			accessor.RegisterItem(showLineNumber, "SkeletonSettings.MessagePrinter.ShowLineNumber");
+			accessor.RegisterItem(appendNewLine, "SkeletonSettings.MessagePrinter.AppendNewLine");
+
+			accessor.Load(Routines::GlobalSettingsFilePath());
+		}
+	};
+
+
+
 	// Message Category ID
 	using MsgCatID = int;
 
@@ -27,14 +53,14 @@ namespace VT
 
 		// Thread safety: Thread safe through locking
 		void PrintMessage(MsgCatID id, const std::string &text, bool append, 
-			bool makeCurrrentCategory);
+			bool makeCurrrentCategory, const char *file, int line);
 
 		void SetOutputWindow(UI::IOutputWindow *wnd);
 
 	private:
 		virtual MsgCatID RegisterMessageCategory_(const std::string &categoryName) = 0;
 		virtual void PrintMessage_(MsgCatID id, const std::string &text, 
-			bool append, bool makeCurrrentCategory) = 0;
+			bool append, bool makeCurrrentCategory, const char *file, int line) = 0;
 		virtual void SetOutputWindow_(UI::IOutputWindow *wnd) = 0;
 	};
 
@@ -45,9 +71,10 @@ namespace VT
 	public:
 		StdRedirector(std::ostream &a_Stream, MsgCatID wnd) :
 			m_Stream{ a_Stream },
-			m_pBuf{ m_Stream.rdbuf(this) },
 			outWndId{ wnd }
-		{}
+		{
+			m_pBuf = m_Stream.rdbuf(this);
+		}
 
 		~StdRedirector()
 		{
@@ -59,7 +86,7 @@ namespace VT
 		*/
 		std::streamsize xsputn(const Elem *_Ptr, std::streamsize _Count)
 		{
-			VT::GetMessagePrinter()->PrintMessage(outWndId, _Ptr, true, true);
+			PRINT_MESSAGE(outWndId, _Ptr, true, true)
 			return _Count;
 		}
 
@@ -70,7 +97,7 @@ namespace VT
 		{
 			std::string s;
 			s += Tr::to_char_type(v);
-			VT::GetMessagePrinter()->PrintMessage(outWndId, s, true, true);
+			PRINT_MESSAGE(outWndId, s, true, true)
 			return Tr::not_eof(v);
 		}
 

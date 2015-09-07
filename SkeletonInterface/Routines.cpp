@@ -112,3 +112,9 @@ bool Routines::IsSamePath(string path1, string path2)
 
 	return p1 == p2;
 }
+
+std::string Routines::GlobalSettingsFilePath()
+{
+	const string settingsFile{ "SkeletonSettings.xml" };
+	return GetSettingsFileFullPath_Load(settingsFile);
+}

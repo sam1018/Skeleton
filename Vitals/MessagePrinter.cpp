@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <mutex>
 #include <iostream>
+#include <sstream>
 
 
 using namespace UI;
@@ -78,7 +79,22 @@ public:
 		return ret;
 	}
 
-	void OutputWindowSetText(MsgCatID id, const string &text, bool append, bool makeCurrrentCategory)
+	std::string FormatMsg(const string &text, const char *file, int line)
+	{
+		stringstream ss;
+		if (settings.showFileName)
+			ss << "<File=" << file << ">";
+		if (settings.showLineNumber)
+			ss << "<Line=" << line << ">";
+		ss << text;
+		if (settings.appendNewLine)
+			ss << "\n";
+
+		return ss.str();
+	}
+
+	void OutputWindowSetText(MsgCatID id, const string &text, bool append, 
+		bool makeCurrrentCategory, const char *file, int line)
 	{
 		lock_guard<mutex> lock(m);
 
@@ -86,10 +102,12 @@ public:
 
 		ThrowIfItemNotFound(iter, to_string(id));
 
+		string msg = FormatMsg(text, file, line);
+
 		if (append)
-			iter->text += text;
+			iter->text += msg;
 		else
-			iter->text = text;
+			iter->text = msg;
 
 		if (makeCurrrentCategory)
 		{
@@ -104,7 +122,7 @@ public:
 			{
 				// User wants to print something, but outputWindow is not yet ready
 				// So print it in cout
-				cout << text << "\n";
+				cout << iter->text << "\n";
 			}
 		}
 	}
@@ -114,6 +132,7 @@ private:
 	MsgCatID nextId = 23; // it could be 0... doesn't matter why it's 23
 	IOutputWindow *outputWindow = nullptr;
 	mutex m;
+	MessagePrinterSettings settings;
 };
 
 
@@ -134,10 +153,10 @@ MsgCatID MessagePrinter::RegisterMessageCategory_(const string &categoryName)
 	return messagePrinterImpl->RegisterOutputWindowCategory(categoryName);
 }
 
-void MessagePrinter::PrintMessage_(MsgCatID id,
-	const string &text, bool append, bool makeCurrrentCategory)
+void MessagePrinter::PrintMessage_(MsgCatID id, const string &text, bool append,
+	bool makeCurrrentCategory, const char *file, int line)
 {
-	messagePrinterImpl->OutputWindowSetText(id, text, append, makeCurrrentCategory);
+	messagePrinterImpl->OutputWindowSetText(id, text, append, makeCurrrentCategory, file, line);
 }
 
 void MessagePrinter::SetOutputWindow_(IOutputWindow * wnd)

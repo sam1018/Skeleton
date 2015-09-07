@@ -46,4 +46,6 @@ namespace Routines
 	std::string SKELETONINTERFACE_DECLSPEC GetFileNameFromPath(std::string path);
 
 	bool SKELETONINTERFACE_DECLSPEC IsSamePath(std::string path1, std::string path2);
+
+	std::string SKELETONINTERFACE_DECLSPEC GlobalSettingsFilePath();
 }

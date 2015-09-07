@@ -33,11 +33,11 @@ bool CoreGUIApplicationImpl::notify(QObject * receiver, QEvent * e)
 	}
 	catch (exception &ex)
 	{
-		messagePrinter->PrintMessage(MsgCat_ErrorMsg, ex.what() + "\n"s, true, true);
+		PRINT_MESSAGE(MsgCat_ErrorMsg, ex.what() + "\n"s, true, true)
 	}
 	catch (...)
 	{
-		messagePrinter->PrintMessage(MsgCat_ErrorMsg, "Something went wrong.\n", true, true);
+		PRINT_MESSAGE(MsgCat_ErrorMsg, "Something went wrong.\n", true, true)
 	}
 
 	return false;

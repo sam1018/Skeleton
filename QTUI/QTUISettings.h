@@ -8,10 +8,6 @@ struct QTUISettings
 {
 	Settings::AttribAccessor accessor;
 
-	QTUISettings()
-	{
-	}
-
 	void Load(std::string fileName)
 	{
 		accessor.Load(fileName);

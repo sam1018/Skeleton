@@ -27,20 +27,15 @@ IPluginExplorer::~IPluginExplorer()
 
 void IPluginExplorer::LoadPlugin(const string &pluginName, vector<string> &functions)
 {
-	IMessagePrinter *messagePrinter = GetMessagePrinter();
-
 	// Clear the output window
-	messagePrinter->PrintMessage(MsgCat_PluginExplorer, "", false, false);
+	PRINT_MESSAGE(MsgCat_PluginExplorer, "", false, false)
+	PRINT_MESSAGE(MsgCat_PluginExplorer, "Searching module for exported functions............... ", true, true)
 
-	messagePrinter->PrintMessage(MsgCat_PluginExplorer, 
-		"Searching module for exported functions............... ", true, true);
 	ListDLLFunctions(pluginName, functions);
 	if (functions.empty())
-		messagePrinter->PrintMessage(MsgCat_PluginExplorer, 
-			"No exported functions found.", true, true);
+		PRINT_MESSAGE(MsgCat_PluginExplorer, "No exported functions found.", true, true)
 	else
-		messagePrinter->PrintMessage(MsgCat_PluginExplorer, 
-			to_string(functions.size()) + " exported functions found.", true, true);
+		PRINT_MESSAGE(MsgCat_PluginExplorer, to_string(functions.size()) + " exported functions found.\n", true, true)
 }
 
 void IPluginExplorer::LoadPlugin()
@@ -56,19 +51,10 @@ void IPluginExplorer::LoadPlugin()
 
 void IPluginExplorer::ExecuteFunction(const string &pluginName, const string &functionName)
 {
-	IMessagePrinter *messagePrinter = GetMessagePrinter();
-
 	// Clear the output window
-	messagePrinter->PrintMessage(MsgCat_PluginExplorer, "", false, false);
+	//PRINT_MESSAGE(MsgCat_PluginExplorer, "", false, false)
 
-	auto msg{ "Attempting to run function \"" + functionName +
-		"\" In plugin \"" + pluginName + "\"\n" };
-
-	messagePrinter->PrintMessage(MsgCat_PluginExplorer, msg, true, true);
-
-	messagePrinter->PrintMessage(MsgCat_PluginExplorer, "Result: ", true, true);
-
-	StdRedirector<> redirOut{ cout, MsgCat_PluginExplorer };
+		StdRedirector<> redirOut{ cout, MsgCat_PluginExplorer };
 	StdRedirector<> redirErr{ cerr, MsgCat_PluginExplorer };
 
 	auto success{ true };
@@ -80,11 +66,11 @@ void IPluginExplorer::ExecuteFunction(const string &pluginName, const string &fu
 	catch (exception &e)
 	{
 		success = false;
-		messagePrinter->PrintMessage(MsgCat_PluginExplorer, e.what(), true, true);
+		PRINT_MESSAGE(MsgCat_PluginExplorer, e.what(), true, true)
 	}
 
 	if (success)
-		messagePrinter->PrintMessage(MsgCat_PluginExplorer, "Call to function \"" + functionName + "\" ended successfully.\n", true, true);
+		PRINT_MESSAGE(MsgCat_PluginExplorer, "Queued function: " + functionName + "\n", true, true)
 }
 
 void IPluginExplorer::AddPluginDataToTree(const string &pluginName,
