@@ -6,16 +6,17 @@
 #include <atomic>
 
 using namespace VT;
+using namespace std;
 
 
-using Callers = std::vector<Caller>;
+using Callers = vector<Caller>;
 
 
 class AddressGetterForFunction : public boost::static_visitor<size_t>
 {
 public:
 	template<typename T, typename... U>
-	size_t operator()(std::function<T(U...)> f)
+	size_t operator()(function<T(U...)> f)
 	{
 		typedef T(fnType)(U...);
 		fnType ** fnPointer = f.template target<fnType*>();
@@ -37,19 +38,19 @@ public:
 		t.join();
 	}
 
-	void CallbackSetupThread(std::function<void(void)> f)
+	void CallbackSetupThread(function<void(void)> f)
 	{
 		CheckStartThreadCall();
 		Init = f;
 	}
 
-	void CallbackStartCycle(std::function<bool(void)> f)
+	void CallbackStartCycle(function<bool(void)> f)
 	{
 		CheckStartThreadCall();
 		StartCycle = f;
 	}
 
-	void CallbackEndCycle(std::function<void(void)> f)
+	void CallbackEndCycle(function<void(void)> f)
 	{
 		CheckStartThreadCall();
 		EndCycle = f;
@@ -58,12 +59,12 @@ public:
 	void StartThread()
 	{
 		StartThreadCalled = true;
-		t = std::thread([this]() { Run(); });
+		t = thread([this]() { Run(); });
 	}
 
 	void AddCallers(const Callers &callers)
 	{
-		std::lock_guard<std::mutex> lock(lockAddFuncs);
+		lock_guard<mutex> lock(lockAddFuncs);
 		addCallers.insert(addCallers.end(), callers.begin(), callers.end());
 	}
 
@@ -90,7 +91,7 @@ public:
 		{
 			if (appendItems)
 			{
-				std::lock_guard<std::mutex> lock(lockAddFuncs);
+				lock_guard<mutex> lock(lockAddFuncs);
 				callers.swap(addCallers);
 				addCallers.clear();
 				appendItems = false;
@@ -104,7 +105,7 @@ public:
 
 				bool ret = StartCycle();
 
-				std::for_each(callers.begin(), callers.end(), 
+				for_each(callers.begin(), callers.end(), 
 					[](Caller &caller) { caller.ExecuteCaller(); });
 
 				callers.clear();
@@ -121,22 +122,22 @@ private:
 	void CheckStartThreadCall()
 	{
 		if (StartThreadCalled)
-			throw std::runtime_error("Error!!! This function cannot be called after call to StartThread()");
+			throw runtime_error("Error!!! This function cannot be called after call to StartThread()");
 	}
 
 private:
-	std::thread t;
+	thread t;
 
 	// <Following variables need mutex guard>
 	Callers addCallers;
-	std::mutex lockAddFuncs;
+	mutex lockAddFuncs;
 	// </>
 
 	// <Following variables need atomic>
-	std::atomic<bool> startNewCycle = false; // GUI thread asks for a new cycle
-	std::atomic<bool> keepGoing = true; // To keep thread loop running
-	std::atomic<bool> appendItems = false; // Some new Callers need to be added for execution
-	std::atomic<bool> readyForNewCycle = true; // To convey we are ready for new cycle
+	atomic<bool> startNewCycle = false; // GUI thread asks for a new cycle
+	atomic<bool> keepGoing = true; // To keep thread loop running
+	atomic<bool> appendItems = false; // Some new Callers need to be added for execution
+	atomic<bool> readyForNewCycle = true; // To convey we are ready for new cycle
 	//</>
 
 	// <Following variables don't need atomic, as they won't be accessed within Run()>
@@ -148,9 +149,9 @@ private:
 	// </>
 
 	// <Following variables don't need atomic, as we make sure, calling them after StartThread() calll is an error>
-	std::function<void(void)> Init;
-	std::function<bool(void)> StartCycle;
-	std::function<void(void)> EndCycle;
+	function<void(void)> Init;
+	function<bool(void)> StartCycle;
+	function<void(void)> EndCycle;
 	// </>
 };
 
@@ -166,7 +167,7 @@ struct CallerManager::CallerManagerImpl
 };
 
 CallerManager::CallerManager() :
-	callerManagerImpl{ std::make_unique<CallerManagerImpl>() }
+	callerManagerImpl{ make_unique<CallerManagerImpl>() }
 {
 }
 
@@ -178,10 +179,10 @@ void CallerManager::PluginUnloaded_(IPlugin *plugin)
 {
 	auto remPred = [plugin](const Caller &caller) { return caller.GetPlugin() == plugin; };
 
-	std::remove_if(callerManagerImpl->oneTimeCallersPending.begin(),
+	remove_if(callerManagerImpl->oneTimeCallersPending.begin(),
 		callerManagerImpl->oneTimeCallersPending.end(), remPred);
 
-	std::remove_if(callerManagerImpl->perFrameCallersPending.begin(),
+	remove_if(callerManagerImpl->perFrameCallersPending.begin(),
 		callerManagerImpl->perFrameCallersPending.end(), remPred);
 }
 
@@ -190,12 +191,12 @@ bool CallerManager::RequestNewCycle_()
 	if (!ReadyForNewCycle())
 		return false;
 
-	callerManagerImpl->workerThread.AddCallers(std::move(callerManagerImpl->oneTimeCallersPending));
+	callerManagerImpl->workerThread.AddCallers(move(callerManagerImpl->oneTimeCallersPending));
 	callerManagerImpl->workerThread.AddCallers(callerManagerImpl->perFrameCallersPending);
 	callerManagerImpl->workerThread.AppendItems();
 	callerManagerImpl->workerThread.StartNewCycle();
 
-	// To return the object to a known state, after std::move
+	// To return the object to a known state, after move
 	callerManagerImpl->oneTimeCallersPending.clear();
 
 
@@ -207,17 +208,17 @@ bool CallerManager::ReadyForNewCycle_()
 	return callerManagerImpl->workerThread.IsReadyForNewCycle();
 }
 
-void CallerManager::CallbackSetupThread_(std::function<void(void)> f)
+void CallerManager::CallbackSetupThread_(function<void(void)> f)
 {
 	callerManagerImpl->workerThread.CallbackSetupThread(f);
 }
 
-void CallerManager::CallbackStartCycle_(std::function<bool(void)> f)
+void CallerManager::CallbackStartCycle_(function<bool(void)> f)
 {
 	callerManagerImpl->workerThread.CallbackStartCycle(f);
 }
 
-void CallerManager::CallbackEndCycle_(std::function<void(void)> f)
+void CallerManager::CallbackEndCycle_(function<void(void)> f)
 {
 	callerManagerImpl->workerThread.CallbackEndCycle(f);
 }
@@ -230,7 +231,7 @@ void CallerManager::StartThread_()
 void CallerManager::RegisterCaller_(Caller &&caller, CallType callType)
 {
 	if (callType == CallType::OneTime)
-		callerManagerImpl->oneTimeCallersPending.push_back(std::move(caller));
+		callerManagerImpl->oneTimeCallersPending.push_back(move(caller));
 	else if (callType == CallType::EveryTime)
-		callerManagerImpl->perFrameCallersPending.push_back(std::move(caller));
+		callerManagerImpl->perFrameCallersPending.push_back(move(caller));
 }

@@ -1,6 +1,8 @@
 #include "Vitals\IMessagePrinter.h"
 
+using namespace UI;
 using namespace VT;
+using namespace std;
 
 
 MsgCatID VT::MsgCat_PluginExplorer;
@@ -14,13 +16,18 @@ IMessagePrinter::~IMessagePrinter()
 {
 }
 
-MsgCatID IMessagePrinter::RegisterMessageCategory(const std::string &categoryName)
+MsgCatID IMessagePrinter::RegisterMessageCategory(const string &categoryName)
 {
 	return RegisterMessageCategory_(categoryName);
 }
 
 void IMessagePrinter::PrintMessage(MsgCatID id,
-	const std::string &text, bool append, bool makeCurrrentCategory)
+	const string &text, bool append, bool makeCurrrentCategory)
 {
 	PrintMessage_(id, text, append, makeCurrrentCategory);
+}
+
+void IMessagePrinter::SetOutputWindow(IOutputWindow * wnd)
+{
+	SetOutputWindow_(wnd);
 }

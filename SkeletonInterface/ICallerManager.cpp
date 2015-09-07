@@ -1,18 +1,19 @@
 #include "Vitals\ICallerManager.h"
 
 using namespace VT;
+using namespace std;
 
-void ICallerManager::CallbackSetupThread(std::function<void(void)> f)
+void ICallerManager::CallbackSetupThread(function<void(void)> f)
 {
 	CallbackSetupThread_(f);
 }
 
-void ICallerManager::CallbackStartCycle(std::function<bool(void)> f)
+void ICallerManager::CallbackStartCycle(function<bool(void)> f)
 {
 	CallbackStartCycle_(f);
 }
 
-void ICallerManager::CallbackEndCycle(std::function<void(void)> f)
+void ICallerManager::CallbackEndCycle(function<void(void)> f)
 {
 	CallbackEndCycle_(f);
 }
@@ -34,7 +35,7 @@ bool ICallerManager::RequestNewCycle()
 
 void ICallerManager::RegisterCaller(Caller &&caller, CallType callType)
 {
-	RegisterCaller_(std::move(caller), callType);
+	RegisterCaller_(move(caller), callType);
 }
 
 void ICallerManager::PluginUnloaded(IPlugin *plugin)

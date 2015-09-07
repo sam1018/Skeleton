@@ -1,10 +1,12 @@
 #include "OutputWindow.h"
 #include "OutputWindowImpl.h"
 
+using namespace std;
 
-OutputWindow::OutputWindow() :
-	outputWindowImpl{ std::make_unique<OutputWindowImpl>(this) }
+
+OutputWindow::OutputWindow()
 {
+	outputWindowImpl = new OutputWindowImpl(this);
 }
 
 
@@ -12,17 +14,17 @@ OutputWindow::~OutputWindow()
 {
 }
 
-void OutputWindow::AddCategory_(const std::string &categoryName)
+void OutputWindow::AddCategory_(const string &categoryName)
 {
 	outputWindowImpl->AddCategory(categoryName);
 }
 
-void OutputWindow::Refresh_(const std::string &categoryName, const std::string &text)
+void OutputWindow::Refresh_(const string &categoryName, const string &text)
 {
 	outputWindowImpl->Refresh(categoryName, text);
 }
 
 QDockWidget* OutputWindow::GetDockWidget()
 {
-	return outputWindowImpl.get();
+	return outputWindowImpl;
 }

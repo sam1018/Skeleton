@@ -3,6 +3,8 @@
 #include <QtCore\QThread>
 #include <QtGui\QOpenGLContext>
 
+using namespace std;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 /////////////          OpenGLWindowImpl Definition                 ////////////
@@ -21,7 +23,7 @@ OpenGLWindowImpl::~OpenGLWindowImpl()
 
 void OpenGLWindowImpl::SetupThread()
 {
-	context = std::make_unique<QOpenGLContext>();
+	context = make_unique<QOpenGLContext>();
 	context->create();
 
 	context->doneCurrent();

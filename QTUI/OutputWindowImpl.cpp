@@ -4,6 +4,8 @@
 #include <QtWidgets\QComboBox>
 #include <QtWidgets\QPlainTextEdit>
 
+using namespace std;
+
 
 OutputWindowImpl::OutputWindowImpl(OutputWindow *wnd) :
 	QDockWidget("Output Window"),
@@ -43,7 +45,7 @@ OutputWindowImpl::~OutputWindowImpl()
 {
 }
 
-void OutputWindowImpl::AddCategory(const std::string &categoryName)
+void OutputWindowImpl::AddCategory(const string &categoryName)
 {
 	emit AddCategorySignal(QString(categoryName.c_str()));
 }
@@ -53,7 +55,7 @@ void OutputWindowImpl::AddCategoryHandler(const QString &categoryName)
 	comboCatagory->addItem(categoryName);
 }
 
-void OutputWindowImpl::Refresh(const std::string &categoryName, const std::string &text)
+void OutputWindowImpl::Refresh(const string &categoryName, const string &text)
 {
 	emit RefreshSignal(QString(categoryName.c_str()), QString(text.c_str()));
 }

@@ -1,23 +1,25 @@
 #include "Routines.h"
 #include <boost\filesystem.hpp>
 
+using namespace std;
+using namespace Routines;
 using namespace boost::filesystem;
 
 path binFilePath;
 
 constexpr auto settingsDirName{ "/Settings" };
 
-void Routines::SetBinFilePath(std::string path)
+void Routines::SetBinFilePath(string path)
 {
 	binFilePath /= path;
 }
 
-std::string SKELETONINTERFACE_DECLSPEC Routines::GetBinDirectory()
+string Routines::GetBinDirectory()
 {
 	return binFilePath.parent_path().generic_string();
 }
 
-std::string Routines::GetUserDir()
+string Routines::GetUserDir()
 {
 	path p;
 
@@ -27,7 +29,7 @@ std::string Routines::GetUserDir()
 	p /= buffer;
 	free(buffer);
 #else
-	p /= std::getnev("HOME");
+	p /= getnev("HOME");
 #endif
 
 	p /= GetApplicationName();
@@ -37,7 +39,7 @@ std::string Routines::GetUserDir()
 	return p.generic_string();
 }
 
-std::string Routines::GetUserSettingsDir()
+string Routines::GetUserSettingsDir()
 {
 	path p(GetUserDir());
 
@@ -48,7 +50,7 @@ std::string Routines::GetUserSettingsDir()
 	return p.generic_string();
 }
 
-std::string Routines::GetFactorySettingsDir()
+string Routines::GetFactorySettingsDir()
 {
 	path p(GetBinDirectory());
 
@@ -60,7 +62,7 @@ std::string Routines::GetFactorySettingsDir()
 	return p.generic_string();
 }
 
-std::string Routines::GetSettingsFileFullPath_Save(std::string fileName)
+string Routines::GetSettingsFileFullPath_Save(string fileName)
 {
 	path p(GetUserSettingsDir());
 
@@ -69,7 +71,7 @@ std::string Routines::GetSettingsFileFullPath_Save(std::string fileName)
 	return p.generic_string();
 }
 
-std::string Routines::GetSettingsFileFullPath_Load(std::string fileName)
+string Routines::GetSettingsFileFullPath_Load(string fileName)
 {
 	path p(GetUserSettingsDir());
 
@@ -82,29 +84,29 @@ std::string Routines::GetSettingsFileFullPath_Load(std::string fileName)
 	}
 
 	if (!exists(p))
-		throw std::exception((fileName + " not found").c_str());
+		throw exception((fileName + " not found").c_str());
 
 	return p.generic_string();
 }
 
-std::string Routines::GetApplicationName()
+string Routines::GetApplicationName()
 {
 	return binFilePath.stem().generic_string();
 }
 
-std::string Routines::GetCompanyName()
+string Routines::GetCompanyName()
 {
 	return "HOME";
 }
 
-std::string Routines::GetFileNameFromPath(std::string filepath)
+string Routines::GetFileNameFromPath(string filepath)
 {
 	path p(filepath);
 
 	return p.stem().generic_string();
 }
 
-bool Routines::IsSamePath(std::string path1, std::string path2)
+bool Routines::IsSamePath(string path1, string path2)
 {
 	path p1(path1), p2(path2);
 

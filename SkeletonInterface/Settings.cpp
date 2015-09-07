@@ -3,6 +3,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
+using namespace std;
 using namespace Settings;
 
 namespace pt = boost::property_tree;
@@ -10,10 +11,10 @@ namespace pt = boost::property_tree;
 struct Item
 {
 	ValueType value;
-	std::string path;
+	string path;
 };
 
-using Items = std::vector<Item>;
+using Items = vector<Item>;
 
 struct AttribAccessor::ItemsImpl
 {
@@ -29,7 +30,7 @@ public:
 		LOAD_FROM_TREE
 	};
 
-	ValueAccessor(pt::ptree &tree, std::string &path, AccessType accessType) :
+	ValueAccessor(pt::ptree &tree, string &path, AccessType accessType) :
 		tree{ tree },
 		path{ path },
 		accessType{ accessType }
@@ -46,11 +47,11 @@ public:
 
 private:
 	pt::ptree &tree;
-	const std::string &path;
+	const string &path;
 	AccessType accessType;
 };
 
-void AccessTree(std::string fileName, Items &items, ValueAccessor::AccessType accessType)
+void AccessTree(string fileName, Items &items, ValueAccessor::AccessType accessType)
 {
 	pt::ptree tree;
 
@@ -74,7 +75,7 @@ void AccessTree(std::string fileName, Items &items, ValueAccessor::AccessType ac
 
 
 AttribAccessor::AttribAccessor() :
-	itemsImpl{ std::make_unique<ItemsImpl>() }
+	itemsImpl{ make_unique<ItemsImpl>() }
 {
 }
 
@@ -82,17 +83,17 @@ AttribAccessor::~AttribAccessor()
 {
 }
 
-void AttribAccessor::Load(std::string fileName)
+void AttribAccessor::Load(string fileName)
 {
 	AccessTree(fileName, itemsImpl->items, ValueAccessor::AccessType::LOAD_FROM_TREE);
 }
 
-void AttribAccessor::Save(std::string fileName)
+void AttribAccessor::Save(string fileName)
 {
 	AccessTree(fileName, itemsImpl->items, ValueAccessor::AccessType::STORE_IN_TREE);
 }
 
-void AttribAccessor::InternalRegisterItem(ValueType value, std::string path)
+void AttribAccessor::InternalRegisterItem(ValueType value, string path)
 {
 	itemsImpl->items.push_back(Item{ value, path });
 }

@@ -11,8 +11,11 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 using namespace VT;
+using namespace std;
+using namespace Routines;
 
-using PluginsArrayDynamic = std::vector<std::unique_ptr<Plugin>>;
+
+using PluginsArrayDynamic = vector<unique_ptr<Plugin>>;
 
 
 struct PluginsManager::PluginsManagerImpl
@@ -27,7 +30,7 @@ struct PluginsManager::PluginsManagerImpl
 
 
 PluginsManager::PluginsManager() :
-	pluginsManagerImpl{ std::make_unique<PluginsManager::PluginsManagerImpl>() }
+	pluginsManagerImpl{ make_unique<PluginsManager::PluginsManagerImpl>() }
 {
 }
 
@@ -35,29 +38,29 @@ PluginsManager::~PluginsManager()
 {
 }
 
-void PluginsManager::ExecuteFunction_(const std::string &pluginName, const std::string &functionName)
+void PluginsManager::ExecuteFunction_(const string &pluginName, const string &functionName)
 {
 	Plugin *plugin = GetDynamicPlugin(pluginName);
 
 	if (plugin == nullptr)
 		ThrowPluginLoadFailure(pluginName);
 
-	std::function<void(void)> f = (void(*)(void))plugin->GetFunctionAddress(functionName);
+	function<void(void)> f = (void(*)(void))plugin->GetFunctionAddress(functionName);
 	GetCallerManager()->RegisterCaller(CreateCaller(f, plugin), CallType::OneTime);
 }
 
-Plugin* PluginsManager::GetDynamicPlugin(const std::string &pluginName)
+Plugin* PluginsManager::GetDynamicPlugin(const string &pluginName)
 {
 	for (auto &plugin : pluginsManagerImpl->pluginsArrayDynamic)
 	{
-		if (Routines::IsSamePath(plugin->GetPluginName(), pluginName))
+		if (IsSamePath(plugin->GetPluginName(), pluginName))
 			return plugin.get();
 	}
 
-	std::unique_ptr<Plugin> plugin{ std::make_unique<Plugin>(pluginName) };
+	unique_ptr<Plugin> plugin{ make_unique<Plugin>(pluginName) };
 
 	Plugin *ret = plugin.get(); // store return result before moving
-	pluginsManagerImpl->pluginsArrayDynamic.push_back(std::move(plugin));
+	pluginsManagerImpl->pluginsArrayDynamic.push_back(move(plugin));
 
 	return ret;
 }

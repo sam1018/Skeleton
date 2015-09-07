@@ -9,9 +9,12 @@
 
 
 using namespace UI;
+using namespace VT;
+using namespace std;
+using namespace Routines;
 
 
-void ListDLLFunctions(std::string sADllName, std::vector<std::string>& slListOfDllFunctions);
+void ListDLLFunctions(string sADllName, vector<string>& slListOfDllFunctions);
 
 
 IPluginExplorer::IPluginExplorer()
@@ -22,75 +25,70 @@ IPluginExplorer::~IPluginExplorer()
 {
 }
 
-void IPluginExplorer::LoadPlugin(const std::string &pluginName, std::vector<std::string> &functions)
+void IPluginExplorer::LoadPlugin(const string &pluginName, vector<string> &functions)
 {
-	VT::IMessagePrinter *messagePrinter = VT::GetMessagePrinter();
+	IMessagePrinter *messagePrinter = GetMessagePrinter();
 
 	// Clear the output window
-	messagePrinter->PrintMessage(VT::MsgCat_PluginExplorer, "", false, false);
+	messagePrinter->PrintMessage(MsgCat_PluginExplorer, "", false, false);
 
-	messagePrinter->PrintMessage(VT::MsgCat_PluginExplorer, 
+	messagePrinter->PrintMessage(MsgCat_PluginExplorer, 
 		"Searching module for exported functions............... ", true, true);
 	ListDLLFunctions(pluginName, functions);
 	if (functions.empty())
-		messagePrinter->PrintMessage(VT::MsgCat_PluginExplorer, 
+		messagePrinter->PrintMessage(MsgCat_PluginExplorer, 
 			"No exported functions found.", true, true);
 	else
-		messagePrinter->PrintMessage(VT::MsgCat_PluginExplorer, 
-			std::to_string(functions.size()) + " exported functions found.", true, true);
+		messagePrinter->PrintMessage(MsgCat_PluginExplorer, 
+			to_string(functions.size()) + " exported functions found.", true, true);
 }
 
 void IPluginExplorer::LoadPlugin()
 {
-	std::string pluginName = UI::GetCommonControls()->GetOpenFileName(
+	string pluginName = GetCommonControls()->GetOpenFileName(
 		GetControlImplementationSpecific(), "Open As", 
-		Routines::GetBinDirectory(), ("dll Files (*.dll)"));
+		GetBinDirectory(), ("dll Files (*.dll)"));
 
-	std::vector<std::string> functions;
+	vector<string> functions;
 	LoadPlugin(pluginName, functions);
 	AddPluginDataToTree(pluginName, functions);
 }
 
-void IPluginExplorer::ExecuteFunction(const std::string &pluginName, const std::string &functionName)
+void IPluginExplorer::ExecuteFunction(const string &pluginName, const string &functionName)
 {
-	VT::IMessagePrinter *messagePrinter = VT::GetMessagePrinter();
+	IMessagePrinter *messagePrinter = GetMessagePrinter();
 
 	// Clear the output window
-	messagePrinter->PrintMessage(VT::MsgCat_PluginExplorer, "", false, false);
+	messagePrinter->PrintMessage(MsgCat_PluginExplorer, "", false, false);
 
 	auto msg{ "Attempting to run function \"" + functionName +
 		"\" In plugin \"" + pluginName + "\"\n" };
 
-	messagePrinter->PrintMessage(VT::MsgCat_PluginExplorer, msg, true, true);
+	messagePrinter->PrintMessage(MsgCat_PluginExplorer, msg, true, true);
 
-	messagePrinter->PrintMessage(VT::MsgCat_PluginExplorer, "Result: ", true, true);
+	messagePrinter->PrintMessage(MsgCat_PluginExplorer, "Result: ", true, true);
 
-	VT::StdRedirector<> redirOut{ std::cout, VT::MsgCat_PluginExplorer };
-	VT::StdRedirector<> redirErr{ std::cerr, VT::MsgCat_PluginExplorer };
+	StdRedirector<> redirOut{ cout, MsgCat_PluginExplorer };
+	StdRedirector<> redirErr{ cerr, MsgCat_PluginExplorer };
 
 	auto success{ true };
 
 	try
 	{
-		VT::GetPluginsManager()->ExecuteFunction(pluginName, functionName);
+		GetPluginsManager()->ExecuteFunction(pluginName, functionName);
 	}
-	catch (std::exception &e)
+	catch (exception &e)
 	{
 		success = false;
-		messagePrinter->PrintMessage(VT::MsgCat_PluginExplorer, e.what(), true, true);
-	}
-	catch (...)
-	{
-		success = false;
-		messagePrinter->PrintMessage(VT::MsgCat_PluginExplorer, "Something went wrong.\n", true, true);
+		messagePrinter->PrintMessage(MsgCat_PluginExplorer, e.what(), true, true);
 	}
 
 	if (success)
-		messagePrinter->PrintMessage(VT::MsgCat_PluginExplorer, "Call to function \"" + functionName + "\" ended successfully.\n", true, true);
+		messagePrinter->PrintMessage(MsgCat_PluginExplorer, "Call to function \"" + functionName + "\" ended successfully.\n", true, true);
 }
 
-void IPluginExplorer::AddPluginDataToTree(const std::string &pluginName,
-	const std::vector<std::string> &functions)
+void IPluginExplorer::AddPluginDataToTree(const string &pluginName,
+	const vector<string> &functions)
 {
 	AddPluginDataToTree_(pluginName, functions);
 }
@@ -112,11 +110,11 @@ void* IPluginExplorer::GetControlImplementationSpecific()
 #include <Imagehlp.h>
 #pragma warning( pop )
 
-void ListDLLFunctions(std::string sADllName, std::vector<std::string>& slListOfDllFunctions)
+void ListDLLFunctions(string sADllName, vector<string>& slListOfDllFunctions)
 {
 	unsigned long cDirSize;
 	_LOADED_IMAGE LoadedImage;
-	std::string sName;
+	string sName;
 	slListOfDllFunctions.clear();
 	if (MapAndLoad(sADllName.c_str(), NULL, &LoadedImage, TRUE, TRUE))
 	{

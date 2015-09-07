@@ -5,18 +5,23 @@
 #include <windows.h> 
 
 
+using namespace VT;
+using namespace std;
+
+
 typedef int(*InitFunc)(int argc, char** argv);
 
-std::wstring StringToWString(std::string src)
+
+wstring StringToWString(string src)
 {
-	std::wstring dest;
+	wstring dest;
 	dest.insert(dest.begin(), src.begin(), src.end());
 	return dest;
 }
 
-std::string WStringToString(std::wstring src)
+string WStringToString(wstring src)
 {
-	std::string dest;
+	string dest;
 	dest.insert(dest.begin(), src.begin(), src.end());
 	return dest;
 }
@@ -24,7 +29,7 @@ std::string WStringToString(std::wstring src)
 struct Plugin::PluginImpl
 {
 	HINSTANCE hinstLib = nullptr;
-	std::string pluginName;
+	string pluginName;
 
 	~PluginImpl()
 	{
@@ -32,14 +37,14 @@ struct Plugin::PluginImpl
 	}
 };
 
-void ThrowPluginLoadFailure(std::string pluginName)
+void ThrowPluginLoadFailure(string pluginName)
 {
-	throw std::system_error(std::error_code(GetLastError(), std::system_category()), "Failed to load plugin: \"" + pluginName + "\". System Error");
+	throw system_error(error_code(GetLastError(), system_category()), "Failed to load plugin: \"" + pluginName + "\". System Error");
 }
 
-void ThrowFunctionLoadFailure(std::string functionName)
+void ThrowFunctionLoadFailure(string functionName)
 {
-	throw std::system_error(std::error_code(GetLastError(), std::system_category()), "Failed to load function: \"" + functionName + "\". System Error");
+	throw system_error(error_code(GetLastError(), system_category()), "Failed to load function: \"" + functionName + "\". System Error");
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -47,10 +52,10 @@ void ThrowFunctionLoadFailure(std::string functionName)
 ///////////////////////////////////////////////////////////////////////////////
 
 
-Plugin::Plugin(std::string pluginName) :
-	pluginImpl{ std::make_unique<PluginImpl>() }
+Plugin::Plugin(string pluginName) :
+	pluginImpl{ make_unique<PluginImpl>() }
 {
-	std::wstring fileName = StringToWString(pluginName);
+	wstring fileName = StringToWString(pluginName);
 
 	pluginImpl->hinstLib = LoadLibrary(fileName.c_str());
 
@@ -63,10 +68,10 @@ Plugin::Plugin(std::string pluginName) :
 
 Plugin::~Plugin()
 {
-	VT::GetCallerManager()->PluginUnloaded(this);
+	GetCallerManager()->PluginUnloaded(this);
 }
 
-void* Plugin::GetFunctionAddress(std::string functionName)
+void* Plugin::GetFunctionAddress(string functionName)
 {
 	void* ret = GetProcAddress(pluginImpl->hinstLib, functionName.c_str());
 	if (!ret)
@@ -80,7 +85,7 @@ void Plugin::PluginInitialize(int argc, char** argv)
 	bool ret = PluginCallerBody<bool, int, char**>(__func__, argc, argv);
 	if (!ret)
 	{
-		std::exception e{ ("Initialization for plugin: \"" + pluginImpl->pluginName + "\" Failed.").c_str() };
+		exception e{ ("Initialization for plugin: \"" + pluginImpl->pluginName + "\" Failed.").c_str() };
 		throw e;
 	}
 }
@@ -90,7 +95,7 @@ void Plugin::PluginDestroy()
 	PluginCallerBody<void>(__func__);
 }
 
-std::string Plugin::GetPluginName()
+string Plugin::GetPluginName()
 {
 	return pluginImpl->pluginName;
 }

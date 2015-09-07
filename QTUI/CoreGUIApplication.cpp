@@ -1,6 +1,8 @@
 #include "CoreGUIApplication.h"
 #include "CoreGUIApplicationImpl.h"
 
+using namespace std;
+
 
 ///////////////////////////////////////////////////////////////////////////////
 /////////////          CoreGUIApplication Definition               ////////////
@@ -8,7 +10,7 @@
 
 
 CoreGUIApplication::CoreGUIApplication(int argc, char **argv) :
-	coreGUIApplicationImpl{ std::make_unique<CoreGUIApplicationImpl>(argc, argv, this) }
+	coreGUIApplicationImpl{ make_unique<CoreGUIApplicationImpl>(argc, argv, this) }
 {
 }
 

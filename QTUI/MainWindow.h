@@ -5,14 +5,14 @@
 
 class MainWindowImpl;
 class OpenGLWindow;
-class OutputWindow;
 class PluginExplorer;
 class CommonControls;
+class OutputWindow;
 
 class MainWindow : public UI::IMainWindow
 {
 public:
-	MainWindow(OpenGLWindow *oglWnd);
+	MainWindow(OpenGLWindow *oglWnd, OutputWindow *outWnd);
 	~MainWindow();
 
 private:
@@ -31,7 +31,6 @@ private:
 	// as long as they are usable by mainWindowImpl
 	///////////////////////////////////////////////////////////////////////////
 
-	std::unique_ptr<OutputWindow> outputWindow;
 	std::unique_ptr<PluginExplorer> pluginExplorer;
 
 	///////////////////////////////////////////////////////////////////////////

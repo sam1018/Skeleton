@@ -1,7 +1,6 @@
 #pragma once
 
 #include "UI/IOutputWindow.h"
-#include <memory>
 
 class OutputWindowImpl;
 class QDockWidget;
@@ -20,5 +19,6 @@ private:
 
 
 private:
-	std::unique_ptr<OutputWindowImpl> outputWindowImpl;
+	// MainWindow will delete it's child controls
+	OutputWindowImpl *outputWindowImpl;
 };

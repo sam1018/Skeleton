@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../SkeletonInterface.h"
+#include "../UI/IOutputWindow.h"
 #include <string>
 
 namespace VT
@@ -28,10 +29,13 @@ namespace VT
 		void PrintMessage(MsgCatID id, const std::string &text, bool append, 
 			bool makeCurrrentCategory);
 
+		void SetOutputWindow(UI::IOutputWindow *wnd);
+
 	private:
 		virtual MsgCatID RegisterMessageCategory_(const std::string &categoryName) = 0;
 		virtual void PrintMessage_(MsgCatID id, const std::string &text, 
 			bool append, bool makeCurrrentCategory) = 0;
+		virtual void SetOutputWindow_(UI::IOutputWindow *wnd) = 0;
 	};
 
 

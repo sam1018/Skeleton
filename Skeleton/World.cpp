@@ -6,22 +6,30 @@
 #include "UI/ICoreGUIApplication.h"
 #include "UI/IUIInterfaceManager.h"
 #include "Vitals/IPluginsManager.h"
+#include "Vitals\IMessagePrinter.h"
 #include "Vitals\IVitalsInterfaceManager.h"
+
+
+using namespace UI;
+using namespace VT;
+using namespace std;
+using namespace Routines;
+
 
 struct World::WorldImpl
 {
-	const std::string settingsFile{ "SkeletonSettings.xml" };
-	SkeletonSettings skeletonSettings{ Routines::GetSettingsFileFullPath_Load(settingsFile) };
-	Module<VT::IVitalsInterfaceManager*> vitalsModule;
-	Module<UI::IUIInterfaceManager*> uiModule;
+	const string settingsFile{ "SkeletonSettings.xml" };
+	SkeletonSettings skeletonSettings{ GetSettingsFileFullPath_Load(settingsFile) };
+	Module<IVitalsInterfaceManager*> vitalsModule;
+	Module<IUIInterfaceManager*> uiModule;
 
 	WorldImpl(int argc, char** argv)
 	{
 		vitalsModule.Initialize(skeletonSettings.vitalsModule, argc, argv);
-		VT::SetVitalsInterfaceManager(vitalsModule.GetInterfaceManager());
+		SetVitalsInterfaceManager(vitalsModule.GetInterfaceManager());
 
 		uiModule.Initialize(skeletonSettings.uiModule, argc, argv);
-		UI::SetUIInterfaceManager(uiModule.GetInterfaceManager());
+		SetUIInterfaceManager(uiModule.GetInterfaceManager());
 	}
 };
 
@@ -32,7 +40,7 @@ struct World::WorldImpl
 
 
 World::World(int argc, char** argv) :
-	worldImpl{ std::make_unique<WorldImpl>(argc, argv) }
+	worldImpl{ make_unique<WorldImpl>(argc, argv) }
 {
 	Initialize();
 }
@@ -43,28 +51,21 @@ World::~World()
 
 void World::Initialize() const
 {
-	//UI::InitializeItems();
+	GetMessagePrinter()->SetOutputWindow(GetOutputWindow());
 
-	UI::ICoreGUIApplication *cga = UI::GetCoreGUIApplication();
-
+	ICoreGUIApplication *cga = GetCoreGUIApplication();
 	cga->FinishInitialization();
-
 	cga->SetupFPS(worldImpl->skeletonSettings.fps);
 }
 
 void World::Show() const
 {
-	UI::GetMainWindow()->Show();
+	GetMainWindow()->Show();
 }
 
 int World::Run() const
 {
-	return UI::GetCoreGUIApplication()->Run();
-}
-
-void World::Cleanup() const
-{
-	//UI::Cleanup();
+	return GetCoreGUIApplication()->Run();
 }
 
 bool World::IsHideCmdPromptAfterInitialization() const

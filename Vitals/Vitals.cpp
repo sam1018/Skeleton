@@ -4,7 +4,11 @@
 #include "MessagePrinter.h"
 #include "Vitals\IVitalsInterfaceManager.h"
 
-class VitalsInterfaceManager : public VT::IVitalsInterfaceManager
+
+using namespace VT;
+
+
+class VitalsInterfaceManager : public IVitalsInterfaceManager
 {
 public:
 	VitalsInterfaceManager()
@@ -16,16 +20,16 @@ public:
 	}
 
 private:
-	virtual VT::IPluginsManager* GetPluginsManager()
+	virtual IPluginsManager* GetPluginsManager()
 	{
 		return &pluginsManager;
 	}
-	virtual VT::ICallerManager* GetCallerManager()
+	virtual ICallerManager* GetCallerManager()
 	{
 		return &CallerManager;
 	}
 
-	virtual VT::IMessagePrinter* GetMessagePrinter()
+	virtual IMessagePrinter* GetMessagePrinter()
 	{
 		return &messagePrinter;
 	}
@@ -43,7 +47,7 @@ extern "C"
 	{
 	}
 
-	VITALS_DECLSPEC VT::IVitalsInterfaceManager* GetInterfaceManager()
+	VITALS_DECLSPEC IVitalsInterfaceManager* GetInterfaceManager()
 	{
 		return &vitalsInterfaceManager;
 	}

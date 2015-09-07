@@ -4,6 +4,11 @@
 #include "Vitals\IVitalsInterfaceManager.h"
 #include <QtCore\QTimer>
 
+
+using namespace VT;
+using namespace std;
+
+
 CoreGUIApplicationImpl::CoreGUIApplicationImpl(int argc, char **argv, CoreGUIApplication *par) :
 	QApplication(argc, argv),
 	parent{ par }
@@ -18,21 +23,21 @@ CoreGUIApplicationImpl::~CoreGUIApplicationImpl()
 
 bool CoreGUIApplicationImpl::notify(QObject * receiver, QEvent * e)
 {
-	using namespace std::string_literals;
+	using namespace string_literals;
 
-	auto messagePrinter{ VT::GetMessagePrinter() };
+	auto messagePrinter{ GetMessagePrinter() };
 
 	try
 	{
 		return QApplication::notify(receiver, e);
 	}
-	catch (std::exception &ex)
+	catch (exception &ex)
 	{
-		messagePrinter->PrintMessage(VT::MsgCat_ErrorMsg, ex.what() + "\n"s, true, true);
+		messagePrinter->PrintMessage(MsgCat_ErrorMsg, ex.what() + "\n"s, true, true);
 	}
 	catch (...)
 	{
-		messagePrinter->PrintMessage(VT::MsgCat_ErrorMsg, "Something went wrong.\n", true, true);
+		messagePrinter->PrintMessage(MsgCat_ErrorMsg, "Something went wrong.\n", true, true);
 	}
 
 	return false;

@@ -5,6 +5,7 @@
 #include "UI\IUIInterfaceManager.h"
 
 using namespace UI;
+using namespace VT;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -22,8 +23,8 @@ ICoreGUIApplication::~ICoreGUIApplication()
 
 void ICoreGUIApplication::FinishInitialization()
 {
-	VT::ICallerManager *fctMngr = VT::GetCallerManager();
-	UI::IOpenGLWindow *oglWnd = UI::GetOpenGLWindow();
+	ICallerManager *fctMngr = GetCallerManager();
+	IOpenGLWindow *oglWnd = GetOpenGLWindow();
 
 
 	fctMngr->CallbackSetupThread([oglWnd]() { oglWnd->CallbackSetupThread(); });

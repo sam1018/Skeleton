@@ -1,6 +1,7 @@
 #include "CommonControls.h"
 #include <QtWidgets\QFileDialog>
 
+using namespace std;
 
 CommonControls::CommonControls()
 {
@@ -11,9 +12,9 @@ CommonControls::~CommonControls()
 {
 }
 
-std::string CommonControls::GetOpenFileName_(void *parent, const std::string &caption,
-	const std::string &dir, const std::string &filter,
-	std::string *selectedFilter, const int options)
+string CommonControls::GetOpenFileName_(void *parent, const string &caption,
+	const string &dir, const string &filter,
+	string *selectedFilter, const int options)
 {
 	QString filterRes;
 	QString res = QFileDialog::getOpenFileName(static_cast<QWidget*>(parent), 

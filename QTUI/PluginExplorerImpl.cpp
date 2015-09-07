@@ -7,15 +7,21 @@
 #include <QtWidgets\QPushButton>
 #include <QtWidgets\QTreeWidget>
 
+
+using namespace std;
+using namespace Routines;
+
+
 constexpr int PluginPathRole = Qt::UserRole + 1;
 constexpr int ColWithPluginPath = 0;
 
-void SetPluginPath(QTreeWidgetItem *item, const std::string &pluginName)
+
+void SetPluginPath(QTreeWidgetItem *item, const string &pluginName)
 {
 	item->setData(ColWithPluginPath, PluginPathRole, QVariant(pluginName.c_str()));
 }
 
-std::string GetPluginPath(QTreeWidgetItem *item)
+string GetPluginPath(QTreeWidgetItem *item)
 {
 	return item->data(ColWithPluginPath, PluginPathRole).toString().toStdString();
 }
@@ -61,11 +67,11 @@ void PluginExplorerImpl::LoadPlugin()
 	pluginExplorer->LoadPlugin();
 }
 
-void PluginExplorerImpl::AddPluginDataToTree(const std::string &pluginName, const std::vector<std::string> &functions)
+void PluginExplorerImpl::AddPluginDataToTree(const string &pluginName, const vector<string> &functions)
 {
 	if (!functions.empty())
 	{
-		QTreeWidgetItem *plugin = new QTreeWidgetItem({ QString(Routines::GetFileNameFromPath(pluginName).c_str()) });
+		QTreeWidgetItem *plugin = new QTreeWidgetItem({ QString(GetFileNameFromPath(pluginName).c_str()) });
 
 		SetPluginPath(plugin, pluginName);
 

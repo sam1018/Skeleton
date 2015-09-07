@@ -16,8 +16,6 @@ public:
 
 	int Run() const;
 
-	void Cleanup() const;
-
 	bool IsHideCmdPromptAfterInitialization() const;
 
 private:

@@ -3,12 +3,15 @@
 #include <iostream>
 #include <Windows.h>
 
+using namespace std;
+using namespace Routines;
+
 
 int main(int argc, char** argv)
 {
 	try
 	{
-		Routines::SetBinFilePath(argv[0]);
+		SetBinFilePath(argv[0]);
 
 		World world(argc, argv);
 
@@ -23,16 +26,13 @@ int main(int argc, char** argv)
 
 		// Run the application
 		world.Run();
-
-		// Application finished... Cleanup Time
-		world.Cleanup();
 	}
-	catch (std::exception &e)
+	catch (exception &e)
 	{
-		std::cerr << e.what() << "\n";
+		cerr << e.what() << "\n";
 	}
 	catch (...)
 	{
-		std::cerr << "Something went wrong!!! Closing application.\n";
+		cerr << "Something went wrong!!! Closing application.\n";
 	}
 }

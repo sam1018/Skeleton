@@ -1,6 +1,7 @@
 #include "Vitals\Caller.h"
 
 using namespace VT;
+using namespace std;
 
 
 struct Caller::CallerImpl
@@ -14,9 +15,9 @@ struct Caller::CallerImpl
 	{
 	}
 
-	std::unique_ptr<CallerImpl> Clone()
+	unique_ptr<CallerImpl> Clone()
 	{
-		return std::make_unique<CallerImpl>(func, plugin);
+		return make_unique<CallerImpl>(func, plugin);
 	}
 };
 
@@ -24,14 +25,14 @@ template <typename RetType>
 class FunctionVisitor : public boost::static_visitor<RetType>
 {
 public:
-	RetType operator()(std::function<RetType(void)> f)
+	RetType operator()(function<RetType(void)> f)
 	{
 		f();
 	}
 };
 
 Caller::Caller(FunctionType f, IPlugin *p) :
-	callerImpl{ std::make_unique<CallerImpl>(f, p) }
+	callerImpl{ make_unique<CallerImpl>(f, p) }
 {
 }
 
@@ -39,19 +40,19 @@ Caller::~Caller()
 {
 }
 
-Caller::Caller(const VT::Caller &right)
+Caller::Caller(const Caller &right)
 {
 	callerImpl = right.callerImpl->Clone();
 }
 
-Caller::Caller(VT::Caller &&right)
+Caller::Caller(Caller &&right)
 {
-	callerImpl = std::move(right.callerImpl);
+	callerImpl = move(right.callerImpl);
 }
 
 Caller& Caller::operator=(Caller right)
 {
-	std::swap(*this, right);
+	swap(*this, right);
 	return *this;
 }
 
@@ -61,7 +62,7 @@ void Caller::ExecuteCaller()
 	boost::apply_visitor(ob, callerImpl->func);
 }
 
-IPlugin * VT::Caller::GetPlugin() const
+IPlugin * Caller::GetPlugin() const
 {
 	return callerImpl->plugin;
 }

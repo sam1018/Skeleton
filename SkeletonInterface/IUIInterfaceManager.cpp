@@ -26,6 +26,7 @@ namespace UI
 		ADD_PROP(ICoreGUIApplication*, GetCoreGUIApplication)
 		ADD_PROP(IMainWindow*, GetMainWindow)
 		ADD_PROP(IOpenGLWindow*, GetOpenGLWindow)
+		ADD_PROP(IOutputWindow*, GetOutputWindow)
 
 	private:
 		IUIInterfaceManager *uiInterfaceManager = nullptr;
@@ -60,4 +61,9 @@ IMainWindow* UI::GetMainWindow()
 IOpenGLWindow* UI::GetOpenGLWindow()
 {
 	return uiInterfaceMngrAccessor.GetOpenGLWindow();
+}
+
+IOutputWindow * UI::GetOutputWindow()
+{
+	return uiInterfaceMngrAccessor.GetOutputWindow();
 }

@@ -5,19 +5,25 @@
 #include "CoreGUIApplication.h"
 #include "Routines.h"
 #include "OpenGLWindow.h"
-#include "UI\IUIInterfaceManager.h"
+#include "OutputWindow.h"
 #include "CommonControls.h"
+#include "UI\IUIInterfaceManager.h"
 #include <memory>
 
+using namespace UI;
+using namespace std;
+using namespace Routines;
 
-class UIInterfaceManager : public UI::IUIInterfaceManager
+
+class UIInterfaceManager : public IUIInterfaceManager
 {
 public:
 	UIInterfaceManager(int argc, char** argv) :
-		app{ std::make_unique<CoreGUIApplication>(argc, argv) },
-		commonControls{ std::make_unique<CommonControls>() },
-		openGLWindow{ std::make_unique<OpenGLWindow>() },
-		mainWindow{ std::make_unique<MainWindow>(openGLWindow.get()) }
+		app{ make_unique<CoreGUIApplication>(argc, argv) },
+		commonControls{ make_unique<CommonControls>() },
+		openGLWindow{ make_unique<OpenGLWindow>() },
+		outputWindow{ make_unique<OutputWindow>() },
+		mainWindow{ make_unique<MainWindow>(openGLWindow.get(), outputWindow.get()) }
 	{
 	}
 
@@ -26,31 +32,37 @@ public:
 	}
 
 private:
-	virtual UI::ICommonControls* GetCommonControls()
+	virtual ICommonControls* GetCommonControls()
 	{
 		return commonControls.get();
 	}
 
-	virtual UI::ICoreGUIApplication* GetCoreGUIApplication()
+	virtual ICoreGUIApplication* GetCoreGUIApplication()
 	{
 		return app.get();
 	}
 
-	virtual UI::IMainWindow* GetMainWindow()
+	virtual IMainWindow* GetMainWindow()
 	{
 		return mainWindow.get();
 	}
 
-	virtual UI::IOpenGLWindow* GetOpenGLWindow()
+	virtual IOpenGLWindow* GetOpenGLWindow()
 	{
 		return openGLWindow.get();
 	}
 
+	virtual IOutputWindow* GetOutputWindow()
+	{
+		return outputWindow.get();
+	}
+
 private:
-	std::unique_ptr <CoreGUIApplication> app;
-	std::unique_ptr<CommonControls> commonControls;
-	std::unique_ptr<OpenGLWindow> openGLWindow;
-	std::unique_ptr <MainWindow> mainWindow;
+	unique_ptr <CoreGUIApplication> app;
+	unique_ptr<CommonControls> commonControls;
+	unique_ptr<OpenGLWindow> openGLWindow;
+	unique_ptr<OutputWindow> outputWindow;
+	unique_ptr <MainWindow> mainWindow;
 
 } *uiInterfaceManager;
 
@@ -70,18 +82,18 @@ extern "C"
 {
 	QTUI_DECLSPEC void InitializeModule(int argc, char** argv, int)
 	{
-		GetQTUISettings().Load(Routines::GetSettingsFileFullPath_Load(settingsFile));
+		GetQTUISettings().Load(GetSettingsFileFullPath_Load(settingsFile));
 		uiInterfaceManager = new UIInterfaceManager(argc, argv);
 	}
 
-	QTUI_DECLSPEC UI::IUIInterfaceManager* GetInterfaceManager()
+	QTUI_DECLSPEC IUIInterfaceManager* GetInterfaceManager()
 	{
 		return uiInterfaceManager;
 	}
 
 	QTUI_DECLSPEC void DestroyModule()
 	{
-		GetQTUISettings().Save(Routines::GetSettingsFileFullPath_Save(settingsFile));
+		GetQTUISettings().Save(GetSettingsFileFullPath_Save(settingsFile));
 		delete uiInterfaceManager;
 	}
 }

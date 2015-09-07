@@ -3,6 +3,9 @@
 #include <QtCore\QSettings>
 #include <QtWidgets\QToolBar>
 
+using namespace std;
+using namespace Routines;
+
 
 class QSettingsHelper
 {
@@ -32,14 +35,14 @@ public:
 
 private:
 	QSettingsHelper() :
-		settings{ Routines::GetCompanyName().c_str(), Routines::GetApplicationName().c_str() }
+		settings{ GetCompanyName().c_str(), GetApplicationName().c_str() }
 	{
 	}
 
 private:
 	QSettings settings;
-	const std::string geometryKey{ "geometry" };
-	const std::string windowStateKey{ "windowState" };
+	const string geometryKey{ "geometry" };
+	const string windowStateKey{ "windowState" };
 };
 
 
@@ -98,7 +101,7 @@ void MainWindowImpl::closeEvent(QCloseEvent *event)
 //void MainWindowImpl::AppendToDebug()
 //{
 //	static int x = 0;
-//	OutWnd::OutputWindowSetText(debugID, (std::string("Some Text: ") + std::to_string(x++)), true, true);
+//	OutWnd::OutputWindowSetText(debugID, (string("Some Text: ") + to_string(x++)), true, true);
 //}
 //
 //void MainWindowImpl::AddCatDebug2()
@@ -109,5 +112,5 @@ void MainWindowImpl::closeEvent(QCloseEvent *event)
 //void MainWindowImpl::AppendToDebug2()
 //{
 //	static int x = 0;
-//	OutWnd::OutputWindowSetText(debugID2, (std::string("Some Some Other Text XXXXXXXXXXXXXXXXXXXX Text: ") + std::to_string(x++)), true, true);
+//	OutWnd::OutputWindowSetText(debugID2, (string("Some Some Other Text XXXXXXXXXXXXXXXXXXXX Text: ") + to_string(x++)), true, true);
 //}
