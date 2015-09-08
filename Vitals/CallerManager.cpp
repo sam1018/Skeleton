@@ -1,9 +1,12 @@
 #include "Plugin.h"
 #include "CallerManager.h"
+#include "Vitals\IMessagePrinter.h"
+#include "Vitals\IVitalsInterfaceManager.h"
 #include <vector>
 #include <mutex>
 #include <thread>
 #include <atomic>
+#include <iostream>
 
 using namespace VT;
 using namespace std;
@@ -28,7 +31,7 @@ public:
 class WorkerThread
 {
 public:
-	WorkerThread()		
+	WorkerThread()
 	{
 	}
 
@@ -60,6 +63,14 @@ public:
 	void StartThread()
 	{
 		StartThreadCalled = true;
+
+		IMessagePrinter *mp = GetMessagePrinter();
+		MsgCatID id = mp->RegisterMessageCategory("Output");
+
+		//outRedirHandler = mp->RedirectStream(cout, id);
+		//errRedirHandler = mp->RedirectStream(cerr, id);
+
+
 		t = thread([this]() { Run(); });
 	}
 
@@ -145,8 +156,11 @@ private:
 	bool StartThreadCalled = false;
 	//</>
 
-	// <Following variables don't need atomic, as they are only used within Run()>
-	Callers callers;
+	// <Following variables don't need atomic
+	// As except for initialization, they are only used within Run()>
+	Callers callers; 
+	unique_ptr<IRedirHandler> outRedirHandler;
+	unique_ptr<IRedirHandler> errRedirHandler;
 	// </>
 
 	// <Following variables don't need atomic, as we make sure, calling them after StartThread() calll is an error>

@@ -3,6 +3,7 @@
 #include"Vitals\IMessagePrinter.h"
 #include <memory>
 
+
 class MessagePrinter : public VT::IMessagePrinter
 {
 public:
@@ -14,6 +15,7 @@ private:
 	virtual void PrintMessage_(VT::MsgCatID id, const std::string &text, bool append, 
 		bool makeCurrrentCategory, const char *file, int line);
 	virtual void SetOutputWindow_(UI::IOutputWindow *wnd);
+	virtual std::unique_ptr<VT::IRedirHandler> RedirectStream_(std::ostream &stream, VT::MsgCatID cat);
 
 private:
 	class MessagePrinterImpl;

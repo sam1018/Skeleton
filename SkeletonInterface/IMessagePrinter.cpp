@@ -8,6 +8,25 @@ using namespace std;
 MsgCatID VT::MsgCat_PluginExplorer;
 MsgCatID VT::MsgCat_ErrorMsg;
 
+
+
+IRedirHandler::~IRedirHandler()
+{
+}
+
+void IRedirHandler::Pause()
+{
+	Pause_();
+}
+
+void IRedirHandler::Resume()
+{
+	Resume_();
+}
+
+
+
+
 IMessagePrinter::IMessagePrinter()
 {
 }
@@ -30,4 +49,9 @@ void IMessagePrinter::PrintMessage(MsgCatID id, const string &text, bool append,
 void IMessagePrinter::SetOutputWindow(IOutputWindow * wnd)
 {
 	SetOutputWindow_(wnd);
+}
+
+std::unique_ptr<IRedirHandler> IMessagePrinter::RedirectStream(std::ostream & stream, MsgCatID cat)
+{
+	return RedirectStream_(stream, cat);
 }

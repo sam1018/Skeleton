@@ -51,12 +51,6 @@ void IPluginExplorer::LoadPlugin()
 
 void IPluginExplorer::ExecuteFunction(const string &pluginName, const string &functionName)
 {
-	// Clear the output window
-	//PRINT_MESSAGE(MsgCat_PluginExplorer, "", false, false)
-
-		StdRedirector<> redirOut{ cout, MsgCat_PluginExplorer };
-	StdRedirector<> redirErr{ cerr, MsgCat_PluginExplorer };
-
 	auto success{ true };
 
 	try

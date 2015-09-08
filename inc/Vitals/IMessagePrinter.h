@@ -39,6 +39,24 @@ namespace VT
 	extern MsgCatID SKELETONINTERFACE_DECLSPEC MsgCat_PluginExplorer;
 	extern MsgCatID SKELETONINTERFACE_DECLSPEC MsgCat_ErrorMsg;
 
+
+
+	// Simply delete IRedirHandler when you are done redirecting
+	class SKELETONINTERFACE_DECLSPEC IRedirHandler
+	{
+	public:
+		virtual ~IRedirHandler() = 0;
+		void Pause();
+		void Resume();
+
+	private:
+		virtual void Pause_() = 0;
+		virtual void Resume_() = 0;
+	};
+
+
+
+
 	class SKELETONINTERFACE_DECLSPEC IMessagePrinter
 	{
 	public:
@@ -53,57 +71,17 @@ namespace VT
 
 		// Thread safety: Thread safe through locking
 		void PrintMessage(MsgCatID id, const std::string &text, bool append, 
-			bool makeCurrrentCategory, const char *file, int line);
+			bool makeCurrrentCategory, const char *file = nullptr, int line = -1);
 
 		void SetOutputWindow(UI::IOutputWindow *wnd);
+
+		std::unique_ptr<IRedirHandler> RedirectStream(std::ostream &stream, MsgCatID cat);
 
 	private:
 		virtual MsgCatID RegisterMessageCategory_(const std::string &categoryName) = 0;
 		virtual void PrintMessage_(MsgCatID id, const std::string &text, 
 			bool append, bool makeCurrrentCategory, const char *file, int line) = 0;
 		virtual void SetOutputWindow_(UI::IOutputWindow *wnd) = 0;
-	};
-
-
-	template< class Elem = char, class Tr = std::char_traits< Elem > >
-	class StdRedirector : public std::basic_streambuf< Elem, Tr >
-	{
-	public:
-		StdRedirector(std::ostream &a_Stream, MsgCatID wnd) :
-			m_Stream{ a_Stream },
-			outWndId{ wnd }
-		{
-			m_pBuf = m_Stream.rdbuf(this);
-		}
-
-		~StdRedirector()
-		{
-			m_Stream.rdbuf(m_pBuf);
-		}
-
-		/**
-		* Override xsputn and make it forward data to the callback function.
-		*/
-		std::streamsize xsputn(const Elem *_Ptr, std::streamsize _Count)
-		{
-			PRINT_MESSAGE(outWndId, _Ptr, true, true)
-			return _Count;
-		}
-
-		/**
-		* Override overflow and make it forward data to the callback function.
-		*/
-		typename Tr::int_type overflow(typename Tr::int_type v)
-		{
-			std::string s;
-			s += Tr::to_char_type(v);
-			PRINT_MESSAGE(outWndId, s, true, true)
-			return Tr::not_eof(v);
-		}
-
-	private:
-		std::basic_ostream<Elem, Tr> &m_Stream;
-		std::streambuf *m_pBuf;
-		MsgCatID outWndId;
+		virtual std::unique_ptr<IRedirHandler> RedirectStream_(std::ostream &stream, MsgCatID cat) = 0;
 	};
 }
