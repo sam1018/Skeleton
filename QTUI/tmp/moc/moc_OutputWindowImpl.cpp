@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_OutputWindowImpl_t {
-    QByteArrayData data[8];
-    char stringdata0[102];
+    QByteArrayData data[10];
+    char stringdata0[127];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,12 +36,15 @@ QT_MOC_LITERAL(3, 36, 12), // "categoryName"
 QT_MOC_LITERAL(4, 49, 13), // "RefreshSignal"
 QT_MOC_LITERAL(5, 63, 4), // "text"
 QT_MOC_LITERAL(6, 68, 18), // "AddCategoryHandler"
-QT_MOC_LITERAL(7, 87, 14) // "RefreshHandler"
+QT_MOC_LITERAL(7, 87, 14), // "RefreshHandler"
+QT_MOC_LITERAL(8, 102, 20), // "ComboCategoryChanged"
+QT_MOC_LITERAL(9, 123, 3) // "cat"
 
     },
     "OutputWindowImpl\0AddCategorySignal\0\0"
     "categoryName\0RefreshSignal\0text\0"
-    "AddCategoryHandler\0RefreshHandler"
+    "AddCategoryHandler\0RefreshHandler\0"
+    "ComboCategoryChanged\0cat"
 };
 #undef QT_MOC_LITERAL
 
@@ -51,7 +54,7 @@ static const uint qt_meta_data_OutputWindowImpl[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -59,12 +62,13 @@ static const uint qt_meta_data_OutputWindowImpl[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   34,    2, 0x06 /* Public */,
-       4,    2,   37,    2, 0x06 /* Public */,
+       1,    1,   39,    2, 0x06 /* Public */,
+       4,    2,   42,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       6,    1,   42,    2, 0x0a /* Public */,
-       7,    2,   45,    2, 0x0a /* Public */,
+       6,    1,   47,    2, 0x0a /* Public */,
+       7,    2,   50,    2, 0x0a /* Public */,
+       8,    1,   55,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    3,
@@ -73,6 +77,7 @@ static const uint qt_meta_data_OutputWindowImpl[] = {
  // slots: parameters
     QMetaType::Void, QMetaType::QString,    3,
     QMetaType::Void, QMetaType::QString, QMetaType::QString,    3,    5,
+    QMetaType::Void, QMetaType::QString,    9,
 
        0        // eod
 };
@@ -87,6 +92,7 @@ void OutputWindowImpl::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         case 1: _t->RefreshSignal((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         case 2: _t->AddCategoryHandler((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 3: _t->RefreshHandler((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 4: _t->ComboCategoryChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -132,13 +138,13 @@ int OutputWindowImpl::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 5)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 5;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 4)
+        if (_id < 5)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 4;
+        _id -= 5;
     }
     return _id;
 }

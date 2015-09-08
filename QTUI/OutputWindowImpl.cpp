@@ -1,8 +1,9 @@
 #include "OutputWindowImpl.h"
 #include "OutputWindow.h"
-#include <QtWidgets\QVBoxLayout>
 #include <QtWidgets\QComboBox>
+#include <QtWidgets\QVBoxLayout>
 #include <QtWidgets\QPlainTextEdit>
+
 
 using namespace std;
 
@@ -38,6 +39,7 @@ OutputWindowImpl::OutputWindowImpl(OutputWindow *wnd) :
 	// The below signal slot mechanism makes sure it is handled in the main thread
 	connect(this, SIGNAL(AddCategorySignal(const QString&)), this, SLOT(AddCategoryHandler(const QString&)));
 	connect(this, SIGNAL(RefreshSignal(const QString&, const QString&)), this, SLOT(RefreshHandler(const QString&, const QString&)));
+	connect(comboCatagory, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(ComboCategoryChanged(const QString&)));
 }
 
 
@@ -60,6 +62,11 @@ void OutputWindowImpl::Refresh(const string &categoryName, const string &text)
 	emit RefreshSignal(QString(categoryName.c_str()), QString(text.c_str()));
 }
 
+void OutputWindowImpl::SetComboCategoryChangedCallback(std::function<void(const std::string&)> callback)
+{
+	ComboCategoryChangedCallback = callback;
+}
+
 void OutputWindowImpl::RefreshHandler(const QString &categoryName, const QString &text)
 {
 	comboCatagory->setCurrentText(categoryName);
@@ -69,4 +76,10 @@ void OutputWindowImpl::RefreshHandler(const QString &categoryName, const QString
 	QTextCursor cursor(textEdit->textCursor());
 	cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
 	textEdit->setTextCursor(cursor);
+}
+
+void OutputWindowImpl::ComboCategoryChanged(const QString &cat)
+{
+	if(ComboCategoryChangedCallback)
+		ComboCategoryChangedCallback(cat.toStdString());
 }

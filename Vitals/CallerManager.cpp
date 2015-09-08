@@ -35,7 +35,8 @@ public:
 	~WorkerThread()
 	{
 		keepGoing = false;
-		t.join();
+		if (StartThreadCalled)
+			t.join();
 	}
 
 	void CallbackSetupThread(function<void(void)> f)

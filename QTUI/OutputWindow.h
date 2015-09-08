@@ -16,6 +16,7 @@ public:
 private:
 	virtual void AddCategory_(const std::string &categoryName);
 	virtual void Refresh_(const std::string &categoryName, const std::string &text);
+	virtual void SetComboCategoryChangedCallback_(std::function<void(const std::string&)> callback);
 
 
 private:

@@ -2,6 +2,7 @@
 
 #include "SkeletonInterface.h"
 #include <string>
+#include <functional>
 
 namespace UI
 {
@@ -25,8 +26,11 @@ namespace UI
 		void AddCategory(const std::string &categoryName);
 		void Refresh(const std::string &categoryName, const std::string &text);
 
+		void SetComboCategoryChangedCallback(std::function<void(const std::string&)> callback);
+
 	private:
 		virtual void AddCategory_(const std::string &categoryName) = 0;
 		virtual void Refresh_(const std::string &categoryName, const std::string &text) = 0;
+		virtual void SetComboCategoryChangedCallback_(std::function<void(const std::string&)> callback) = 0;
 	};
 }

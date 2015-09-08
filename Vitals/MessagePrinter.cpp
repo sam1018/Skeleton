@@ -42,10 +42,19 @@ class MessagePrinter::MessagePrinterImpl
 			throw runtime_error((item + ": No such output window category.").c_str());
 	}
 
+	void ComboCategoryChanged(const std::string &cat)
+	{
+		auto iter = GetCategoryByName(cat);
+		PrintMessage(iter->id, iter->text, false, true, __FILE__, __LINE__);
+	}
+
 public:
 	void SetOutputWindow(IOutputWindow *param)
 	{
 		outputWindow = param;
+
+		// Vitals leave longer than UI... so no worries regarding lifetime
+		outputWindow->SetComboCategoryChangedCallback([this](const std::string &cat) {ComboCategoryChanged(cat); });
 
 		if (outputWindow)
 		{
@@ -93,7 +102,7 @@ public:
 		return ss.str();
 	}
 
-	void OutputWindowSetText(MsgCatID id, const string &text, bool append, 
+	void PrintMessage(MsgCatID id, const string &text, bool append,
 		bool makeCurrrentCategory, const char *file, int line)
 	{
 		lock_guard<mutex> lock(m);
@@ -156,7 +165,7 @@ MsgCatID MessagePrinter::RegisterMessageCategory_(const string &categoryName)
 void MessagePrinter::PrintMessage_(MsgCatID id, const string &text, bool append,
 	bool makeCurrrentCategory, const char *file, int line)
 {
-	messagePrinterImpl->OutputWindowSetText(id, text, append, makeCurrrentCategory, file, line);
+	messagePrinterImpl->PrintMessage(id, text, append, makeCurrrentCategory, file, line);
 }
 
 void MessagePrinter::SetOutputWindow_(IOutputWindow * wnd)

@@ -24,3 +24,8 @@ void IOutputWindow::Refresh(const string &categoryName, const string &text)
 {
 	Refresh_(categoryName, text);
 }
+
+void UI::IOutputWindow::SetComboCategoryChangedCallback(std::function<void(const std::string&)> callback)
+{
+	SetComboCategoryChangedCallback_(callback);
+}
