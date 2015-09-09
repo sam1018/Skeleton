@@ -1,16 +1,18 @@
 #include "MessagePrinter.h"
 #include "UI\IOutputWindow.h"
 #include "Vitals\IVitalsInterfaceManager.h"
-#include <vector>
-#include <algorithm>
 #include <mutex>
-#include <iostream>
+#include <vector>
 #include <sstream>
+#include <iostream>
+#include <algorithm>
+#include <boost\circular_buffer.hpp>
 
 
 using namespace UI;
 using namespace VT;
 using namespace std;
+using namespace boost;
 
 
 
@@ -97,7 +99,14 @@ class MessagePrinter::MessagePrinterImpl
 	{
 		MsgCatID id;
 		string categoryName;
-		string text;
+		circular_buffer<char> text;
+
+		Category(MsgCatID catId, const string &categoryName, int bufferSize) :
+			id{ catId },
+			categoryName{ categoryName },
+			text{ bufferSize }
+		{
+		}
 	};
 
 	using Categories = vector<Category>;
@@ -124,7 +133,8 @@ class MessagePrinter::MessagePrinterImpl
 	void ComboCategoryChanged(const std::string &cat)
 	{
 		auto iter = GetCategoryByName(cat);
-		PrintMessage(iter->id, iter->text, false, true, __FILE__, __LINE__);
+		PrintMessage(iter->id, string{ iter->text.begin(), iter->text.end() }, 
+			false, true, __FILE__, __LINE__);
 	}
 
 public:
@@ -151,7 +161,7 @@ public:
 		MsgCatID ret = nextId;
 		if (iter == categories.end())
 		{
-			categories.push_back(Category{ nextId++, categoryName, "" });
+			categories.push_back(Category{ nextId++, categoryName, settings.bufferSize });
 
 			if (outputWindow)
 			{
@@ -192,10 +202,11 @@ public:
 
 		string msg = FormatMsg(text, file, line);
 
-		if (append)
-			iter->text += msg;
-		else
-			iter->text = msg;
+		if(!append)
+			iter->text.clear();
+
+		for (auto &c : msg)
+			iter->text.push_back(c);
 
 		if (makeCurrrentCategory)
 		{
@@ -204,13 +215,13 @@ public:
 				// This function may get called outside of main thread
 				// QT Plugin needs to make sure this situation is properly handled
 				// Because, in QT this is not acceptable to send event to an object outside of GUI thread
-				outputWindow->Refresh(iter->categoryName, iter->text);
+				outputWindow->Refresh(iter->categoryName, string{ iter->text.begin(), iter->text.end() });
 			}
 			else
 			{
 				// User wants to print something, but outputWindow is not yet ready
 				// So print it in cout
-				cout << iter->text << "\n";
+				cout << string{ iter->text.begin(), iter->text.end() } << "\n";
 			}
 		}
 	}

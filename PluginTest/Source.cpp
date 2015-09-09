@@ -11,8 +11,8 @@ extern "C" void __declspec(dllexport) TestFuncMsg()
 
 extern "C" void __declspec(dllexport) TestFuncRandNums()
 {
-	for (int i = 0; i < 15; i++)
-		cout << i << " " << rand() << "\n";
+	for (;;)
+		cout << rand() << " " << rand() << "\n";
 }
 
 void Msg()

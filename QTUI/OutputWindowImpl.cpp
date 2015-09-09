@@ -69,7 +69,11 @@ void OutputWindowImpl::SetComboCategoryChangedCallback(std::function<void(const 
 
 void OutputWindowImpl::RefreshHandler(const QString &categoryName, const QString &text)
 {
+	// We don't want to create a loop of signals between RefreshSignal and currentIndexChanged
+	disconnect(comboCatagory, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(ComboCategoryChanged(const QString&)));
 	comboCatagory->setCurrentText(categoryName);
+	connect(comboCatagory, SIGNAL(currentIndexChanged(const QString&)), this, SLOT(ComboCategoryChanged(const QString&)));
+
 	textEdit->setPlainText(text);
 
 	//move the cursor to the end of the text

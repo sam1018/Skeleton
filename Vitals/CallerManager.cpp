@@ -64,12 +64,17 @@ public:
 	{
 		StartThreadCalled = true;
 
-		IMessagePrinter *mp = GetMessagePrinter();
-		MsgCatID id = mp->RegisterMessageCategory("Output");
+		if (cmSettings.redirectErrStream || cmSettings.redirectOutStream)
+		{
+			IMessagePrinter *mp = GetMessagePrinter();
+			MsgCatID id = mp->RegisterMessageCategory("Output");
 
-		//outRedirHandler = mp->RedirectStream(cout, id);
-		//errRedirHandler = mp->RedirectStream(cerr, id);
+			if (cmSettings.redirectOutStream)
+				outRedirHandler = mp->RedirectStream(cout, id);
 
+			if (cmSettings.redirectErrStream)
+				errRedirHandler = mp->RedirectStream(cerr, id);
+		}
 
 		t = thread([this]() { Run(); });
 	}
@@ -154,6 +159,7 @@ private:
 
 	// <Following variables don't need atomic, as they won't be accessed within Run()>
 	bool StartThreadCalled = false;
+	CallerManagerSettings cmSettings;
 	//</>
 
 	// <Following variables don't need atomic

@@ -19,12 +19,14 @@ namespace VT
 		bool showFileName;
 		bool showLineNumber;
 		bool appendNewLine;
+		int bufferSize;
 
 		MessagePrinterSettings()
 		{
 			accessor.RegisterItem(showFileName, "SkeletonSettings.MessagePrinter.ShowFileName");
 			accessor.RegisterItem(showLineNumber, "SkeletonSettings.MessagePrinter.ShowLineNumber");
 			accessor.RegisterItem(appendNewLine, "SkeletonSettings.MessagePrinter.AppendNewLine");
+			accessor.RegisterItem(bufferSize, "SkeletonSettings.MessagePrinter.BufferSize");
 
 			accessor.Load(Routines::GlobalSettingsFilePath());
 		}

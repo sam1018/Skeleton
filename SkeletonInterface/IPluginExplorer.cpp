@@ -27,6 +27,9 @@ IPluginExplorer::~IPluginExplorer()
 
 void IPluginExplorer::LoadPlugin(const string &pluginName, vector<string> &functions)
 {
+	if (pluginName == "")
+		return;
+
 	// Clear the output window
 	PRINT_MESSAGE(MsgCat_PluginExplorer, "", false, false)
 	PRINT_MESSAGE(MsgCat_PluginExplorer, "Searching module for exported functions............... ", true, true)

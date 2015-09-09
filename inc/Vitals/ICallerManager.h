@@ -1,11 +1,30 @@
 #pragma once
 
 #include "Caller.h"
+#include "../Settings.h"
+#include "../Routines.h"
 #include"../SkeletonInterface.h"
 #include <functional>
 
 namespace VT
 {
+	struct CallerManagerSettings
+	{
+		Settings::AttribAccessor accessor;
+		bool redirectOutStream;
+		bool redirectErrStream;
+
+		CallerManagerSettings()
+		{
+			accessor.RegisterItem(redirectOutStream, "SkeletonSettings.CallerManager.RedirectOutStream");
+			accessor.RegisterItem(redirectErrStream, "SkeletonSettings.CallerManager.RedirectErrStream");
+
+			accessor.Load(Routines::GlobalSettingsFilePath());
+		}
+	};
+
+
+
 	class SKELETONINTERFACE_DECLSPEC ICallerManager
 	{
 	public:
