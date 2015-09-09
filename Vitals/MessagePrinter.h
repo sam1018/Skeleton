@@ -16,6 +16,7 @@ private:
 		bool makeCurrrentCategory, const char *file, int line);
 	virtual void SetOutputWindow_(UI::IOutputWindow *wnd);
 	virtual std::unique_ptr<VT::IRedirHandler> RedirectStream_(std::ostream &stream, VT::MsgCatID cat);
+	virtual void StartPrinterThread_();
 
 private:
 	class MessagePrinterImpl;

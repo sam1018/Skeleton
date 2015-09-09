@@ -46,11 +46,15 @@ World::World(int argc, char** argv) :
 
 World::~World()
 {
+	IMessagePrinter *mp = GetMessagePrinter();
+	mp->SetOutputWindow(nullptr);
 }
 
 void World::Initialize() const
 {
-	GetMessagePrinter()->SetOutputWindow(GetOutputWindow());
+	IMessagePrinter *mp = GetMessagePrinter();
+	mp->SetOutputWindow(GetOutputWindow());
+	mp->StartPrinterThread();
 
 	ICoreGUIApplication *cga = GetCoreGUIApplication();
 	cga->FinishInitialization();

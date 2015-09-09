@@ -3,6 +3,8 @@
 #include "Vitals\IVitalsInterfaceManager.h"
 #include <mutex>
 #include <vector>
+#include <atomic>
+#include <thread>
 #include <sstream>
 #include <iostream>
 #include <algorithm>
@@ -93,13 +95,48 @@ private:
 };
 
 
+class CircularString
+{
+public:
+	explicit CircularString(int bufferSize) :
+		text{ bufferSize }
+	{
+	}
+
+	operator string() const
+	{
+		return string{ text.begin(), text.end() };
+	}
+
+	void Clear()
+	{
+		text.clear();
+	}
+
+	void Append(const std::string &str)
+	{
+		for (auto &c : str)
+			text.push_back(c);
+	}
+
+private:
+	circular_buffer<char> text;
+};
+
+ostream& operator<<(ostream &os, const CircularString &cs)
+{
+	os << (string)cs;
+	return os;
+}
+
+
 class MessagePrinter::MessagePrinterImpl
 {
 	struct Category
 	{
 		MsgCatID id;
 		string categoryName;
-		circular_buffer<char> text;
+		CircularString text;
 
 		Category(MsgCatID catId, const string &categoryName, int bufferSize) :
 			id{ catId },
@@ -110,7 +147,7 @@ class MessagePrinter::MessagePrinterImpl
 	};
 
 	using Categories = vector<Category>;
-	using CategoryIter = vector<Category>::iterator;
+	using CategoryIter = Categories::iterator;
 
 	CategoryIter GetCategoryByName(const string &categoryName)
 	{
@@ -124,36 +161,67 @@ class MessagePrinter::MessagePrinterImpl
 			[id](auto &item) { return item.id == id; });
 	}
 
-	void ThrowIfItemNotFound(CategoryIter iter, const string &item)
-	{
-		if (iter == categories.end())
-			throw runtime_error((item + ": No such output window category.").c_str());
-	}
-
 	void ComboCategoryChanged(const std::string &cat)
 	{
 		auto iter = GetCategoryByName(cat);
-		PrintMessage(iter->id, string{ iter->text.begin(), iter->text.end() }, 
+		PrintMessage(iter->id, iter->text, 
 			false, true, __FILE__, __LINE__);
 	}
 
+	void Runner()
+	{
+		while (keepGoing)
+		{
+			if (needPrinting)
+			{
+				lock_guard<mutex> lock(m);
+				if (outputWindow)
+					outputWindow->Refresh(print->categoryName, print->text);
+				else
+					cout << print->text << "\n";
+
+				needPrinting = false;
+			}
+
+			this_thread::sleep_for(static_cast<chrono::milliseconds>(printerThreadSleepTime));
+		}
+	}
+
 public:
+	MessagePrinterImpl()
+	{
+		categories.reserve(totalCategories);
+	}
+
+	~MessagePrinterImpl()
+	{
+		keepGoing = false;
+		printerThread.join();
+		lock_guard<mutex> lock(m);
+	}
+
 	void SetOutputWindow(IOutputWindow *param)
 	{
 		outputWindow = param;
 
-		// Vitals leave longer than UI... so no worries regarding lifetime
-		outputWindow->SetComboCategoryChangedCallback([this](const std::string &cat) {ComboCategoryChanged(cat); });
-
 		if (outputWindow)
-		{
-			for (auto &item : categories)
-				outputWindow->AddCategory(item.categoryName);
+		{		
+			// Vitals leave longer than UI... so no worries regarding lifetime
+			outputWindow->SetComboCategoryChangedCallback([this](const std::string &cat) {ComboCategoryChanged(cat); });
+
+			if (outputWindow)
+			{
+				for (auto &item : categories)
+					outputWindow->AddCategory(item.categoryName);
+			}
 		}
 	}
 
 	MsgCatID RegisterOutputWindowCategory(const string &categoryName)
 	{
+		if (!keepGoing)
+			return -1;
+
 		lock_guard<mutex> lock(m);
 
 		auto iter = GetCategoryByName(categoryName);
@@ -161,6 +229,8 @@ public:
 		MsgCatID ret = nextId;
 		if (iter == categories.end())
 		{
+			assert(nextId != totalCategories);
+
 			categories.push_back(Category{ nextId++, categoryName, settings.bufferSize });
 
 			if (outputWindow)
@@ -179,50 +249,43 @@ public:
 
 	std::string FormatMsg(const string &text, const char *file, int line)
 	{
-		stringstream ss;
-		if (settings.showFileName)
-			ss << "<File=" << file << ">";
-		if (settings.showLineNumber)
-			ss << "<Line=" << line << ">";
-		ss << text;
-		if (settings.appendNewLine)
-			ss << "\n";
+		using namespace std::literals::string_literals;
 
-		return ss.str();
+		string res;
+		if (settings.showFileName)
+			res += ("<File="s + file + ">"s);
+		if (settings.showLineNumber)
+			res += ("<Line="s + to_string(line) + ">"s);
+		res += text;
+		if (settings.appendNewLine)
+			res += "\n"s;
+
+		return res;
 	}
 
 	void PrintMessage(MsgCatID id, const string &text, bool append,
 		bool makeCurrrentCategory, const char *file, int line)
 	{
+		if (!keepGoing)
+			return;
+
 		lock_guard<mutex> lock(m);
 
 		auto iter = GetCategoryByID(id);
 
-		ThrowIfItemNotFound(iter, to_string(id));
+		assert(iter != categories.end());
 
 		string msg = FormatMsg(text, file, line);
 
 		if(!append)
-			iter->text.clear();
+			iter->text.Clear();
 
-		for (auto &c : msg)
-			iter->text.push_back(c);
+		iter->text.Append(msg);
 
 		if (makeCurrrentCategory)
 		{
-			if (outputWindow)
-			{
-				// This function may get called outside of main thread
-				// QT Plugin needs to make sure this situation is properly handled
-				// Because, in QT this is not acceptable to send event to an object outside of GUI thread
-				outputWindow->Refresh(iter->categoryName, string{ iter->text.begin(), iter->text.end() });
-			}
-			else
-			{
-				// User wants to print something, but outputWindow is not yet ready
-				// So print it in cout
-				cout << string{ iter->text.begin(), iter->text.end() } << "\n";
-			}
+			needPrinting = true;
+			print = iter;
 		}
 	}
 
@@ -231,12 +294,23 @@ public:
 		return make_unique<RedirHandler>(stream, cat);
 	}
 
+	void StartPrinterThread()
+	{
+		printerThread = thread([this]() { Runner(); });
+	}
+
 private:
-	vector<Category> categories;
-	MsgCatID nextId = 23; // it could be 0... doesn't matter why it's 23
+	MsgCatID nextId = 0;
 	IOutputWindow *outputWindow = nullptr;
 	mutex m;
 	MessagePrinterSettings settings;
+	thread printerThread;
+	atomic<bool> keepGoing = true;
+	atomic<bool> needPrinting = false;
+	const int printerThreadSleepTime = 100 / settings.refreshRate;
+	const int totalCategories = settings.totalCategories;
+	Categories categories;
+	CategoryIter print;
 };
 
 
@@ -271,4 +345,9 @@ void MessagePrinter::SetOutputWindow_(IOutputWindow * wnd)
 std::unique_ptr<IRedirHandler> MessagePrinter::RedirectStream_(std::ostream &stream, MsgCatID cat)
 {
 	return messagePrinterImpl->RedirectStream(stream, cat);
+}
+
+void MessagePrinter::StartPrinterThread_()
+{
+	messagePrinterImpl->StartPrinterThread();
 }

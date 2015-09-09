@@ -55,3 +55,8 @@ std::unique_ptr<IRedirHandler> IMessagePrinter::RedirectStream(std::ostream & st
 {
 	return RedirectStream_(stream, cat);
 }
+
+void IMessagePrinter::StartPrinterThread()
+{
+	StartPrinterThread_();
+}

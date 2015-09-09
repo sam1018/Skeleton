@@ -20,6 +20,8 @@ namespace VT
 		bool showLineNumber;
 		bool appendNewLine;
 		int bufferSize;
+		int refreshRate;
+		int totalCategories;
 
 		MessagePrinterSettings()
 		{
@@ -27,6 +29,8 @@ namespace VT
 			accessor.RegisterItem(showLineNumber, "SkeletonSettings.MessagePrinter.ShowLineNumber");
 			accessor.RegisterItem(appendNewLine, "SkeletonSettings.MessagePrinter.AppendNewLine");
 			accessor.RegisterItem(bufferSize, "SkeletonSettings.MessagePrinter.BufferSize");
+			accessor.RegisterItem(refreshRate, "SkeletonSettings.MessagePrinter.RefreshRate");
+			accessor.RegisterItem(totalCategories, "SkeletonSettings.MessagePrinter.TotalCategories");
 
 			accessor.Load(Routines::GlobalSettingsFilePath());
 		}
@@ -79,11 +83,14 @@ namespace VT
 
 		std::unique_ptr<IRedirHandler> RedirectStream(std::ostream &stream, MsgCatID cat);
 
+		void StartPrinterThread();
+
 	private:
 		virtual MsgCatID RegisterMessageCategory_(const std::string &categoryName) = 0;
 		virtual void PrintMessage_(MsgCatID id, const std::string &text, 
 			bool append, bool makeCurrrentCategory, const char *file, int line) = 0;
 		virtual void SetOutputWindow_(UI::IOutputWindow *wnd) = 0;
 		virtual std::unique_ptr<IRedirHandler> RedirectStream_(std::ostream &stream, MsgCatID cat) = 0;
+		virtual void StartPrinterThread_() = 0;
 	};
 }

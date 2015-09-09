@@ -162,9 +162,6 @@
     <ClInclude Include="SkeletonSettings.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Xml Include="..\x64\Settings\SkeletonSettings.xml" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
