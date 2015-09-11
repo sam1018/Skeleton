@@ -10,6 +10,7 @@
 
 using namespace VT;
 using namespace std;
+using namespace chrono;
 
 
 using Callers = vector<Caller>;
@@ -30,6 +31,9 @@ public:
 
 class WorkerThread
 {
+	using DurationTypeLLMicro = duration<long long, ratio<1, 1000000>>;
+	using DurationTypeDS = duration<double>;
+
 public:
 	WorkerThread()
 	{
@@ -38,14 +42,14 @@ public:
 	~WorkerThread()
 	{
 		keepGoing = false;
-		if (StartThreadCalled)
+		if (t.joinable())
 			t.join();
 	}
 
 	void CallbackSetupThread(function<void(void)> f)
 	{
 		CheckStartThreadCall();
-		Init = f;
+		CallFromYourThread = f;
 	}
 
 	void CallbackStartCycle(function<bool(void)> f)
@@ -79,6 +83,21 @@ public:
 		t = thread([this]() { Run(); });
 	}
 
+	void Init()
+	{
+		if (cmSettings.redirectErrStream || cmSettings.redirectOutStream)
+		{
+			IMessagePrinter *mp = GetMessagePrinter();
+			MsgCatID id = mp->RegisterMessageCategory("Output");
+
+			if (cmSettings.redirectOutStream)
+				outRedirHandler = mp->RedirectStream(cout, id);
+
+			if (cmSettings.redirectErrStream)
+				errRedirHandler = mp->RedirectStream(cerr, id);
+		}
+	}
+
 	void AddCallers(const Callers &callers)
 	{
 		lock_guard<mutex> lock(lockAddFuncs);
@@ -100,19 +119,77 @@ public:
 		return readyForNewCycle;
 	}
 
+	void Play(double cps_, const Callers &callers_)
+	{
+		cps = cps_;
+		duration<double> temp{1 / cps};
+		callInterval = DurationTypeLLMicro{ static_cast<long long>(temp.count() * 
+			DurationTypeLLMicro::period::den) };
+
+		callers = callers_;
+
+		Pause();
+
+		if (t.joinable())
+			t.join();
+
+		keepGoing = true;
+
+		t = thread([this]() { Run(); });
+	}
+
+	void Pause()
+	{
+		keepGoing = false;
+	}
+
+	void SetAchievedCPSCallback(std::function<void(double)> AchievedCPSCallback_)
+	{
+		AchievedCPSCallback = AchievedCPSCallback_;
+	}
+
+private:
+	void AchievedCPSCounter()
+	{
+		cpsCounter++;
+
+		ck2_achievedCPSCnt = std::chrono::high_resolution_clock::now();
+
+		auto diff = ck2_achievedCPSCnt - ck1_achievedCPSCnt;
+
+		if (diff >= 1s)
+		{
+			if ((callInterval >= 1s && diff >= callInterval) ||
+				(callInterval < 1s && diff > 1s))
+			{
+				DurationTypeDS duration = diff;
+				AchievedCPSCallback(cpsCounter / duration.count());
+
+				cpsCounter = 0;
+				ck1_achievedCPSCnt = std::chrono::high_resolution_clock::now();
+			}
+		}
+	}
+
 	void Run()
 	{
-		Init();
+		CallFromYourThread();
+
+		ck1_achievedCPSCnt = std::chrono::high_resolution_clock::now();
+
+		auto startPoint = high_resolution_clock::now();
+		int callCounter = 0;
 
 		while (keepGoing)
 		{
-			if (appendItems)
-			{
-				lock_guard<mutex> lock(lockAddFuncs);
-				callers.swap(addCallers);
-				addCallers.clear();
-				appendItems = false;
-			}
+
+			//if (appendItems)
+			//{
+			//	lock_guard<mutex> lock(lockAddFuncs);
+			//	callers.swap(addCallers);
+			//	addCallers.clear();
+			//	appendItems = false;
+			//}
 
 			if (startNewCycle)
 			{
@@ -132,10 +209,28 @@ public:
 
 				readyForNewCycle = true;
 			}
+
+			AchievedCPSCounter();
+
+			auto currentPoint = high_resolution_clock::now();
+			callCounter++;
+			auto curDuration = duration_cast<DurationTypeDS>(currentPoint - startPoint);
+			auto reqDuration = DurationTypeDS{ callCounter * callInterval };
+			auto diff = reqDuration - curDuration;
+
+			if (diff.count() > 0)
+			{
+				while (diff > 500ms && keepGoing)
+				{
+					this_thread::sleep_for(500ms);
+					diff -= 500ms;
+				}
+				if (diff > 0ms)
+					this_thread::sleep_for(duration_cast<DurationTypeLLMicro>(diff));
+			}
 		}
 	}
 
-private:
 	void CheckStartThreadCall()
 	{
 		if (StartThreadCalled)
@@ -170,10 +265,17 @@ private:
 	// </>
 
 	// <Following variables don't need atomic, as we make sure, calling them after StartThread() calll is an error>
-	function<void(void)> Init;
+	function<void(void)> CallFromYourThread;
 	function<bool(void)> StartCycle;
 	function<void(void)> EndCycle;
 	// </>
+
+	DurationTypeLLMicro callInterval;
+	time_point<steady_clock> ck1_achievedCPSCnt;
+	time_point<steady_clock> ck2_achievedCPSCnt;
+	int cpsCounter = 0;
+	std::function<void(double)> AchievedCPSCallback;
+	double cps;
 };
 
 
@@ -249,10 +351,33 @@ void CallerManager::StartThread_()
 	callerManagerImpl->workerThread.StartThread();
 }
 
+std::function<void(double)> CallerManager::CallbackPlay_()
+{
+	return [this](double cps) 
+	{
+		callerManagerImpl->workerThread.Play(cps, callerManagerImpl->perFrameCallersPending);
+	};
+}
+
+std::function<void(void)> CallerManager::CallbackPause_()
+{
+	return [this]() { callerManagerImpl->workerThread.Pause(); };
+}
+
 void CallerManager::RegisterCaller_(Caller &&caller, CallType callType)
 {
 	if (callType == CallType::OneTime)
 		callerManagerImpl->oneTimeCallersPending.push_back(move(caller));
 	else if (callType == CallType::EveryTime)
 		callerManagerImpl->perFrameCallersPending.push_back(move(caller));
+}
+
+void CallerManager::SetAchievedCPSCallback_(std::function<void(double)> AchievedCPSCallback)
+{
+	callerManagerImpl->workerThread.SetAchievedCPSCallback(AchievedCPSCallback);
+}
+
+void CallerManager::Init_()
+{
+	callerManagerImpl->workerThread.Init();
 }

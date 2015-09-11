@@ -6,13 +6,13 @@
 class MainWindowImpl;
 class OpenGLWindow;
 class PluginExplorer;
-class CommonControls;
 class OutputWindow;
+class TBCallControl;
 
 class MainWindow : public UI::IMainWindow
 {
 public:
-	MainWindow(OpenGLWindow *oglWnd, OutputWindow *outWnd);
+	MainWindow(OpenGLWindow *oglWnd, OutputWindow *outWnd, TBCallControl *tbCallControl);
 	~MainWindow();
 
 private:

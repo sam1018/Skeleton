@@ -3,10 +3,12 @@
 #include "Routines.h"
 #include "SkeletonSettings.h"
 #include "UI/IMainWindow.h"
+#include "UI\ITBCallControl.h"
 #include "UI/ICoreGUIApplication.h"
 #include "UI/IUIInterfaceManager.h"
 #include "Vitals/IPluginsManager.h"
 #include "Vitals\IMessagePrinter.h"
+#include "Vitals\ICallerManager.h"
 #include "Vitals\IVitalsInterfaceManager.h"
 
 
@@ -58,7 +60,11 @@ void World::Initialize() const
 
 	ICoreGUIApplication *cga = GetCoreGUIApplication();
 	cga->FinishInitialization();
-	cga->SetupFPS(worldImpl->skeletonSettings.fps);
+	//cga->SetupFPS(worldImpl->skeletonSettings.fps);
+
+	GetTBCallControl()->Init();
+
+	GetCallerManager()->Init();
 }
 
 void World::Show() const

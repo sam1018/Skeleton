@@ -164,6 +164,7 @@
     <ClInclude Include="..\inc\UI\IOpenGLWindow.h" />
     <ClInclude Include="..\inc\UI\IOutputWindow.h" />
     <ClInclude Include="..\inc\UI\IPluginExplorer.h" />
+    <ClInclude Include="..\inc\UI\ITBCallControl.h" />
     <ClInclude Include="..\inc\UI\IUIInterfaceManager.h" />
     <ClInclude Include="..\inc\Vitals\Caller.h" />
     <ClInclude Include="..\inc\Vitals\ICallerManager.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="IPlugin.cpp" />
     <ClCompile Include="IPluginExplorer.cpp" />
     <ClCompile Include="IPluginsManager.cpp" />
+    <ClCompile Include="ITBCallControl.cpp" />
     <ClCompile Include="IUIInterfaceManager.cpp" />
     <ClCompile Include="IVitalsInterfaceManager.cpp" />
     <ClCompile Include="Routines.cpp" />

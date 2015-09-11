@@ -75,6 +75,9 @@
     <ClInclude Include="..\inc\Vitals\IMessagePrinter.h">
       <Filter>Vitals Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\UI\ITBCallControl.h">
+      <Filter>UI Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Settings.cpp">
@@ -121,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="IVitalsInterfaceManager.cpp">
       <Filter>Vitals Interfaces\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ITBCallControl.cpp">
+      <Filter>UI Interfaces\Sources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

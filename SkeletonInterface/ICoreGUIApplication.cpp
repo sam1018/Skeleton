@@ -31,27 +31,27 @@ void ICoreGUIApplication::FinishInitialization()
 	fctMngr->CallbackStartCycle([oglWnd]() { return oglWnd->CallbackStartCycle(); });
 	fctMngr->CallbackEndCycle([oglWnd]() { oglWnd->CallbackEndCycle(); });
 
-	fctMngr->StartThread();
+	//fctMngr->StartThread();
 }
 
-void ICoreGUIApplication::FPSHandler()
-{
-	using namespace VT;
-	ICallerManager *fctMngr = GetCallerManager();
-
-	if (fctMngr->ReadyForNewCycle())
-	{
-		//OGLWnd::Update();
-		fctMngr->RequestNewCycle();
-	}
-}
+//void ICoreGUIApplication::FPSHandler()
+//{
+//	using namespace VT;
+//	ICallerManager *fctMngr = GetCallerManager();
+//
+//	if (fctMngr->ReadyForNewCycle())
+//	{
+//		//OGLWnd::Update();
+//		fctMngr->RequestNewCycle();
+//	}
+//}
 
 int ICoreGUIApplication::Run()
 {
 	return Run_();
 }
 
-void ICoreGUIApplication::SetupFPS(int fps)
-{
-	return SetupFPS_(fps);
-}
+//void ICoreGUIApplication::SetupFPS(int fps)
+//{
+//	return SetupFPS_(fps);
+//}

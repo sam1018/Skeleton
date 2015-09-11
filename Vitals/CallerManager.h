@@ -32,6 +32,13 @@ private:
 
 	virtual void StartThread_();
 
+	virtual std::function<void(double)> CallbackPlay_();
+	virtual std::function<void(void)> CallbackPause_();
+
+	virtual void SetAchievedCPSCallback_(std::function<void(double)> AchievedCPSCallback);
+
+	virtual void Init_();
+
 private:
 	struct CallerManagerImpl;
 	std::unique_ptr<CallerManagerImpl> callerManagerImpl;

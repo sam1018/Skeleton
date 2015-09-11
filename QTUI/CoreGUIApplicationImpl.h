@@ -15,10 +15,10 @@ public:
 
 	bool notify(QObject * receiver, QEvent * e);
 
-	void SetupFPS(int fps);
+	//void SetupFPS(int fps);
 
-	public slots:
-	void Update();
+	//public slots:
+	//void Update();
 
 private:
 	CoreGUIApplication *parent;

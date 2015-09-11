@@ -36,6 +36,10 @@ namespace VT
 		bool RequestNewCycle();
 		void RegisterCaller(Caller &&caller, CallType callType);
 		void PluginUnloaded(IPlugin *plugin);
+		std::function<void(double)> CallbackPlay();
+		std::function<void(void)> CallbackPause();
+		void SetAchievedCPSCallback(std::function<void(double)> AchievedCPSCallback);
+		void Init();
 
 	private:
 		virtual void CallbackSetupThread_(std::function<void(void)> f) = 0;
@@ -46,5 +50,9 @@ namespace VT
 		virtual bool RequestNewCycle_() = 0;
 		virtual void RegisterCaller_(Caller &&caller, CallType callType) = 0;
 		virtual void PluginUnloaded_(IPlugin *plugin) = 0;
+		virtual std::function<void(double)> CallbackPlay_() = 0;
+		virtual std::function<void(void)> CallbackPause_() = 0;
+		virtual void SetAchievedCPSCallback_(std::function<void(double)> AchievedCPSCallback) = 0;
+		virtual void Init_() = 0;
 	};
 }

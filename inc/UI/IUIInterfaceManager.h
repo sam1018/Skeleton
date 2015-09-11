@@ -9,6 +9,7 @@ namespace UI
 	class IMainWindow;
 	class IOpenGLWindow;
 	class IOutputWindow;
+	class ITBCallControl;
 
 	class SKELETONINTERFACE_DECLSPEC IUIInterfaceManager
 	{
@@ -23,6 +24,7 @@ namespace UI
 		virtual IMainWindow* GetMainWindow() = 0;
 		virtual IOpenGLWindow* GetOpenGLWindow() = 0;
 		virtual IOutputWindow* GetOutputWindow() = 0;
+		virtual ITBCallControl* GetTBCallControl() = 0;
 	};
 
 	SKELETONINTERFACE_DECLSPEC void SetUIInterfaceManager(IUIInterfaceManager*);
@@ -32,4 +34,5 @@ namespace UI
 	SKELETONINTERFACE_DECLSPEC IMainWindow* GetMainWindow();
 	SKELETONINTERFACE_DECLSPEC IOpenGLWindow* GetOpenGLWindow();
 	SKELETONINTERFACE_DECLSPEC IOutputWindow* GetOutputWindow();
+	SKELETONINTERFACE_DECLSPEC ITBCallControl* GetTBCallControl();
 }

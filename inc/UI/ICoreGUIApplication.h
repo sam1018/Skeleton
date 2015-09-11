@@ -13,7 +13,7 @@ namespace UI
 
 		void FinishInitialization();
 
-		void FPSHandler();
+		//void FPSHandler();
 
 		int Run();
 
@@ -21,6 +21,6 @@ namespace UI
 
 	private:
 		virtual int Run_() = 0;
-		virtual void SetupFPS_(int fps) = 0;
+		//virtual void SetupFPS_(int fps) = 0;
 	};
 }

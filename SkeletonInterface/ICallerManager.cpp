@@ -42,3 +42,23 @@ void ICallerManager::PluginUnloaded(IPlugin *plugin)
 {
 	PluginUnloaded_(plugin);
 }
+
+std::function<void(double)> VT::ICallerManager::CallbackPlay()
+{
+	return CallbackPlay_();
+}
+
+std::function<void(void)> VT::ICallerManager::CallbackPause()
+{
+	return CallbackPause_();
+}
+
+void VT::ICallerManager::SetAchievedCPSCallback(std::function<void(double)> AchievedCPSCallback)
+{
+	SetAchievedCPSCallback_(AchievedCPSCallback);
+}
+
+void ICallerManager::Init()
+{
+	Init_();
+}

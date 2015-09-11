@@ -27,6 +27,7 @@ namespace UI
 		ADD_PROP(IMainWindow*, GetMainWindow)
 		ADD_PROP(IOpenGLWindow*, GetOpenGLWindow)
 		ADD_PROP(IOutputWindow*, GetOutputWindow)
+		ADD_PROP(ITBCallControl*, GetTBCallControl)
 
 	private:
 		IUIInterfaceManager *uiInterfaceManager = nullptr;
@@ -66,4 +67,9 @@ IOpenGLWindow* UI::GetOpenGLWindow()
 IOutputWindow * UI::GetOutputWindow()
 {
 	return uiInterfaceMngrAccessor.GetOutputWindow();
+}
+
+ITBCallControl *UI::GetTBCallControl()
+{
+	return uiInterfaceMngrAccessor.GetTBCallControl();
 }

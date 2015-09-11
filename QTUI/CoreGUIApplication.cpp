@@ -24,7 +24,7 @@ int CoreGUIApplication::Run_()
 	return coreGUIApplicationImpl->exec();
 }
 
-void CoreGUIApplication::SetupFPS_(int fps)
-{
-	coreGUIApplicationImpl->SetupFPS(fps);
-}
+//void CoreGUIApplication::SetupFPS_(int fps)
+//{
+//	coreGUIApplicationImpl->SetupFPS(fps);
+//}

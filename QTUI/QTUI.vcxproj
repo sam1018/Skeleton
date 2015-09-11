@@ -116,10 +116,11 @@
       <Command>%QTDIR%\bin\moc.exe MainWindowImpl.h -o tmp\moc\moc_MainWindowImpl.cpp
 %QTDIR%\bin\moc.exe OutputWindowImpl.h -o tmp\moc\moc_OutputWindowImpl.cpp
 %QTDIR%\bin\moc.exe PluginExplorerImpl.h -o tmp\moc\moc_PluginExplorerImpl.cpp
-%QTDIR%\bin\moc.exe CoreGUIApplicationImpl.h -o tmp\moc\moc_CoreGUIApplicationImpl.cpp</Command>
+%QTDIR%\bin\moc.exe CoreGUIApplicationImpl.h -o tmp\moc\moc_CoreGUIApplicationImpl.cpp
+%QTDIR%\bin\moc.exe TBCallControlImpl.h -o tmp\moc\moc_TBCallControlImpl.cpp</Command>
       <Message>Moc'ing ...</Message>
-      <Outputs>tmp\moc\moc_MainWindowImpl.cpp;tmp\moc\moc_OutputWindowImpl.cpp;tmp\moc\moc_PluginExplorerImpl.cpp;tmp\moc\moc_CoreGUIApplicationImpl.cpp</Outputs>
-      <Inputs>MainWindowImpl.h;OutputWindowImpl.h;PluginExplorerImpl.h;CoreGUIApplicationImpl.h</Inputs>
+      <Outputs>tmp\moc\moc_MainWindowImpl.cpp;tmp\moc\moc_OutputWindowImpl.cpp;tmp\moc\moc_PluginExplorerImpl.cpp;tmp\moc\moc_CoreGUIApplicationImpl.cpp;tmp\moc\moc_TBCallControlImpl.cpp</Outputs>
+      <Inputs>MainWindowImpl.h;OutputWindowImpl.h;PluginExplorerImpl.h;CoreGUIApplicationImpl.h;TBCallControlImpl.h</Inputs>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -174,10 +175,13 @@
     <ClCompile Include="PluginExplorer.cpp" />
     <ClCompile Include="PluginExplorerImpl.cpp" />
     <ClCompile Include="QTUI.cpp" />
+    <ClCompile Include="TBCallControl.cpp" />
+    <ClCompile Include="TBCallControlImpl.cpp" />
     <ClCompile Include="tmp\moc\moc_CoreGUIApplicationImpl.cpp" />
     <ClCompile Include="tmp\moc\moc_MainWindowImpl.cpp" />
     <ClCompile Include="tmp\moc\moc_OutputWindowImpl.cpp" />
     <ClCompile Include="tmp\moc\moc_PluginExplorerImpl.cpp" />
+    <ClCompile Include="tmp\moc\moc_TBCallControlImpl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonControls.h" />
@@ -193,6 +197,8 @@
     <ClInclude Include="PluginExplorerImpl.h" />
     <ClInclude Include="QTUISettings.h" />
     <ClInclude Include="QTUI.h" />
+    <ClInclude Include="TBCallControl.h" />
+    <ClInclude Include="TBCallControlImpl.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\x64\Settings\QTUISettings.xml" />

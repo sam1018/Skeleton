@@ -13,7 +13,7 @@ public:
 
 private:
 	virtual int Run_();
-	virtual void SetupFPS_(int fps);
+	//virtual void SetupFPS_(int fps);
 
 private:
 	std::unique_ptr<CoreGUIApplicationImpl> coreGUIApplicationImpl;

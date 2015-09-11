@@ -1,12 +1,13 @@
 #include "QTUI.h"
+#include "Routines.h"
 #include "MainWindow.h"
 #include "OpenGLWindow.h"
 #include "QTUISettings.h"
-#include "CoreGUIApplication.h"
-#include "Routines.h"
 #include "OpenGLWindow.h"
 #include "OutputWindow.h"
 #include "CommonControls.h"
+#include "CoreGUIApplication.h"
+#include "TBCallControl.h"
 #include "UI\IUIInterfaceManager.h"
 #include <memory>
 
@@ -23,8 +24,11 @@ public:
 		commonControls{ make_unique<CommonControls>() },
 		openGLWindow{ make_unique<OpenGLWindow>() },
 		outputWindow{ make_unique<OutputWindow>() },
-		mainWindow{ make_unique<MainWindow>(openGLWindow.get(), outputWindow.get()) }
+		tbCallControl{ make_unique<TBCallControl>() },
+		mainWindow{ make_unique<MainWindow>(openGLWindow.get(), outputWindow.get(),
+			tbCallControl.get()) }
 	{
+		tbCallControl->Init();
 	}
 
 	virtual ~UIInterfaceManager()
@@ -57,11 +61,17 @@ private:
 		return outputWindow.get();
 	}
 
+	virtual ITBCallControl* GetTBCallControl()
+	{
+		return tbCallControl.get();
+	}
+
 private:
 	unique_ptr <CoreGUIApplication> app;
 	unique_ptr<CommonControls> commonControls;
 	unique_ptr<OpenGLWindow> openGLWindow;
 	unique_ptr<OutputWindow> outputWindow;
+	unique_ptr <TBCallControl> tbCallControl;
 	unique_ptr <MainWindow> mainWindow;
 
 } *uiInterfaceManager;
