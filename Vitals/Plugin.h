@@ -39,6 +39,10 @@ public:
 
 	void* GetFunctionAddress(std::string functionName);
 
+
+private:
+	virtual std::vector<std::string> GetFunctions_();
+
 private:
 	struct PluginImpl;
 	std::unique_ptr <PluginImpl> pluginImpl;

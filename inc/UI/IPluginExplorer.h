@@ -19,7 +19,6 @@ namespace UI
 		virtual ~IPluginExplorer() = 0;
 
 		void LoadPlugin();
-		void LoadPlugin(const std::string &pluginName, std::vector<std::string> &functions);
 
 		// Give the plugin name with full path and function name to execute
 		void ExecuteFunction(const std::string &pluginName, const std::string &functionName);

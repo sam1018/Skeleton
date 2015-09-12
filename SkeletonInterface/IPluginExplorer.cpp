@@ -1,10 +1,11 @@
 #include "Routines.h"
-#include "Vitals\IMessagePrinter.h"
-#include "Vitals\IVitalsInterfaceManager.h"
-#include "Vitals/IPluginsManager.h"
 #include "UI/IPluginExplorer.h"
 #include "UI/ICommonControls.h"
 #include "UI\IUIInterfaceManager.h"
+#include <Vitals\IPlugin.h>
+#include "Vitals\IMessagePrinter.h"
+#include "Vitals/IPluginsManager.h"
+#include "Vitals\IVitalsInterfaceManager.h"
 #include <iostream>
 
 
@@ -13,8 +14,6 @@ using namespace VT;
 using namespace std;
 using namespace Routines;
 
-
-void ListDLLFunctions(string sADllName, vector<string>& slListOfDllFunctions);
 
 
 IPluginExplorer::IPluginExplorer()
@@ -25,30 +24,33 @@ IPluginExplorer::~IPluginExplorer()
 {
 }
 
-void IPluginExplorer::LoadPlugin(const string &pluginName, vector<string> &functions)
-{
-	if (pluginName == "")
-		return;
-
-	// Clear the output window
-	PRINT_MESSAGE(MsgCat_PluginExplorer, "", false, false)
-	PRINT_MESSAGE(MsgCat_PluginExplorer, "Searching module for exported functions............... ", true, true)
-
-	ListDLLFunctions(pluginName, functions);
-	if (functions.empty())
-		PRINT_MESSAGE(MsgCat_PluginExplorer, "No exported functions found.", true, true)
-	else
-		PRINT_MESSAGE(MsgCat_PluginExplorer, to_string(functions.size()) + " exported functions found.\n", true, true)
-}
-
 void IPluginExplorer::LoadPlugin()
 {
 	string pluginName = GetCommonControls()->GetOpenFileName(
 		GetControlImplementationSpecific(), "Open As", 
 		GetBinDirectory(), ("dll Files (*.dll)"));
 
-	vector<string> functions;
-	LoadPlugin(pluginName, functions);
+	if (pluginName == "")
+		return;
+
+	IPluginsManager *pm = GetPluginsManager();
+
+	if (pm->IsPluginLoaded(pluginName))
+	{
+		PRINT_MESSAGE(MsgCat_PluginExplorer, "Plugin already loaded.\n", true, true);
+		return;
+	}
+
+	IPlugin *plugin = pm->LoadPlugin(pluginName);
+
+	if (!plugin)
+	{
+		PRINT_MESSAGE(MsgCat_PluginExplorer, "Failed to load plugin.\n", true, true);
+		return;
+	}
+
+	vector<string> functions = plugin->GetFunctions();
+
 	AddPluginDataToTree(pluginName, functions);
 }
 
@@ -79,44 +81,4 @@ void IPluginExplorer::AddPluginDataToTree(const string &pluginName,
 void* IPluginExplorer::GetControlImplementationSpecific()
 {
 	return GetControlImplementationSpecific_();
-}
-
-
-
-
-
-#include <Windows.h>
-
-// I hate warnings
-#pragma warning( push )
-#pragma warning( disable : 4091 )
-#include <Imagehlp.h>
-#pragma warning( pop )
-
-void ListDLLFunctions(string sADllName, vector<string>& slListOfDllFunctions)
-{
-	unsigned long cDirSize;
-	_LOADED_IMAGE LoadedImage;
-	string sName;
-	slListOfDllFunctions.clear();
-	if (MapAndLoad(sADllName.c_str(), NULL, &LoadedImage, TRUE, TRUE))
-	{
-		_IMAGE_EXPORT_DIRECTORY *ImageExportDirectory = (_IMAGE_EXPORT_DIRECTORY*)
-			ImageDirectoryEntryToData(LoadedImage.MappedAddress,
-				false, IMAGE_DIRECTORY_ENTRY_EXPORT, &cDirSize);
-		if (ImageExportDirectory != NULL)
-		{
-			DWORD *dNameRVAs = (DWORD *)ImageRvaToVa(LoadedImage.FileHeader,
-				LoadedImage.MappedAddress,
-				ImageExportDirectory->AddressOfNames, NULL);
-			for (size_t i = 0; i < ImageExportDirectory->NumberOfNames; i++)
-			{
-				sName = (char *)ImageRvaToVa(LoadedImage.FileHeader,
-					LoadedImage.MappedAddress,
-					dNameRVAs[i], NULL);
-				slListOfDllFunctions.push_back(sName);
-			}
-		}
-		UnMapAndLoad(&LoadedImage);
-	}
 }

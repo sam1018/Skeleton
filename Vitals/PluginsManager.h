@@ -1,10 +1,9 @@
 #pragma once
 
+
 #include <memory>
 #include <string>
 #include "Vitals\IPluginsManager.h"
-
-class Plugin;
 
 
 class PluginsManager : public VT::IPluginsManager
@@ -14,12 +13,9 @@ public:
 	~PluginsManager();
 
 private:
-	void ExecuteFunction_(const std::string &pluginName, const std::string &functionName);
-
-	// Returns the asked plugin
-	// Loads the plugin if not already loaded
-	// Returns nullptr if the plugin cannot be loaded
-	Plugin* GetDynamicPlugin(const std::string &pluginName);
+	virtual void ExecuteFunction_(const std::string &pluginName, const std::string &functionName);
+	virtual bool IsPluginLoaded_(const std::string &pluginName);
+	virtual VT::IPlugin* LoadPlugin_(const std::string &pluginName);
 
 private:
 	struct PluginsManagerImpl;

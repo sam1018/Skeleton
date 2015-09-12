@@ -7,3 +7,13 @@ void IPluginsManager::ExecuteFunction(const string &pluginName, const string &fu
 {
 	ExecuteFunction_(pluginName, functionName);
 }
+
+bool IPluginsManager::IsPluginLoaded(const std::string & pluginName)
+{
+	return IsPluginLoaded_(pluginName);
+}
+
+IPlugin* IPluginsManager::LoadPlugin(const string &pluginName)
+{
+	return LoadPlugin_(pluginName);
+}

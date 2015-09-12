@@ -4,6 +4,11 @@
 #include <system_error>
 #include <windows.h> 
 
+#pragma warning( push )
+#pragma warning( disable : 4091 )
+#include <Imagehlp.h>
+#pragma warning( pop )
+
 
 using namespace VT;
 using namespace std;
@@ -47,6 +52,39 @@ void ThrowFunctionLoadFailure(string functionName)
 	throw system_error(error_code(GetLastError(), system_category()), "Failed to load function: \"" + functionName + "\". System Error");
 }
 
+
+vector<string> ListDLLFunctions(string sADllName)
+{
+	vector<string> slListOfDllFunctions;
+	unsigned long cDirSize;
+	_LOADED_IMAGE LoadedImage;
+	string sName;
+	slListOfDllFunctions.clear();
+	if (MapAndLoad(sADllName.c_str(), NULL, &LoadedImage, TRUE, TRUE))
+	{
+		_IMAGE_EXPORT_DIRECTORY *ImageExportDirectory = (_IMAGE_EXPORT_DIRECTORY*)
+			ImageDirectoryEntryToData(LoadedImage.MappedAddress,
+				false, IMAGE_DIRECTORY_ENTRY_EXPORT, &cDirSize);
+		if (ImageExportDirectory != NULL)
+		{
+			DWORD *dNameRVAs = (DWORD *)ImageRvaToVa(LoadedImage.FileHeader,
+				LoadedImage.MappedAddress,
+				ImageExportDirectory->AddressOfNames, NULL);
+			for (size_t i = 0; i < ImageExportDirectory->NumberOfNames; i++)
+			{
+				sName = (char *)ImageRvaToVa(LoadedImage.FileHeader,
+					LoadedImage.MappedAddress,
+					dNameRVAs[i], NULL);
+				slListOfDllFunctions.push_back(sName);
+			}
+		}
+		UnMapAndLoad(&LoadedImage);
+	}
+
+	return slListOfDllFunctions;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 /////////////          Plugin Definition                           ////////////
 ///////////////////////////////////////////////////////////////////////////////
@@ -78,6 +116,11 @@ void* Plugin::GetFunctionAddress(string functionName)
 		ThrowFunctionLoadFailure(functionName);
 
 	return ret;
+}
+
+vector<string> Plugin::GetFunctions_()
+{
+	return ListDLLFunctions(pluginImpl->pluginName);
 }
 
 void Plugin::PluginInitialize(int argc, char** argv)

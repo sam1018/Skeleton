@@ -10,6 +10,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
+
 using namespace VT;
 using namespace std;
 using namespace Routines;
@@ -18,9 +19,36 @@ using namespace Routines;
 using PluginsArrayDynamic = vector<unique_ptr<Plugin>>;
 
 
+
 struct PluginsManager::PluginsManagerImpl
 {
-	PluginsArrayDynamic pluginsArrayDynamic;
+	PluginsArrayDynamic pluginsArray;
+
+	Plugin* GetPlugin(const string &pluginName)
+	{
+		for (auto &plugin : pluginsArray)
+		{
+			if (IsSamePath(plugin->GetPluginName(), pluginName))
+				return plugin.get();
+		}
+
+		return nullptr;
+	}
+
+	Plugin* LoadPlugin(const string &pluginName)
+	{
+		Plugin *ret = GetPlugin(pluginName);
+		if (ret)
+			return ret;
+
+		unique_ptr<Plugin> plugin{ make_unique<Plugin>(pluginName) };
+
+		ret = plugin.get(); // store return result before moving
+
+		pluginsArray.push_back(move(plugin));
+
+		return ret;
+	}
 };
 
 
@@ -40,7 +68,7 @@ PluginsManager::~PluginsManager()
 
 void PluginsManager::ExecuteFunction_(const string &pluginName, const string &functionName)
 {
-	Plugin *plugin = GetDynamicPlugin(pluginName);
+	Plugin *plugin = pluginsManagerImpl->GetPlugin(pluginName);
 
 	if (plugin == nullptr)
 		ThrowPluginLoadFailure(pluginName);
@@ -49,18 +77,12 @@ void PluginsManager::ExecuteFunction_(const string &pluginName, const string &fu
 	GetCallerManager()->RegisterCaller(CreateCaller(f, plugin), CallType::OneTime);
 }
 
-Plugin* PluginsManager::GetDynamicPlugin(const string &pluginName)
+bool PluginsManager::IsPluginLoaded_(const std::string & pluginName)
 {
-	for (auto &plugin : pluginsManagerImpl->pluginsArrayDynamic)
-	{
-		if (IsSamePath(plugin->GetPluginName(), pluginName))
-			return plugin.get();
-	}
+	return pluginsManagerImpl->GetPlugin(pluginName) != nullptr;
+}
 
-	unique_ptr<Plugin> plugin{ make_unique<Plugin>(pluginName) };
-
-	Plugin *ret = plugin.get(); // store return result before moving
-	pluginsManagerImpl->pluginsArrayDynamic.push_back(move(plugin));
-
-	return ret;
+IPlugin* PluginsManager::LoadPlugin_(const std::string & pluginName)
+{
+	return pluginsManagerImpl->LoadPlugin(pluginName);
 }
