@@ -6,6 +6,7 @@
 #include <QtWidgets\QVBoxLayout>
 #include <QtWidgets\QPushButton>
 #include <QtWidgets\QTreeWidget>
+#include <QtWidgets\QHeaderView>
 
 
 using namespace std;
@@ -86,7 +87,7 @@ void PluginExplorerImpl::CreateTreeWidget()
 {
 	treeWidget = new QTreeWidget;
 	treeWidget->setColumnCount(1);
-	treeWidget->setHeaderLabels({ "Plugin/Function Name"});
+	treeWidget->header()->hide();
 	treeWidget->connect(treeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(ExecuteFunction(QTreeWidgetItem*, int)));
 }
 
