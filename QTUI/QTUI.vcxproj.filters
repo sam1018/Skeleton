@@ -126,4 +126,7 @@
   <ItemGroup>
     <Xml Include="..\x64\Settings\QTUISettings.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

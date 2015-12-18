@@ -98,10 +98,10 @@ public:
 		}
 	}
 
-	void AddCallers(const Callers &callers)
+	void AddCallers(const Callers &c)
 	{
 		lock_guard<mutex> lock(lockAddFuncs);
-		addCallers.insert(addCallers.end(), callers.begin(), callers.end());
+		addCallers.insert(addCallers.end(), c.begin(), c.end());
 	}
 
 	void AppendItems()

@@ -25,12 +25,12 @@ namespace VT
 
 		MessagePrinterSettings()
 		{
-			accessor.RegisterItem(showFileName, "SkeletonSettings.MessagePrinter.ShowFileName");
-			accessor.RegisterItem(showLineNumber, "SkeletonSettings.MessagePrinter.ShowLineNumber");
-			accessor.RegisterItem(appendNewLine, "SkeletonSettings.MessagePrinter.AppendNewLine");
-			accessor.RegisterItem(bufferSize, "SkeletonSettings.MessagePrinter.BufferSize");
-			accessor.RegisterItem(refreshRate, "SkeletonSettings.MessagePrinter.RefreshRate");
-			accessor.RegisterItem(totalCategories, "SkeletonSettings.MessagePrinter.TotalCategories");
+			accessor.RegisterItem(showFileName,		"SkeletonSettings.MessagePrinter.ShowFileName");
+			accessor.RegisterItem(showLineNumber,	"SkeletonSettings.MessagePrinter.ShowLineNumber");
+			accessor.RegisterItem(appendNewLine,	"SkeletonSettings.MessagePrinter.AppendNewLine");
+			accessor.RegisterItem(bufferSize,		"SkeletonSettings.MessagePrinter.BufferSize");
+			accessor.RegisterItem(refreshRate,		"SkeletonSettings.MessagePrinter.RefreshRate");
+			accessor.RegisterItem(totalCategories,	"SkeletonSettings.MessagePrinter.TotalCategories");
 
 			accessor.Load(Routines::GlobalSettingsFilePath());
 		}

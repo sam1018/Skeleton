@@ -43,7 +43,7 @@ private:
 
 extern "C"
 {
-	VITALS_DECLSPEC void InitializeModule(int argc, char** argv)
+	VITALS_DECLSPEC void InitializeModule(int, char**)
 	{
 	}
 

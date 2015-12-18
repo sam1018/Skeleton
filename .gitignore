@@ -215,3 +215,8 @@ QTUI/tmp/moc/moc_OpenGLWindowImpl.cpp
 QTUI/tmp/moc/moc_OutputWindowImpl.cpp
 QTUI/tmp/moc/moc_CoreGUIApplicationImpl.cpp
 QTUI/tmp/moc/moc_TBCallControlImpl.cpp
+QTUI/tmp/moc/moc_OutputWindowImpl.cpp
+QTUI/tmp/moc/moc_OutputWindowImpl.cpp
+QTUI/tmp/moc/moc_PluginExplorerImpl.cpp
+QTUI/tmp/moc/moc_OutputWindowImpl.cpp
+QTUI/tmp/moc/moc_PluginExplorerImpl.cpp

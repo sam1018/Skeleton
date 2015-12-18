@@ -47,7 +47,7 @@ extern "C" void __declspec(dllexport) TestFunc10sSleep()
 	auto start = chrono::high_resolution_clock::now();
 	this_thread::sleep_for(10s);
 	auto end = chrono::high_resolution_clock::now();
-	chrono::duration<double, nano> duration = end - start;
+	auto duration = chrono::duration<double, nano>(end - start);
 	cout << "Sleep time: " << duration.count() << "ns\n";
 }
 

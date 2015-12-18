@@ -129,4 +129,7 @@
       <Filter>UI Interfaces\Sources</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

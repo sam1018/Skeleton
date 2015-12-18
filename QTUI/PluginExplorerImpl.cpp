@@ -91,7 +91,7 @@ void PluginExplorerImpl::CreateTreeWidget()
 	treeWidget->connect(treeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), this, SLOT(ExecuteFunction(QTreeWidgetItem*, int)));
 }
 
-void PluginExplorerImpl::ExecuteFunction(QTreeWidgetItem *itemFunc, int column)
+void PluginExplorerImpl::ExecuteFunction(QTreeWidgetItem *itemFunc, int)
 {
 	QTreeWidgetItem *root = treeWidget->invisibleRootItem();
 

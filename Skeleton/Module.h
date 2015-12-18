@@ -1,10 +1,36 @@
 #include <codecvt>
 #include <iostream>
+#include <functional>
 #include <system_error>
 #include <windows.h>
 #include <boost/type_index.hpp>
 
 
+// Requirements:
+// f must be callable
+// f must have an overload that takes arg as its parameter
+// f must return a value other than void
+template
+<
+	typename Func, 
+	typename ...Args, 
+	typename RetType = std::result_of_t<Func(Args...)>
+>
+RetType SystemCallThrowing(const std::string &errMsg, const Func &f, Args ...args)
+{
+	SetLastError(0);
+
+	auto ret = f(std::forward<Args>(args)...);
+
+	if (auto err = GetLastError())
+	{
+		throw std::system_error(
+			std::error_code(err, std::system_category()),
+			errMsg);
+	}
+
+	return ret;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -22,13 +48,6 @@ std::wstring s2ws(const std::string &str)
 
 	return converterX.from_bytes(str);
 }
-
-void ThrowSystemError(const std::string &errMsg)
-{
-	auto ec = std::error_code(GetLastError(), std::system_category());
-	throw std::system_error(ec, errMsg);
-}
-
 
 template <typename InterfaceManagerType>
 class ModuleImpl
@@ -72,10 +91,9 @@ public:
 private:
 	void LoadModule()
 	{
-		hinstLib = LoadLibrary(s2ws(moduleName).c_str());
-
-		if (!hinstLib)
-			ThrowSystemError("Failed to load module: \"" + moduleName + "\".");
+		auto func = [](auto s) { return LoadLibrary(s); };
+		auto msg = "Failed to load module: \""s + moduleName + "\"."s;
+		hinstLib = SystemCallThrowing(msg, func, s2ws(moduleName).c_str());
 	}
 
 	void InitializeModule(int argc, char** argv) const
@@ -105,19 +123,18 @@ private:
 
 	void UnloadModule() const
 	{
-		if (!FreeLibrary(hinstLib))
-			ThrowSystemError("Failed to unload module: \"" + moduleName + "\".");
+		auto func = [](auto hinstLib) { return FreeLibrary(hinstLib); };
+		auto msg = "Failed to unload module: \""s + moduleName + "\"."s;
+		SystemCallThrowing(msg, func, hinstLib);
 	}
 
 	template <typename FuncType>
 	FuncType GetFunctionAddress(const std::string &funcName) const
 	{
-		FuncType func = reinterpret_cast<FuncType>(GetProcAddress(hinstLib, funcName.c_str()));
-		if (!func)
-			ThrowSystemError("Failed to load funcion: \"" + funcName +
-				"\", in Module: \"" + moduleName + "\".");
-
-		return func;
+		auto func = [](auto hinstLib, auto funcName) { return reinterpret_cast<FuncType>(GetProcAddress(hinstLib, funcName)); };
+		auto msg = "Failed to load funcion: \""s + funcName +
+			"\", in Module: \""s + moduleName + "\"."s;
+		return SystemCallThrowing(msg, func, hinstLib, funcName.c_str());
 	}
 
 private:

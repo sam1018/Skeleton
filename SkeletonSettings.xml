@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SkeletonSettings>
+  <HideCmdPromptAfterInitialization>0</HideCmdPromptAfterInitialization>
+  <FPS>1000</FPS>
+  <UIModule>QTUI</UIModule>
+  <VitalsModule>Vitals</VitalsModule>
+  <CallerManager>
+    <RedirectOutStream>1</RedirectOutStream>
+    <RedirectErrStream>1</RedirectErrStream>
+  </CallerManager>
+  <MessagePrinter>
+    <ShowFileName>1</ShowFileName>
+    <ShowLineNumber>1</ShowLineNumber>
+    <AppendNewLine>1</AppendNewLine>
+    <BufferSize>100</BufferSize>
+    <RefreshRate>30</RefreshRate>
+    <TotalCategories>10</TotalCategories>
+  </MessagePrinter>
+</SkeletonSettings>

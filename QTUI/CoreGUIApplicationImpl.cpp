@@ -25,8 +25,6 @@ bool CoreGUIApplicationImpl::notify(QObject * receiver, QEvent * e)
 {
 	using namespace string_literals;
 
-	auto messagePrinter{ GetMessagePrinter() };
-
 	try
 	{
 		return QApplication::notify(receiver, e);

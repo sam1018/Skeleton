@@ -196,7 +196,8 @@ public:
 	~MessagePrinterImpl()
 	{
 		keepGoing = false;
-		printerThread.join();
+		if (printerThread.joinable())
+			printerThread.join();
 		lock_guard<mutex> lock(m);
 	}
 

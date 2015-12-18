@@ -54,10 +54,7 @@ string Routines::GetFactorySettingsDir()
 {
 	path p(GetBinDirectory());
 
-	p /= "../";
-	p /= settingsDirName;
-
-	create_directory(p);
+	p /= "../../";
 
 	return p.generic_string();
 }
