@@ -40,15 +40,3 @@ bool CoreGUIApplicationImpl::notify(QObject * receiver, QEvent * e)
 
 	return false;
 }
-
-//void CoreGUIApplicationImpl::SetupFPS(int fps)
-//{
-//	QTimer *timer = new QTimer(this);
-//	connect(timer, SIGNAL(timeout()), this, SLOT(Update()));
-//	timer->start(1000 / fps);
-//}
-
-//void CoreGUIApplicationImpl::Update()
-//{
-//	parent->FPSHandler();
-//}

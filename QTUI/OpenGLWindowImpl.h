@@ -17,14 +17,20 @@ public:
 	explicit OpenGLWindowImpl(OpenGLWindow* obj);
 	~OpenGLWindowImpl();
 
+	void exposeEvent(QExposeEvent *) Q_DECL_OVERRIDE;
+
 	void SetupThread();
 	bool ReadyFrameToDraw();
-	void DrawComplete(); 
+	void DrawComplete();
+
+private:
+	void SetupOpenGL();
 
 private:
 	std::unique_ptr <QOpenGLContext> context;
 
-	// Destroying m_pParentObj is not our responsibility
-	// QT mainwindow will handle it
+	// non-owning
 	OpenGLWindow *parentObj;
+
+	bool contextInSeparateThread;
 };

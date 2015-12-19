@@ -23,35 +23,16 @@ ICoreGUIApplication::~ICoreGUIApplication()
 
 void ICoreGUIApplication::FinishInitialization()
 {
-	ICallerManager *fctMngr = GetCallerManager();
+	ICallerManager *callerMngr = GetCallerManager();
 	IOpenGLWindow *oglWnd = GetOpenGLWindow();
 
 
-	fctMngr->CallbackSetupThread([oglWnd]() { oglWnd->CallbackSetupThread(); });
-	fctMngr->CallbackStartCycle([oglWnd]() { return oglWnd->CallbackStartCycle(); });
-	fctMngr->CallbackEndCycle([oglWnd]() { oglWnd->CallbackEndCycle(); });
-
-	//fctMngr->StartThread();
+	callerMngr->CallbackSetupThread([oglWnd]() { oglWnd->CallbackSetupThread(); });
+	callerMngr->CallbackStartCycle([oglWnd]() { return oglWnd->CallbackStartCycle(); });
+	callerMngr->CallbackEndCycle([oglWnd]() { oglWnd->CallbackEndCycle(); });
 }
-
-//void ICoreGUIApplication::FPSHandler()
-//{
-//	using namespace VT;
-//	ICallerManager *fctMngr = GetCallerManager();
-//
-//	if (fctMngr->ReadyForNewCycle())
-//	{
-//		//OGLWnd::Update();
-//		fctMngr->RequestNewCycle();
-//	}
-//}
 
 int ICoreGUIApplication::Run()
 {
 	return Run_();
 }
-
-//void ICoreGUIApplication::SetupFPS(int fps)
-//{
-//	return SetupFPS_(fps);
-//}

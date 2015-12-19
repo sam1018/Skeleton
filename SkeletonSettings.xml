@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SkeletonSettings>
-  <HideCmdPromptAfterInitialization>0</HideCmdPromptAfterInitialization>
+  <HideCmdPromptAfterInitialization>1</HideCmdPromptAfterInitialization>
   <FPS>1000</FPS>
   <UIModule>QTUI</UIModule>
   <VitalsModule>Vitals</VitalsModule>
@@ -9,8 +9,8 @@
     <RedirectErrStream>1</RedirectErrStream>
   </CallerManager>
   <MessagePrinter>
-    <ShowFileName>1</ShowFileName>
-    <ShowLineNumber>1</ShowLineNumber>
+    <ShowFileName>0</ShowFileName>
+    <ShowLineNumber>0</ShowLineNumber>
     <AppendNewLine>1</AppendNewLine>
     <BufferSize>100</BufferSize>
     <RefreshRate>30</RefreshRate>

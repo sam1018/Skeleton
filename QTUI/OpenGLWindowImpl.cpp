@@ -12,24 +12,33 @@ using namespace std;
 
 
 OpenGLWindowImpl::OpenGLWindowImpl(OpenGLWindow* obj) :
-	parentObj{ obj }
+	parentObj{ obj },
+	contextInSeparateThread{ false }
 {
-	setSurfaceType(QWindow::OpenGLSurface);
+	SetupOpenGL();
 }
 
 OpenGLWindowImpl::~OpenGLWindowImpl()
 {
 }
 
-void OpenGLWindowImpl::SetupThread()
+void OpenGLWindowImpl::SetupOpenGL()
 {
+	setSurfaceType(QWindow::OpenGLSurface);
+
+	delete context.release();
+
 	context = make_unique<QOpenGLContext>();
 	context->create();
 
 	context->doneCurrent();
 	context->moveToThread(QThread::currentThread());
-	
-	glViewport(0, 0, this->width() * this->devicePixelRatio(), this->height() * this->devicePixelRatio());
+}
+
+void OpenGLWindowImpl::SetupThread()
+{
+	SetupOpenGL();
+	contextInSeparateThread = true;
 }
 
 bool OpenGLWindowImpl::ReadyFrameToDraw()
@@ -37,6 +46,7 @@ bool OpenGLWindowImpl::ReadyFrameToDraw()
 	if (isExposed())
 	{
 		context->makeCurrent(this);
+		glViewport(0, 0, this->width() * this->devicePixelRatio(), this->height() * this->devicePixelRatio());
 		return true;
 	}
 
@@ -47,4 +57,15 @@ void OpenGLWindowImpl::DrawComplete()
 {
 	if(isExposed())
 		context->swapBuffers(this);
+}
+
+void OpenGLWindowImpl::exposeEvent(QExposeEvent *)
+{
+	if (isExposed() && !contextInSeparateThread)
+	{
+		ReadyFrameToDraw();
+		glClearColor(0, 0, 0, 0);
+		glClear(GL_COLOR_BUFFER_BIT);
+		DrawComplete();
+	}
 }

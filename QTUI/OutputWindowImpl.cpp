@@ -1,5 +1,6 @@
 #include "OutputWindowImpl.h"
 #include "OutputWindow.h"
+#include <QtWidgets\QLabel>
 #include <QtWidgets\QComboBox>
 #include <QtWidgets\QVBoxLayout>
 #include <QtWidgets\QPlainTextEdit>
@@ -9,7 +10,7 @@ using namespace std;
 
 
 OutputWindowImpl::OutputWindowImpl(OutputWindow *wnd) :
-	QDockWidget("Output Window"),
+	QDockWidget("Output"),
 	comboCatagory{ new QComboBox },
 	textEdit{ new QPlainTextEdit },
 	outputWindow{ wnd }
@@ -24,7 +25,17 @@ OutputWindowImpl::OutputWindowImpl(OutputWindow *wnd) :
 	layout->setMargin(0);
 	layout->setContentsMargins(0, 0, 0, 0);
 
-	layout->addWidget(comboCatagory);
+	QHBoxLayout *btnLayout = new QHBoxLayout;
+
+	comboCatagory->setMinimumWidth(150);
+
+	btnLayout->addWidget(new QLabel(" Show output from:   "));
+	btnLayout->addWidget(comboCatagory);
+
+	btnLayout->addStretch();
+
+	layout->addLayout(btnLayout);
+
 	layout->addWidget(textEdit);
 
 	// We need to create a new widget, with proper layout

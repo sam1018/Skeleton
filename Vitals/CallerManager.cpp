@@ -182,15 +182,6 @@ private:
 
 		while (keepGoing)
 		{
-
-			//if (appendItems)
-			//{
-			//	lock_guard<mutex> lock(lockAddFuncs);
-			//	callers.swap(addCallers);
-			//	addCallers.clear();
-			//	appendItems = false;
-			//}
-
 			if (startNewCycle)
 			{
 				startNewCycle = false;
