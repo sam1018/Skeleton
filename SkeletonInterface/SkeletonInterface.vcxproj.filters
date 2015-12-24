@@ -78,6 +78,9 @@
     <ClInclude Include="..\inc\UI\ITBCallControl.h">
       <Filter>UI Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\HelperFuncs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Settings.cpp">

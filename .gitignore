@@ -220,3 +220,4 @@ QTUI/tmp/moc/moc_OutputWindowImpl.cpp
 QTUI/tmp/moc/moc_PluginExplorerImpl.cpp
 QTUI/tmp/moc/moc_OutputWindowImpl.cpp
 QTUI/tmp/moc/moc_PluginExplorerImpl.cpp
+*.opendb

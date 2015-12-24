@@ -158,6 +158,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\inc\HelperFuncs.h" />
     <ClInclude Include="..\inc\Routines.h" />
     <ClInclude Include="..\inc\Settings.h" />
     <ClInclude Include="..\inc\SkeletonInterface.h" />
