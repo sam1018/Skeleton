@@ -206,9 +206,6 @@
     <ClInclude Include="TBCallControlImpl.h" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\x64\Settings\QTUISettings.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
